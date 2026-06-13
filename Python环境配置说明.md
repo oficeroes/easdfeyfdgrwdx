@@ -14,7 +14,7 @@
 | **pip 路径** | `venv\Scripts\pip.exe` |
 | **Python 版本** | 3.14.3 |
 | **pip 版本** | 25.3 |
-| **已安装包** | 仅 `pip`（纯净环境，无其他依赖） |
+| **已安装包** | openpyxl, pdfplumber, jupyter 及其依赖 |
 | **系统 Python** | `C:\Users\s1325\AppData\Local\Programs\Python\Python314\python.exe` |
 | **VS Code Pylance** | 已指向 `venv\Scripts\python.exe` |
 
@@ -39,15 +39,9 @@
 
 ## 三、配置过程中遇到的问题
 
-### 问题 1：`.venv` 创建失败（文件被锁定）
+### 问题 1：旧记录（历史问题，本次未遇到）
 
-- **现象：** `python -m venv .venv` 报错  
-  `Unable to copy 'venvlauncher.exe' to 'python.exe'`
-- **原因：** 首次创建时 Windows Defender 或某进程锁定了 `python.exe`，导致后续重试时文件无法覆盖或删除
-- **尝试的解决方案：**
-  - ❌ `--symlinks` 模式 — 同样失败
-  - ❌ `--without-pip` 模式 — 问题出在更早的 python.exe 复制阶段
-  - ❌ 使用 `virtualenv` 包 — 同样遇到 `[WinError 5] 拒绝访问`
+- 历史上有 `.venv` 创建失败的问题，本次重建使用 `venv\` 目录顺利完成。
   - ❌ 换到 `C:\temp` 创建 — 无写入权限
 - **最终解决：** 改用新目录名 `venv`（而非 `.venv`），一次创建成功
 

@@ -1,0 +1,21 @@
+# ============================================================
+# 澳门生物多样性数据分析 — Python 依赖清单
+# 
+# 使用方法：
+#   pip install -r requirements.txt
+#
+# 如果是 Live Share 嘉宾，请先创建自己的虚拟环境：
+#   python -m venv venv
+#   .\venv\Scripts\Activate.ps1   (Windows)
+#   source venv/bin/activate      (macOS/Linux)
+#   然后执行 pip install -r requirements.txt
+# ============================================================
+
+# Excel 数据处理
+openpyxl>=3.1.0
+
+# PDF 文本提取
+pdfplumber>=0.11.0
+
+# Jupyter Notebook 支持
+jupyter>=1.1.0
