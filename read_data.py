@@ -1,5 +1,5 @@
 import openpyxl, pdfplumber, os
-#hello
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 results = {}
 
@@ -7,7 +7,7 @@ results = {}
 for pdf_name in ['2025 團隊賽數據包說明.pdf', '2026 團隊賽數據包說明.pdf']:
     try:
         with pdfplumber.open(pdf_name) as pdf:
-            text = '' # hello
+            text = ''
             for page in pdf.pages:
                 t = page.extract_text()
                 if t:
