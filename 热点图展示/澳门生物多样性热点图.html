@@ -19,8 +19,11 @@
     transition:all .3s ease;
   }
   .panel.collapsed{
-    width:44px;height:44px;padding:8px;border-radius:50%;
-    overflow:hidden;cursor:pointer;
+    width:48px;height:48px;padding:0;border-radius:50%;
+    overflow:hidden;cursor:pointer;position:fixed;top:14px;left:14px;
+    z-index:9998;display:flex;align-items:center;justify-content:center;
+    touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+    user-select:none;pointer-events:auto;
   }
   .panel.collapsed>*:not(.panel-header){display:none;}
   .panel.collapsed .panel-header{padding:0;margin:0;border:none;}
@@ -44,14 +47,15 @@
   /* 面板隐藏时出现的浮动按钮 */
   .panel-show-btn{
     display:none;
-    position:absolute;top:14px;left:14px;z-index:1001;
-    width:44px;height:44px;border-radius:50%;
-    background:var(--accent);color:#fff;border:0;
-    font-size:22px;line-height:44px;text-align:center;
-    cursor:pointer;box-shadow:0 3px 12px rgba(31,138,112,.4);
-    transition:transform .25s;
+    position:fixed;top:14px;left:14px;z-index:9999;
+    width:48px;height:48px;border-radius:50%;
+    background:var(--accent);color:#fff;border:2px solid #fff;
+    font-size:24px;line-height:44px;text-align:center;
+    cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.25);
+    pointer-events:auto;touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+    user-select:none;
   }
-  .panel-show-btn:hover{transform:scale(1.12);}
   .panel-show-btn.visible{display:block;}
 
   /* 手机端默认折叠面板 */
@@ -109,9 +113,17 @@
 <body>
 <div id="map"></div>
 
-<div class="panel">
-  <h1>🦜 澳门生物多样性热点图</h1>
-  <div class="sub">基于 iNaturalist 观测记录 · 校际团队挑战赛</div>
+<!-- 面板关闭后出现的浮动打开按钮 -->
+<button class="panel-show-btn" id="panelShowBtn" title="打开控制面板">📊</button>
+
+<div class="panel" id="mainPanel">
+  <div class="panel-header">
+    <div class="left" title="点击收起面板">
+      <h1>🦜 澳门生物多样性热点图</h1>
+      <div class="sub">基于 iNaturalist 观测记录 · 校际团队挑战赛</div>
+    </div>
+    <button class="panel-close" title="关闭面板">✕</button>
+  </div>
 
   <div class="year-toggle" id="yearToggle">
     <button data-year="2025">2025 年</button>
@@ -159,6 +171,48 @@
 
   let currentYear = "2026";
   const active = new Set(CATS.map(c=>c.index));   // 默认全部类别开启
+
+  // ---- 面板折叠/展开 ----
+  const mainPanel = document.getElementById('mainPanel');
+  const showBtn  = document.getElementById('panelShowBtn');
+
+  function collapsePanel(){
+    mainPanel.classList.add('collapsed');
+    showBtn.classList.add('visible');
+    setTimeout(function(){ map.invalidateSize(); }, 350);
+  }
+  function expandPanel(){
+    mainPanel.classList.remove('collapsed');
+    showBtn.classList.remove('visible');
+    setTimeout(function(){ map.invalidateSize(); }, 350);
+  }
+  function togglePanel(){
+    if(mainPanel.classList.contains('collapsed')) expandPanel();
+    else collapsePanel();
+  }
+
+  // 按钮 + 折叠图标都用 touchstart（手机端即时响应）
+  function bindTap(el, fn){
+    el.addEventListener('touchstart', function(e){ e.preventDefault(); fn(); }, {passive:false});
+    el.addEventListener('click', function(e){ e.stopPropagation(); fn(); });
+  }
+  bindTap(showBtn, expandPanel);
+  bindTap(mainPanel.querySelector('.panel-header .left'), togglePanel);
+  bindTap(mainPanel.querySelector('.panel-close'), collapsePanel);
+  // 折叠后的圆形图标点它也能展开
+  mainPanel.addEventListener('click', function(e){
+    if(mainPanel.classList.contains('collapsed')) expandPanel();
+  });
+
+  // 手机端自动折叠
+  if(window.innerWidth < 600) collapsePanel();
+
+  // 点击地图空白区收起面板（手机端），但不干扰按钮
+  map.on('click', function(e){
+    if(window.innerWidth < 600 && !mainPanel.classList.contains('collapsed')){
+      collapsePanel();
+    }
+  });
 
   // ---- 构建类别筛选列表 ----
   const catList = document.getElementById('catList');

@@ -26,7 +26,7 @@ import webbrowser
 # ===== 配置 =====
 PORT = 8080
 HOST = '0.0.0.0'         # 绑定所有网卡（局域网 + cloudflared 都需要）
-TARGET = '澳门生物多样性热点图.html'
+TARGET = '热点图展示/澳门生物多样性热点图.html'
 
 # ===== 切换到项目根目录 =====
 root_dir = os.path.dirname(os.path.abspath(__file__))
@@ -85,6 +85,8 @@ def start_cloudflared(port: int) -> subprocess.Popen | None:
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
+            encoding='utf-8',
+            errors='replace',
             bufsize=1,
         )
         return proc

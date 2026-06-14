@@ -1,6 +1,6 @@
 # ============================================================
 # 澳门生物多样性数据分析 — Python 依赖清单
-# 
+#
 # 使用方法：
 #   pip install -r requirements.txt
 #
@@ -11,11 +11,22 @@
 #   然后执行 pip install -r requirements.txt
 # ============================================================
 
-# Excel 数据处理
+# --- 核心依赖（必须安装）---
+
+# Excel .xlsx 文件读取 — 用于 convert_to_csv.py / read_data.py
 openpyxl>=3.1.0
 
-# PDF 文本提取
+# PDF 文本提取 — 用于 read_data.py 读取数据包说明文档
 pdfplumber>=0.11.0
 
-# Jupyter Notebook 支持
+
+# --- 可选依赖 ---
+
+# Jupyter Notebook 交互式开发
 jupyter>=1.1.0
+
+
+# --- 以下为标准库，无需 pip install ---
+# http.server · os · sys · csv · json · re · shutil · socket
+# subprocess · threading · webbrowser · datetime
+# ============================================================

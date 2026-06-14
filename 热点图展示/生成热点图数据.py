@@ -3,7 +3,7 @@
 import csv, json, os
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE, "表格数据")
+DATA_DIR = os.path.join(BASE, "..", "表格数据")  # 数据在上层目录
 
 # 数据集配置：注意两年的经纬度列顺序不同
 DATASETS = {
