@@ -1,0 +1,2295 @@
+{
+  "verification_date": "2026-06-16",
+  "total_checks": 381,
+  "passed": 381,
+  "failed": 0,
+  "pass_rate": "100.0%",
+  "details": [
+    {
+      "name": "2025 总记录数 N",
+      "expected": "33486",
+      "actual": "33486",
+      "match": true
+    },
+    {
+      "name": "2025 物种种数 S",
+      "expected": "2979",
+      "actual": "2979",
+      "match": true
+    },
+    {
+      "name": "2025 科的数目",
+      "expected": "605",
+      "actual": "605",
+      "match": true
+    },
+    {
+      "name": "2025 属的数目",
+      "expected": "1869",
+      "actual": "1869",
+      "match": true
+    },
+    {
+      "name": "2025 圈养/栽培记录",
+      "expected": "5679",
+      "actual": "5679",
+      "match": true
+    },
+    {
+      "name": "2025 野生/自然记录",
+      "expected": "27807",
+      "actual": "27807",
+      "match": true
+    },
+    {
+      "name": "2026 总记录数 N",
+      "expected": "18367",
+      "actual": "18367",
+      "match": true
+    },
+    {
+      "name": "2026 物种种数 S",
+      "expected": "2009",
+      "actual": "2009",
+      "match": true
+    },
+    {
+      "name": "2026 科的数目",
+      "expected": "517",
+      "actual": "517",
+      "match": true
+    },
+    {
+      "name": "2026 属的数目",
+      "expected": "1473",
+      "actual": "1473",
+      "match": true
+    },
+    {
+      "name": "2026 圈养/栽培记录",
+      "expected": "0",
+      "actual": "0",
+      "match": true
+    },
+    {
+      "name": "2025 Plantae 记录数",
+      "expected": "25441",
+      "actual": "25441",
+      "match": true
+    },
+    {
+      "name": "2025 Aves 记录数",
+      "expected": "3167",
+      "actual": "3167",
+      "match": true
+    },
+    {
+      "name": "2025 Insecta 记录数",
+      "expected": "2929",
+      "actual": "2929",
+      "match": true
+    },
+    {
+      "name": "2025 Animalia 记录数",
+      "expected": "380",
+      "actual": "380",
+      "match": true
+    },
+    {
+      "name": "2025 Actinopterygii 记录数",
+      "expected": "324",
+      "actual": "324",
+      "match": true
+    },
+    {
+      "name": "2025 Mollusca 记录数",
+      "expected": "274",
+      "actual": "274",
+      "match": true
+    },
+    {
+      "name": "2025 Reptilia 记录数",
+      "expected": "252",
+      "actual": "252",
+      "match": true
+    },
+    {
+      "name": "2025 Fungi 记录数",
+      "expected": "246",
+      "actual": "246",
+      "match": true
+    },
+    {
+      "name": "2025 Amphibia 记录数",
+      "expected": "206",
+      "actual": "206",
+      "match": true
+    },
+    {
+      "name": "2025 Arachnida 记录数",
+      "expected": "187",
+      "actual": "187",
+      "match": true
+    },
+    {
+      "name": "2025 Mammalia 记录数",
+      "expected": "73",
+      "actual": "73",
+      "match": true
+    },
+    {
+      "name": "2025 Protozoa 记录数",
+      "expected": "3",
+      "actual": "3",
+      "match": true
+    },
+    {
+      "name": "2026 Plantae 记录数",
+      "expected": "9736",
+      "actual": "9736",
+      "match": true
+    },
+    {
+      "name": "2026 Insecta 记录数",
+      "expected": "3673",
+      "actual": "3673",
+      "match": true
+    },
+    {
+      "name": "2026 Aves 记录数",
+      "expected": "3007",
+      "actual": "3007",
+      "match": true
+    },
+    {
+      "name": "2026 Animalia 记录数",
+      "expected": "536",
+      "actual": "536",
+      "match": true
+    },
+    {
+      "name": "2026 Amphibia 记录数",
+      "expected": "303",
+      "actual": "303",
+      "match": true
+    },
+    {
+      "name": "2026 Mollusca 记录数",
+      "expected": "273",
+      "actual": "273",
+      "match": true
+    },
+    {
+      "name": "2026 Reptilia 记录数",
+      "expected": "239",
+      "actual": "239",
+      "match": true
+    },
+    {
+      "name": "2026 Arachnida 记录数",
+      "expected": "212",
+      "actual": "212",
+      "match": true
+    },
+    {
+      "name": "2026 Actinopterygii 记录数",
+      "expected": "177",
+      "actual": "177",
+      "match": true
+    },
+    {
+      "name": "2026 Fungi 记录数",
+      "expected": "152",
+      "actual": "152",
+      "match": true
+    },
+    {
+      "name": "2026 Mammalia 记录数",
+      "expected": "54",
+      "actual": "54",
+      "match": true
+    },
+    {
+      "name": "2026 Protozoa 记录数",
+      "expected": "4",
+      "actual": "4",
+      "match": true
+    },
+    {
+      "name": "2026 Plantae 占比%",
+      "expected": "53.0",
+      "actual": "53.00811237545599",
+      "match": true
+    },
+    {
+      "name": "2026 Insecta 占比%",
+      "expected": "20.0",
+      "actual": "19.997822181085642",
+      "match": true
+    },
+    {
+      "name": "2026 Aves 占比%",
+      "expected": "16.4",
+      "actual": "16.371753688680787",
+      "match": true
+    },
+    {
+      "name": "2026 Animalia 占比%",
+      "expected": "2.9",
+      "actual": "2.9182773452387436",
+      "match": true
+    },
+    {
+      "name": "2026 Amphibia 占比%",
+      "expected": "1.6",
+      "actual": "1.6496978276256329",
+      "match": true
+    },
+    {
+      "name": "2026 Mollusca 占比%",
+      "expected": "1.5",
+      "actual": "1.4863614090488375",
+      "match": true
+    },
+    {
+      "name": "2026 Reptilia 占比%",
+      "expected": "1.3",
+      "actual": "1.3012468013284695",
+      "match": true
+    },
+    {
+      "name": "2026 Arachnida 占比%",
+      "expected": "1.2",
+      "actual": "1.1542440246093537",
+      "match": true
+    },
+    {
+      "name": "2026 Actinopterygii 占比%",
+      "expected": "1.0",
+      "actual": "0.9636848696030925",
+      "match": true
+    },
+    {
+      "name": "2026 Fungi 占比%",
+      "expected": "0.8",
+      "actual": "0.8275711874557631",
+      "match": true
+    },
+    {
+      "name": "2026 Mammalia 占比%",
+      "expected": "0.3",
+      "actual": "0.2940055534382316",
+      "match": true
+    },
+    {
+      "name": "2025 Plantae 记录数",
+      "expected": "25441",
+      "actual": "25441",
+      "match": true
+    },
+    {
+      "name": "2025 Animalia 记录数",
+      "expected": "7792",
+      "actual": "7792",
+      "match": true
+    },
+    {
+      "name": "2025 Fungi 记录数",
+      "expected": "246",
+      "actual": "246",
+      "match": true
+    },
+    {
+      "name": "2026 Plantae 记录数",
+      "expected": "9736",
+      "actual": "9736",
+      "match": true
+    },
+    {
+      "name": "2026 Animalia 记录数",
+      "expected": "8474",
+      "actual": "8474",
+      "match": true
+    },
+    {
+      "name": "2026 Fungi 记录数",
+      "expected": "152",
+      "actual": "152",
+      "match": true
+    },
+    {
+      "name": "2026 Protozoa 记录数",
+      "expected": "4",
+      "actual": "4",
+      "match": true
+    },
+    {
+      "name": "2026 Bacteria 记录数",
+      "expected": "1",
+      "actual": "1",
+      "match": true
+    },
+    {
+      "name": "2025 Shannon H' (报告: 6.7060)",
+      "expected": "6.706",
+      "actual": "6.70604120527672",
+      "match": true
+    },
+    {
+      "name": "2025 Simpson D (报告: 0.002623)",
+      "expected": "0.002623",
+      "actual": "0.002623374522111456",
+      "match": true
+    },
+    {
+      "name": "2025 Simpson 1-D (报告: 0.997377)",
+      "expected": "0.997377",
+      "actual": "0.9973766254778885",
+      "match": true
+    },
+    {
+      "name": "2025 逆Simpson 1/D (报告: 381.19)",
+      "expected": "381.19",
+      "actual": "381.18842413516217",
+      "match": true
+    },
+    {
+      "name": "2025 Pielou J' (报告: 0.8383)",
+      "expected": "0.8383",
+      "actual": "0.838324002973533",
+      "match": true
+    },
+    {
+      "name": "2025 H'max = ln(S) (报告: 7.9993)",
+      "expected": "7.9993",
+      "actual": "7.999342952713282",
+      "match": true
+    },
+    {
+      "name": "2026 Shannon H' (报告: 6.4099)",
+      "expected": "6.4099",
+      "actual": "6.409933177588405",
+      "match": true
+    },
+    {
+      "name": "2026 Simpson D (报告: 0.004212)",
+      "expected": "0.004212",
+      "actual": "0.004212009212792989",
+      "match": true
+    },
+    {
+      "name": "2026 Simpson 1-D (报告: 0.995788)",
+      "expected": "0.995788",
+      "actual": "0.995787990787207",
+      "match": true
+    },
+    {
+      "name": "2026 逆Simpson 1/D (报告: 237.42)",
+      "expected": "237.42",
+      "actual": "237.41638478917253",
+      "match": true
+    },
+    {
+      "name": "2026 Pielou J' (报告: 0.8428)",
+      "expected": "0.8428",
+      "actual": "0.8428142652104157",
+      "match": true
+    },
+    {
+      "name": "2026 H'max = ln(S) (报告: 7.6054)",
+      "expected": "7.6054",
+      "actual": "7.605392364814935",
+      "match": true
+    },
+    {
+      "name": "  Plantae 记录数",
+      "expected": "9736",
+      "actual": "9736",
+      "match": true
+    },
+    {
+      "name": "  Plantae 物种数 S",
+      "expected": "1074",
+      "actual": "1074",
+      "match": true
+    },
+    {
+      "name": "  Plantae Shannon H'",
+      "expected": "5.9835",
+      "actual": "5.983470455143446",
+      "match": true
+    },
+    {
+      "name": "  Plantae Simpson 1-D",
+      "expected": "0.9949",
+      "actual": "0.9948638931689779",
+      "match": true
+    },
+    {
+      "name": "  Plantae Pielou J'",
+      "expected": "0.8573",
+      "actual": "0.8573357079294287",
+      "match": true
+    },
+    {
+      "name": "  Insecta 记录数",
+      "expected": "3673",
+      "actual": "3673",
+      "match": true
+    },
+    {
+      "name": "  Insecta 物种数 S",
+      "expected": "574",
+      "actual": "574",
+      "match": true
+    },
+    {
+      "name": "  Insecta Shannon H'",
+      "expected": "5.4723",
+      "actual": "5.472332663774042",
+      "match": true
+    },
+    {
+      "name": "  Insecta Simpson 1-D",
+      "expected": "0.9923",
+      "actual": "0.9922940589249585",
+      "match": true
+    },
+    {
+      "name": "  Insecta Pielou J'",
+      "expected": "0.8614",
+      "actual": "0.8614279729499835",
+      "match": true
+    },
+    {
+      "name": "  Aves 记录数",
+      "expected": "3007",
+      "actual": "3007",
+      "match": true
+    },
+    {
+      "name": "  Aves 物种数 S",
+      "expected": "95",
+      "actual": "95",
+      "match": true
+    },
+    {
+      "name": "  Aves Shannon H'",
+      "expected": "3.0875",
+      "actual": "3.087547366551381",
+      "match": true
+    },
+    {
+      "name": "  Aves Simpson 1-D",
+      "expected": "0.9234",
+      "actual": "0.9233887838998868",
+      "match": true
+    },
+    {
+      "name": "  Aves Pielou J'",
+      "expected": "0.678",
+      "actual": "0.6780041358268268",
+      "match": true
+    },
+    {
+      "name": "  Fungi 记录数",
+      "expected": "152",
+      "actual": "152",
+      "match": true
+    },
+    {
+      "name": "  Fungi 物种数 S",
+      "expected": "63",
+      "actual": "63",
+      "match": true
+    },
+    {
+      "name": "  Fungi Shannon H'",
+      "expected": "3.6594",
+      "actual": "3.6593843004116",
+      "match": true
+    },
+    {
+      "name": "  Fungi Simpson 1-D",
+      "expected": "0.9621",
+      "actual": "0.9620948065528059",
+      "match": true
+    },
+    {
+      "name": "  Fungi Pielou J'",
+      "expected": "0.8832",
+      "actual": "0.8832404790270347",
+      "match": true
+    },
+    {
+      "name": "  Arachnida 记录数",
+      "expected": "212",
+      "actual": "212",
+      "match": true
+    },
+    {
+      "name": "  Arachnida 物种数 S",
+      "expected": "58",
+      "actual": "58",
+      "match": true
+    },
+    {
+      "name": "  Arachnida Shannon H'",
+      "expected": "3.3136",
+      "actual": "3.3135800103716537",
+      "match": true
+    },
+    {
+      "name": "  Arachnida Simpson 1-D",
+      "expected": "0.9349",
+      "actual": "0.9349011893051954",
+      "match": true
+    },
+    {
+      "name": "  Arachnida Pielou J'",
+      "expected": "0.8161",
+      "actual": "0.8160636663943083",
+      "match": true
+    },
+    {
+      "name": "  Animalia 记录数",
+      "expected": "536",
+      "actual": "536",
+      "match": true
+    },
+    {
+      "name": "  Animalia 物种数 S",
+      "expected": "38",
+      "actual": "38",
+      "match": true
+    },
+    {
+      "name": "  Animalia Shannon H'",
+      "expected": "1.8609",
+      "actual": "1.860936561024703",
+      "match": true
+    },
+    {
+      "name": "  Animalia Simpson 1-D",
+      "expected": "0.7202",
+      "actual": "0.7201632026781978",
+      "match": true
+    },
+    {
+      "name": "  Animalia Pielou J'",
+      "expected": "0.5116",
+      "actual": "0.5115855623237472",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii 记录数",
+      "expected": "177",
+      "actual": "177",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii 物种数 S",
+      "expected": "38",
+      "actual": "38",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii Shannon H'",
+      "expected": "2.7101",
+      "actual": "2.7101478776461203",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii Simpson 1-D",
+      "expected": "0.882",
+      "actual": "0.8819979455572676",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii Pielou J'",
+      "expected": "0.745",
+      "actual": "0.7450401883676547",
+      "match": true
+    },
+    {
+      "name": "  Mollusca 记录数",
+      "expected": "273",
+      "actual": "273",
+      "match": true
+    },
+    {
+      "name": "  Mollusca 物种数 S",
+      "expected": "28",
+      "actual": "28",
+      "match": true
+    },
+    {
+      "name": "  Mollusca Shannon H'",
+      "expected": "2.2548",
+      "actual": "2.2548244665262627",
+      "match": true
+    },
+    {
+      "name": "  Mollusca Simpson 1-D",
+      "expected": "0.838",
+      "actual": "0.8379659556130145",
+      "match": true
+    },
+    {
+      "name": "  Mollusca Pielou J'",
+      "expected": "0.6767",
+      "actual": "0.6766764943871066",
+      "match": true
+    },
+    {
+      "name": "  Reptilia 记录数",
+      "expected": "239",
+      "actual": "239",
+      "match": true
+    },
+    {
+      "name": "  Reptilia 物种数 S",
+      "expected": "20",
+      "actual": "20",
+      "match": true
+    },
+    {
+      "name": "  Reptilia Shannon H'",
+      "expected": "2.0944",
+      "actual": "2.094448154529596",
+      "match": true
+    },
+    {
+      "name": "  Reptilia Simpson 1-D",
+      "expected": "0.832",
+      "actual": "0.8320030941246792",
+      "match": true
+    },
+    {
+      "name": "  Reptilia Pielou J'",
+      "expected": "0.6991",
+      "actual": "0.6991439699131875",
+      "match": true
+    },
+    {
+      "name": "  Mammalia 记录数",
+      "expected": "54",
+      "actual": "54",
+      "match": true
+    },
+    {
+      "name": "  Mammalia 物种数 S",
+      "expected": "10",
+      "actual": "10",
+      "match": true
+    },
+    {
+      "name": "  Mammalia Shannon H'",
+      "expected": "1.7124",
+      "actual": "1.7124123494520322",
+      "match": true
+    },
+    {
+      "name": "  Mammalia Simpson 1-D",
+      "expected": "0.747",
+      "actual": "0.7470300489168413",
+      "match": true
+    },
+    {
+      "name": "  Mammalia Pielou J'",
+      "expected": "0.7437",
+      "actual": "0.7436912341100005",
+      "match": true
+    },
+    {
+      "name": "  Amphibia 记录数",
+      "expected": "303",
+      "actual": "303",
+      "match": true
+    },
+    {
+      "name": "  Amphibia 物种数 S",
+      "expected": "7",
+      "actual": "7",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Shannon H'",
+      "expected": "1.4224",
+      "actual": "1.4224460660465865",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Simpson 1-D",
+      "expected": "0.6985",
+      "actual": "0.6985115730116058",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Pielou J'",
+      "expected": "0.731",
+      "actual": "0.7309926754517138",
+      "match": true
+    },
+    {
+      "name": "  Protozoa 记录数",
+      "expected": "4",
+      "actual": "4",
+      "match": true
+    },
+    {
+      "name": "  Protozoa 物种数 S",
+      "expected": "3",
+      "actual": "3",
+      "match": true
+    },
+    {
+      "name": "  Protozoa Shannon H'",
+      "expected": "1.0397",
+      "actual": "1.0397207708399179",
+      "match": true
+    },
+    {
+      "name": "  Protozoa Simpson 1-D",
+      "expected": "0.8333",
+      "actual": "0.8333333333333334",
+      "match": true
+    },
+    {
+      "name": "  Protozoa Pielou J'",
+      "expected": "0.9464",
+      "actual": "0.946394630357186",
+      "match": true
+    },
+    {
+      "name": "Top20 Spilopelia chinensis 记录数",
+      "expected": "484",
+      "actual": "484",
+      "match": true
+    },
+    {
+      "name": "Top20 Spilopelia chinensis 占比%",
+      "expected": "2.64",
+      "actual": "2.635160886372298",
+      "match": true
+    },
+    {
+      "name": "Top20 Passer montanus 记录数",
+      "expected": "435",
+      "actual": "435",
+      "match": true
+    },
+    {
+      "name": "Top20 Passer montanus 占比%",
+      "expected": "2.37",
+      "actual": "2.3683780693635326",
+      "match": true
+    },
+    {
+      "name": "Top20 Oxalis debilis 记录数",
+      "expected": "324",
+      "actual": "324",
+      "match": true
+    },
+    {
+      "name": "Top20 Oxalis debilis 占比%",
+      "expected": "1.76",
+      "actual": "1.7640333206293897",
+      "match": true
+    },
+    {
+      "name": "Top20 Pycnonotus jocosus 记录数",
+      "expected": "246",
+      "actual": "246",
+      "match": true
+    },
+    {
+      "name": "Top20 Pycnonotus jocosus 占比%",
+      "expected": "1.34",
+      "actual": "1.3393586323297217",
+      "match": true
+    },
+    {
+      "name": "Top20 Copsychus saularis 记录数",
+      "expected": "236",
+      "actual": "236",
+      "match": true
+    },
+    {
+      "name": "Top20 Copsychus saularis 占比%",
+      "expected": "1.28",
+      "actual": "1.28491315947079",
+      "match": true
+    },
+    {
+      "name": "Top20 Trigoniulus corallinus 记录数",
+      "expected": "230",
+      "actual": "230",
+      "match": true
+    },
+    {
+      "name": "Top20 Trigoniulus corallinus 占比%",
+      "expected": "1.25",
+      "actual": "1.252245875755431",
+      "match": true
+    },
+    {
+      "name": "Top20 Pycnonotus sinensis 记录数",
+      "expected": "198",
+      "actual": "198",
+      "match": true
+    },
+    {
+      "name": "Top20 Pycnonotus sinensis 占比%",
+      "expected": "1.08",
+      "actual": "1.0780203626068492",
+      "match": true
+    },
+    {
+      "name": "Top20 Sphagneticola trilobata 记录数",
+      "expected": "183",
+      "actual": "183",
+      "match": true
+    },
+    {
+      "name": "Top20 Sphagneticola trilobata 占比%",
+      "expected": "1.0",
+      "actual": "0.9963521533184515",
+      "match": true
+    },
+    {
+      "name": "Top20 Acridotheres cristatellus 记录数",
+      "expected": "162",
+      "actual": "162",
+      "match": true
+    },
+    {
+      "name": "Top20 Acridotheres cristatellus 占比%",
+      "expected": "0.88",
+      "actual": "0.8820166603146948",
+      "match": true
+    },
+    {
+      "name": "Top20 Egretta garzetta 记录数",
+      "expected": "162",
+      "actual": "162",
+      "match": true
+    },
+    {
+      "name": "Top20 Egretta garzetta 占比%",
+      "expected": "0.88",
+      "actual": "0.8820166603146948",
+      "match": true
+    },
+    {
+      "name": "Top20 Helicorthomorpha holstii 记录数",
+      "expected": "161",
+      "actual": "161",
+      "match": true
+    },
+    {
+      "name": "Top20 Helicorthomorpha holstii 占比%",
+      "expected": "0.88",
+      "actual": "0.8765721130288017",
+      "match": true
+    },
+    {
+      "name": "Top20 Ficus microcarpa 记录数",
+      "expected": "149",
+      "actual": "149",
+      "match": true
+    },
+    {
+      "name": "Top20 Ficus microcarpa 占比%",
+      "expected": "0.81",
+      "actual": "0.8112375455980835",
+      "match": true
+    },
+    {
+      "name": "Top20 Duttaphrynus melanostictus 记录数",
+      "expected": "142",
+      "actual": "142",
+      "match": true
+    },
+    {
+      "name": "Top20 Duttaphrynus melanostictus 占比%",
+      "expected": "0.77",
+      "actual": "0.7731257145968313",
+      "match": true
+    },
+    {
+      "name": "Top20 Apis cerana 记录数",
+      "expected": "137",
+      "actual": "137",
+      "match": true
+    },
+    {
+      "name": "Top20 Apis cerana 占比%",
+      "expected": "0.75",
+      "actual": "0.7459029781673654",
+      "match": true
+    },
+    {
+      "name": "Top20 Pilea microphylla 记录数",
+      "expected": "137",
+      "actual": "137",
+      "match": true
+    },
+    {
+      "name": "Top20 Pilea microphylla 占比%",
+      "expected": "0.75",
+      "actual": "0.7459029781673654",
+      "match": true
+    },
+    {
+      "name": "Top20 Gallinula chloropus 记录数",
+      "expected": "135",
+      "actual": "135",
+      "match": true
+    },
+    {
+      "name": "Top20 Gallinula chloropus 占比%",
+      "expected": "0.74",
+      "actual": "0.7350138835955791",
+      "match": true
+    },
+    {
+      "name": "Top20 Hyophila involuta 记录数",
+      "expected": "133",
+      "actual": "133",
+      "match": true
+    },
+    {
+      "name": "Top20 Hyophila involuta 占比%",
+      "expected": "0.72",
+      "actual": "0.7241247890237927",
+      "match": true
+    },
+    {
+      "name": "Top20 Gracupica nigricollis 记录数",
+      "expected": "127",
+      "actual": "127",
+      "match": true
+    },
+    {
+      "name": "Top20 Gracupica nigricollis 占比%",
+      "expected": "0.69",
+      "actual": "0.6914575053084336",
+      "match": true
+    },
+    {
+      "name": "Top20 Oxalis corniculata 记录数",
+      "expected": "112",
+      "actual": "112",
+      "match": true
+    },
+    {
+      "name": "Top20 Oxalis corniculata 占比%",
+      "expected": "0.61",
+      "actual": "0.609789296020036",
+      "match": true
+    },
+    {
+      "name": "Top20 Columba livia 记录数",
+      "expected": "108",
+      "actual": "108",
+      "match": true
+    },
+    {
+      "name": "Top20 Columba livia 占比%",
+      "expected": "0.59",
+      "actual": "0.5880111068764632",
+      "match": true
+    },
+    {
+      "name": "Top20 合计记录数",
+      "expected": "4001",
+      "actual": "4001",
+      "match": true
+    },
+    {
+      "name": "Top20 占总记录%",
+      "expected": "21.8",
+      "actual": "21.783633690858608",
+      "match": true
+    },
+    {
+      "name": "  Aves 总记录数",
+      "expected": "3007",
+      "actual": "3007",
+      "match": true
+    },
+    {
+      "name": "  Aves 物种数",
+      "expected": "95",
+      "actual": "95",
+      "match": true
+    },
+    {
+      "name": "  Aves Spilopelia chinensis 记录数",
+      "expected": "484",
+      "actual": "484",
+      "match": true
+    },
+    {
+      "name": "  Aves Spilopelia chinensis 占比%",
+      "expected": "16.1",
+      "actual": "16.09577652144995",
+      "match": true
+    },
+    {
+      "name": "  Aves Passer montanus 记录数",
+      "expected": "435",
+      "actual": "435",
+      "match": true
+    },
+    {
+      "name": "  Aves Passer montanus 占比%",
+      "expected": "14.5",
+      "actual": "14.466245427336217",
+      "match": true
+    },
+    {
+      "name": "  Aves Pycnonotus jocosus 记录数",
+      "expected": "246",
+      "actual": "246",
+      "match": true
+    },
+    {
+      "name": "  Aves Pycnonotus jocosus 占比%",
+      "expected": "8.2",
+      "actual": "8.18091120718324",
+      "match": true
+    },
+    {
+      "name": "  Aves Copsychus saularis 记录数",
+      "expected": "236",
+      "actual": "236",
+      "match": true
+    },
+    {
+      "name": "  Aves Copsychus saularis 占比%",
+      "expected": "7.8",
+      "actual": "7.8483538410375795",
+      "match": true
+    },
+    {
+      "name": "  Aves Pycnonotus sinensis 记录数",
+      "expected": "198",
+      "actual": "198",
+      "match": true
+    },
+    {
+      "name": "  Aves Pycnonotus sinensis 占比%",
+      "expected": "6.6",
+      "actual": "6.58463584968407",
+      "match": true
+    },
+    {
+      "name": "  Aves Acridotheres cristatellus 记录数",
+      "expected": "162",
+      "actual": "162",
+      "match": true
+    },
+    {
+      "name": "  Aves Acridotheres cristatellus 占比%",
+      "expected": "5.4",
+      "actual": "5.387429331559694",
+      "match": true
+    },
+    {
+      "name": "  Aves Egretta garzetta 记录数",
+      "expected": "162",
+      "actual": "162",
+      "match": true
+    },
+    {
+      "name": "  Aves Egretta garzetta 占比%",
+      "expected": "5.4",
+      "actual": "5.387429331559694",
+      "match": true
+    },
+    {
+      "name": "  Aves Gallinula chloropus 记录数",
+      "expected": "135",
+      "actual": "135",
+      "match": true
+    },
+    {
+      "name": "  Aves Gallinula chloropus 占比%",
+      "expected": "4.5",
+      "actual": "4.489524442966411",
+      "match": true
+    },
+    {
+      "name": "  Aves Gracupica nigricollis 记录数",
+      "expected": "127",
+      "actual": "127",
+      "match": true
+    },
+    {
+      "name": "  Aves Gracupica nigricollis 占比%",
+      "expected": "4.2",
+      "actual": "4.223478550049883",
+      "match": true
+    },
+    {
+      "name": "  Aves Columba livia 记录数",
+      "expected": "108",
+      "actual": "108",
+      "match": true
+    },
+    {
+      "name": "  Aves Columba livia 占比%",
+      "expected": "3.6",
+      "actual": "3.5916195543731293",
+      "match": true
+    },
+    {
+      "name": "  Plantae 总记录数",
+      "expected": "9736",
+      "actual": "9736",
+      "match": true
+    },
+    {
+      "name": "  Plantae 物种数",
+      "expected": "1074",
+      "actual": "1074",
+      "match": true
+    },
+    {
+      "name": "  Plantae Oxalis debilis 记录数",
+      "expected": "324",
+      "actual": "324",
+      "match": true
+    },
+    {
+      "name": "  Plantae Oxalis debilis 占比%",
+      "expected": "3.3",
+      "actual": "3.3278553820870993",
+      "match": true
+    },
+    {
+      "name": "  Plantae Sphagneticola trilobata 记录数",
+      "expected": "183",
+      "actual": "183",
+      "match": true
+    },
+    {
+      "name": "  Plantae Sphagneticola trilobata 占比%",
+      "expected": "1.9",
+      "actual": "1.8796220213640098",
+      "match": true
+    },
+    {
+      "name": "  Plantae Ficus microcarpa 记录数",
+      "expected": "149",
+      "actual": "149",
+      "match": true
+    },
+    {
+      "name": "  Plantae Ficus microcarpa 占比%",
+      "expected": "1.5",
+      "actual": "1.5304026294165982",
+      "match": true
+    },
+    {
+      "name": "  Plantae Pilea microphylla 记录数",
+      "expected": "137",
+      "actual": "137",
+      "match": true
+    },
+    {
+      "name": "  Plantae Pilea microphylla 占比%",
+      "expected": "1.4",
+      "actual": "1.4071487263763351",
+      "match": true
+    },
+    {
+      "name": "  Plantae Hyophila involuta 记录数",
+      "expected": "133",
+      "actual": "133",
+      "match": true
+    },
+    {
+      "name": "  Plantae Hyophila involuta 占比%",
+      "expected": "1.4",
+      "actual": "1.366064092029581",
+      "match": true
+    },
+    {
+      "name": "  Plantae Oxalis corniculata 记录数",
+      "expected": "112",
+      "actual": "112",
+      "match": true
+    },
+    {
+      "name": "  Plantae Oxalis corniculata 占比%",
+      "expected": "1.2",
+      "actual": "1.1503697617091209",
+      "match": true
+    },
+    {
+      "name": "  Plantae Lantana camara 记录数",
+      "expected": "106",
+      "actual": "106",
+      "match": true
+    },
+    {
+      "name": "  Plantae Lantana camara 占比%",
+      "expected": "1.1",
+      "actual": "1.0887428101889893",
+      "match": true
+    },
+    {
+      "name": "  Plantae Bidens alba 记录数",
+      "expected": "103",
+      "actual": "103",
+      "match": true
+    },
+    {
+      "name": "  Plantae Bidens alba 占比%",
+      "expected": "1.1",
+      "actual": "1.0579293344289236",
+      "match": true
+    },
+    {
+      "name": "  Plantae Emilia sonchifolia 记录数",
+      "expected": "95",
+      "actual": "95",
+      "match": true
+    },
+    {
+      "name": "  Plantae Emilia sonchifolia 占比%",
+      "expected": "1.0",
+      "actual": "0.9757600657354151",
+      "match": true
+    },
+    {
+      "name": "  Plantae Nelumbo nucifera 记录数",
+      "expected": "91",
+      "actual": "91",
+      "match": true
+    },
+    {
+      "name": "  Plantae Nelumbo nucifera 占比%",
+      "expected": "0.9",
+      "actual": "0.9346754313886606",
+      "match": true
+    },
+    {
+      "name": "  Insecta 总记录数",
+      "expected": "3673",
+      "actual": "3673",
+      "match": true
+    },
+    {
+      "name": "  Insecta 物种数",
+      "expected": "574",
+      "actual": "574",
+      "match": true
+    },
+    {
+      "name": "  Insecta Apis cerana 记录数",
+      "expected": "137",
+      "actual": "137",
+      "match": true
+    },
+    {
+      "name": "  Insecta Apis cerana 占比%",
+      "expected": "3.7",
+      "actual": "3.7299210454669205",
+      "match": true
+    },
+    {
+      "name": "  Insecta Cheilomenes sexmaculata 记录数",
+      "expected": "83",
+      "actual": "83",
+      "match": true
+    },
+    {
+      "name": "  Insecta Cheilomenes sexmaculata 占比%",
+      "expected": "2.3",
+      "actual": "2.2597331881295943",
+      "match": true
+    },
+    {
+      "name": "  Insecta Delias pasithoe 记录数",
+      "expected": "67",
+      "actual": "67",
+      "match": true
+    },
+    {
+      "name": "  Insecta Delias pasithoe 占比%",
+      "expected": "1.8",
+      "actual": "1.8241219711407568",
+      "match": true
+    },
+    {
+      "name": "  Insecta Graphium sarpedon 记录数",
+      "expected": "66",
+      "actual": "66",
+      "match": true
+    },
+    {
+      "name": "  Insecta Graphium sarpedon 占比%",
+      "expected": "1.8",
+      "actual": "1.7968962700789546",
+      "match": true
+    },
+    {
+      "name": "  Insecta Polyrhachis dives 记录数",
+      "expected": "65",
+      "actual": "65",
+      "match": true
+    },
+    {
+      "name": "  Insecta Polyrhachis dives 占比%",
+      "expected": "1.8",
+      "actual": "1.7696705690171521",
+      "match": true
+    },
+    {
+      "name": "  Insecta Paratrechina longicornis 记录数",
+      "expected": "60",
+      "actual": "60",
+      "match": true
+    },
+    {
+      "name": "  Insecta Paratrechina longicornis 占比%",
+      "expected": "1.6",
+      "actual": "1.6335420637081404",
+      "match": true
+    },
+    {
+      "name": "  Insecta Trabala pallida 记录数",
+      "expected": "60",
+      "actual": "60",
+      "match": true
+    },
+    {
+      "name": "  Insecta Trabala pallida 占比%",
+      "expected": "1.6",
+      "actual": "1.6335420637081404",
+      "match": true
+    },
+    {
+      "name": "  Insecta Periplaneta americana 记录数",
+      "expected": "58",
+      "actual": "58",
+      "match": true
+    },
+    {
+      "name": "  Insecta Periplaneta americana 占比%",
+      "expected": "1.6",
+      "actual": "1.5790906615845357",
+      "match": true
+    },
+    {
+      "name": "  Insecta Papilio polytes 记录数",
+      "expected": "56",
+      "actual": "56",
+      "match": true
+    },
+    {
+      "name": "  Insecta Papilio polytes 占比%",
+      "expected": "1.5",
+      "actual": "1.524639259460931",
+      "match": true
+    },
+    {
+      "name": "  Insecta Polyrhachis illaudata 记录数",
+      "expected": "54",
+      "actual": "54",
+      "match": true
+    },
+    {
+      "name": "  Insecta Polyrhachis illaudata 占比%",
+      "expected": "1.5",
+      "actual": "1.4701878573373264",
+      "match": true
+    },
+    {
+      "name": "  Amphibia 总记录数",
+      "expected": "303",
+      "actual": "303",
+      "match": true
+    },
+    {
+      "name": "  Amphibia 物种数",
+      "expected": "7",
+      "actual": "7",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Duttaphrynus melanostictus 记录数",
+      "expected": "142",
+      "actual": "142",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Duttaphrynus melanostictus 占比%",
+      "expected": "46.9",
+      "actual": "46.864686468646866",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Kaloula pulchra 记录数",
+      "expected": "68",
+      "actual": "68",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Kaloula pulchra 占比%",
+      "expected": "22.4",
+      "actual": "22.442244224422442",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Polypedates megacephalus 记录数",
+      "expected": "47",
+      "actual": "47",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Polypedates megacephalus 占比%",
+      "expected": "15.5",
+      "actual": "15.51155115511551",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Eleutherodactylus planirostris 记录数",
+      "expected": "27",
+      "actual": "27",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Eleutherodactylus planirostris 占比%",
+      "expected": "8.9",
+      "actual": "8.91089108910891",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Microhyla fissipes 记录数",
+      "expected": "10",
+      "actual": "10",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Microhyla fissipes 占比%",
+      "expected": "3.3",
+      "actual": "3.3003300330033",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Hylarana guentheri 记录数",
+      "expected": "8",
+      "actual": "8",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Hylarana guentheri 占比%",
+      "expected": "2.6",
+      "actual": "2.6402640264026402",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Hylarana taipehensis 记录数",
+      "expected": "1",
+      "actual": "1",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Hylarana taipehensis 占比%",
+      "expected": "0.3",
+      "actual": "0.33003300330033003",
+      "match": true
+    },
+    {
+      "name": "Singletons 数量",
+      "expected": "720",
+      "actual": "720",
+      "match": true
+    },
+    {
+      "name": "Doubletons 数量",
+      "expected": "322",
+      "actual": "322",
+      "match": true
+    },
+    {
+      "name": "3-5次记录物种数",
+      "expected": "384",
+      "actual": "384",
+      "match": true
+    },
+    {
+      "name": "稀有物种 ≤5次",
+      "expected": "1426",
+      "actual": "1426",
+      "match": true
+    },
+    {
+      "name": "少见物种 6-20次",
+      "expected": "376",
+      "actual": "376",
+      "match": true
+    },
+    {
+      "name": "常见物种 >20次",
+      "expected": "207",
+      "actual": "207",
+      "match": true
+    },
+    {
+      "name": "Singletons 占比%",
+      "expected": "35.8",
+      "actual": "35.83872573419612",
+      "match": true
+    },
+    {
+      "name": "Doubletons 占比%",
+      "expected": "16.0",
+      "actual": "16.02787456445993",
+      "match": true
+    },
+    {
+      "name": "稀有物种 ≤5次 占比%",
+      "expected": "71.0",
+      "actual": "70.98058735689398",
+      "match": true
+    },
+    {
+      "name": "  Plantae 总物种数",
+      "expected": "1074",
+      "actual": "1074",
+      "match": true
+    },
+    {
+      "name": "  Plantae Singletons",
+      "expected": "338",
+      "actual": "338",
+      "match": true
+    },
+    {
+      "name": "  Plantae 稀有≤5次",
+      "expected": "728",
+      "actual": "728",
+      "match": true
+    },
+    {
+      "name": "  Plantae 稀有比例%",
+      "expected": "67.8",
+      "actual": "67.78398510242086",
+      "match": true
+    },
+    {
+      "name": "  Insecta 总物种数",
+      "expected": "574",
+      "actual": "574",
+      "match": true
+    },
+    {
+      "name": "  Insecta Singletons",
+      "expected": "217",
+      "actual": "217",
+      "match": true
+    },
+    {
+      "name": "  Insecta 稀有≤5次",
+      "expected": "428",
+      "actual": "428",
+      "match": true
+    },
+    {
+      "name": "  Insecta 稀有比例%",
+      "expected": "74.6",
+      "actual": "74.56445993031359",
+      "match": true
+    },
+    {
+      "name": "  Aves 总物种数",
+      "expected": "95",
+      "actual": "95",
+      "match": true
+    },
+    {
+      "name": "  Aves Singletons",
+      "expected": "32",
+      "actual": "32",
+      "match": true
+    },
+    {
+      "name": "  Aves 稀有≤5次",
+      "expected": "53",
+      "actual": "53",
+      "match": true
+    },
+    {
+      "name": "  Aves 稀有比例%",
+      "expected": "55.8",
+      "actual": "55.78947368421052",
+      "match": true
+    },
+    {
+      "name": "  Animalia 总物种数",
+      "expected": "38",
+      "actual": "38",
+      "match": true
+    },
+    {
+      "name": "  Animalia Singletons",
+      "expected": "18",
+      "actual": "18",
+      "match": true
+    },
+    {
+      "name": "  Animalia 稀有≤5次",
+      "expected": "30",
+      "actual": "30",
+      "match": true
+    },
+    {
+      "name": "  Animalia 稀有比例%",
+      "expected": "78.9",
+      "actual": "78.94736842105263",
+      "match": true
+    },
+    {
+      "name": "  Amphibia 总物种数",
+      "expected": "7",
+      "actual": "7",
+      "match": true
+    },
+    {
+      "name": "  Amphibia Singletons",
+      "expected": "1",
+      "actual": "1",
+      "match": true
+    },
+    {
+      "name": "  Amphibia 稀有≤5次",
+      "expected": "1",
+      "actual": "1",
+      "match": true
+    },
+    {
+      "name": "  Amphibia 稀有比例%",
+      "expected": "14.3",
+      "actual": "14.285714285714285",
+      "match": true
+    },
+    {
+      "name": "  Mollusca 总物种数",
+      "expected": "28",
+      "actual": "28",
+      "match": true
+    },
+    {
+      "name": "  Mollusca Singletons",
+      "expected": "15",
+      "actual": "15",
+      "match": true
+    },
+    {
+      "name": "  Mollusca 稀有≤5次",
+      "expected": "20",
+      "actual": "20",
+      "match": true
+    },
+    {
+      "name": "  Mollusca 稀有比例%",
+      "expected": "71.4",
+      "actual": "71.42857142857143",
+      "match": true
+    },
+    {
+      "name": "  Reptilia 总物种数",
+      "expected": "20",
+      "actual": "20",
+      "match": true
+    },
+    {
+      "name": "  Reptilia Singletons",
+      "expected": "7",
+      "actual": "7",
+      "match": true
+    },
+    {
+      "name": "  Reptilia 稀有≤5次",
+      "expected": "13",
+      "actual": "13",
+      "match": true
+    },
+    {
+      "name": "  Reptilia 稀有比例%",
+      "expected": "65.0",
+      "actual": "65.0",
+      "match": true
+    },
+    {
+      "name": "  Arachnida 总物种数",
+      "expected": "58",
+      "actual": "58",
+      "match": true
+    },
+    {
+      "name": "  Arachnida Singletons",
+      "expected": "30",
+      "actual": "30",
+      "match": true
+    },
+    {
+      "name": "  Arachnida 稀有≤5次",
+      "expected": "51",
+      "actual": "51",
+      "match": true
+    },
+    {
+      "name": "  Arachnida 稀有比例%",
+      "expected": "87.9",
+      "actual": "87.93103448275862",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii 总物种数",
+      "expected": "38",
+      "actual": "38",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii Singletons",
+      "expected": "18",
+      "actual": "18",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii 稀有≤5次",
+      "expected": "33",
+      "actual": "33",
+      "match": true
+    },
+    {
+      "name": "  Actinopterygii 稀有比例%",
+      "expected": "86.8",
+      "actual": "86.8421052631579",
+      "match": true
+    },
+    {
+      "name": "  Fungi 总物种数",
+      "expected": "63",
+      "actual": "63",
+      "match": true
+    },
+    {
+      "name": "  Fungi Singletons",
+      "expected": "38",
+      "actual": "38",
+      "match": true
+    },
+    {
+      "name": "  Fungi 稀有≤5次",
+      "expected": "58",
+      "actual": "58",
+      "match": true
+    },
+    {
+      "name": "  Fungi 稀有比例%",
+      "expected": "92.1",
+      "actual": "92.06349206349206",
+      "match": true
+    },
+    {
+      "name": "  Mammalia 总物种数",
+      "expected": "10",
+      "actual": "10",
+      "match": true
+    },
+    {
+      "name": "  Mammalia Singletons",
+      "expected": "3",
+      "actual": "3",
+      "match": true
+    },
+    {
+      "name": "  Mammalia 稀有≤5次",
+      "expected": "7",
+      "actual": "7",
+      "match": true
+    },
+    {
+      "name": "  Mammalia 稀有比例%",
+      "expected": "70.0",
+      "actual": "70.0",
+      "match": true
+    },
+    {
+      "name": "  Protozoa 总物种数",
+      "expected": "3",
+      "actual": "3",
+      "match": true
+    },
+    {
+      "name": "  Protozoa Singletons",
+      "expected": "2",
+      "actual": "2",
+      "match": true
+    },
+    {
+      "name": "  Protozoa 稀有≤5次",
+      "expected": "3",
+      "actual": "3",
+      "match": true
+    },
+    {
+      "name": "  Protozoa 稀有比例%",
+      "expected": "100.0",
+      "actual": "100.0",
+      "match": true
+    },
+    {
+      "name": "  Egretta garzetta 记录数",
+      "expected": "162",
+      "actual": "162",
+      "match": true
+    },
+    {
+      "name": "  Gallinula chloropus 记录数",
+      "expected": "135",
+      "actual": "135",
+      "match": true
+    },
+    {
+      "name": "  Ardeola bacchus 记录数",
+      "expected": "39",
+      "actual": "39",
+      "match": true
+    },
+    {
+      "name": "  Ardea alba 记录数",
+      "expected": "29",
+      "actual": "29",
+      "match": true
+    },
+    {
+      "name": "  Nycticorax nycticorax 记录数",
+      "expected": "25",
+      "actual": "25",
+      "match": true
+    },
+    {
+      "name": "  Actitis hypoleucos 记录数",
+      "expected": "4",
+      "actual": "4",
+      "match": true
+    },
+    {
+      "name": "  Pycnonotus sinensis 记录数",
+      "expected": "198",
+      "actual": "198",
+      "match": true
+    },
+    {
+      "name": "  Pycnonotus jocosus 记录数",
+      "expected": "246",
+      "actual": "246",
+      "match": true
+    },
+    {
+      "name": "  Orthotomus sutorius 记录数",
+      "expected": "13",
+      "actual": "13",
+      "match": true
+    },
+    {
+      "name": "  Zosterops simplex 记录数",
+      "expected": "21",
+      "actual": "21",
+      "match": true
+    },
+    {
+      "name": "  Garrulax canorus 记录数",
+      "expected": "44",
+      "actual": "44",
+      "match": true
+    },
+    {
+      "name": "  Ficus microcarpa 记录数",
+      "expected": "149",
+      "actual": "149",
+      "match": true
+    },
+    {
+      "name": "  Ficus rumphii 记录数",
+      "expected": "39",
+      "actual": "39",
+      "match": true
+    },
+    {
+      "name": "  Sphagneticola trilobata 记录数",
+      "expected": "183",
+      "actual": "183",
+      "match": true
+    },
+    {
+      "name": "  Anoplolepis gracilipes 记录数",
+      "expected": "27",
+      "actual": "27",
+      "match": true
+    },
+    {
+      "name": "  Eleutherodactylus planirostris 记录数",
+      "expected": "27",
+      "actual": "27",
+      "match": true
+    },
+    {
+      "name": "  Solenopsis invicta 记录数",
+      "expected": "7",
+      "actual": "7",
+      "match": true
+    },
+    {
+      "name": "  Platydemus manokwari 记录数",
+      "expected": "7",
+      "actual": "7",
+      "match": true
+    },
+    {
+      "name": "  Spilopelia chinensis 记录数",
+      "expected": "484",
+      "actual": "484",
+      "match": true
+    },
+    {
+      "name": "  Passer montanus 记录数",
+      "expected": "435",
+      "actual": "435",
+      "match": true
+    },
+    {
+      "name": "  Copsychus saularis 记录数",
+      "expected": "236",
+      "actual": "236",
+      "match": true
+    },
+    {
+      "name": "  Acridotheres cristatellus 记录数",
+      "expected": "162",
+      "actual": "162",
+      "match": true
+    },
+    {
+      "name": "  Columba livia 记录数",
+      "expected": "108",
+      "actual": "108",
+      "match": true
+    },
+    {
+      "name": "珠颈斑鸠+麻雀合计",
+      "expected": "919",
+      "actual": "919",
+      "match": true
+    },
+    {
+      "name": "小白鹭+黑水鸡合计",
+      "expected": "297",
+      "actual": "297",
+      "match": true
+    },
+    {
+      "name": "两栖类总记录数",
+      "expected": "303",
+      "actual": "303",
+      "match": true
+    },
+    {
+      "name": "两栖类物种数",
+      "expected": "7",
+      "actual": "7",
+      "match": true
+    },
+    {
+      "name": "2025植物占比% (报告: 76.0%)",
+      "expected": "76.0",
+      "actual": "75.97503434271039",
+      "match": true
+    },
+    {
+      "name": "2025动物界占比% (报告: 23.3%)",
+      "expected": "23.3",
+      "actual": "23.26942602878815",
+      "match": true
+    },
+    {
+      "name": "2025圈养/栽培占比% (报告: 17.0%)",
+      "expected": "17.0",
+      "actual": "16.959326285611898",
+      "match": true
+    },
+    {
+      "name": "2026昆虫占比% (报告: 20.0%)",
+      "expected": "20.0",
+      "actual": "19.997822181085642",
+      "match": true
+    },
+    {
+      "name": "2026鸟类占比% (报告: 16.4%)",
+      "expected": "16.4",
+      "actual": "16.371753688680787",
+      "match": true
+    },
+    {
+      "name": "共有物种数",
+      "expected": "1399",
+      "actual": "1399",
+      "match": true
+    },
+    {
+      "name": "仅2025独有物种",
+      "expected": "1580",
+      "actual": "1580",
+      "match": true
+    },
+    {
+      "name": "仅2026独有物种",
+      "expected": "610",
+      "actual": "610",
+      "match": true
+    },
+    {
+      "name": "共有物种/2025物种数",
+      "expected": "47.0",
+      "actual": "46.96206780798926",
+      "match": true
+    },
+    {
+      "name": "共有物种/2026物种数",
+      "expected": "69.6",
+      "actual": "69.63663514186163",
+      "match": true
+    },
+    {
+      "name": "Jaccard相似度%",
+      "expected": "39.0",
+      "actual": "38.9802173307328",
+      "match": true
+    },
+    {
+      "name": "  Sphagneticola trilobata 两年合计",
+      "expected": "386",
+      "actual": "386",
+      "match": true
+    },
+    {
+      "name": "  Anoplolepis gracilipes 两年合计",
+      "expected": "85",
+      "actual": "85",
+      "match": true
+    },
+    {
+      "name": "  Solenopsis invicta 两年合计",
+      "expected": "17",
+      "actual": "17",
+      "match": true
+    },
+    {
+      "name": "  Platydemus manokwari 两年合计",
+      "expected": "11",
+      "actual": "11",
+      "match": true
+    },
+    {
+      "name": "  Eleutherodactylus planirostris 两年合计",
+      "expected": "36",
+      "actual": "36",
+      "match": true
+    },
+    {
+      "name": "  2026 澳门半岛 记录数",
+      "expected": "8489",
+      "actual": "8489",
+      "match": true
+    },
+    {
+      "name": "  2026 氹仔 记录数",
+      "expected": "5006",
+      "actual": "5006",
+      "match": true
+    },
+    {
+      "name": "  2026 路环 记录数",
+      "expected": "4309",
+      "actual": "4309",
+      "match": true
+    },
+    {
+      "name": "  2026 路氹城 记录数",
+      "expected": "509",
+      "actual": "509",
+      "match": true
+    },
+    {
+      "name": "  2026 横琴澳大校区 记录数",
+      "expected": "51",
+      "actual": "51",
+      "match": true
+    },
+    {
+      "name": "  2026 新城A区 记录数",
+      "expected": "3",
+      "actual": "3",
+      "match": true
+    },
+    {
+      "name": "2025 Animalia 记录数",
+      "expected": "7792",
+      "actual": "7792",
+      "match": true
+    },
+    {
+      "name": "2026 Animalia 记录数",
+      "expected": "8474",
+      "actual": "8474",
+      "match": true
+    },
+    {
+      "name": "动物界记录变化% (报告: +8.8%)",
+      "expected": "8.8",
+      "actual": "8.752566735112936",
+      "match": true
+    },
+    {
+      "name": "2025 Asparagaceae 记录数",
+      "expected": "1337",
+      "actual": "1337",
+      "match": true
+    },
+    {
+      "name": "2025 Asteraceae 记录数",
+      "expected": "1319",
+      "actual": "1319",
+      "match": true
+    },
+    {
+      "name": "2025 Euphorbiaceae 记录数",
+      "expected": "1226",
+      "actual": "1226",
+      "match": true
+    },
+    {
+      "name": "2025 Moraceae 记录数",
+      "expected": "1141",
+      "actual": "1141",
+      "match": true
+    },
+    {
+      "name": "2025 Poaceae 记录数",
+      "expected": "1101",
+      "actual": "1101",
+      "match": true
+    },
+    {
+      "name": "2025 Apocynaceae 记录数",
+      "expected": "1026",
+      "actual": "1026",
+      "match": true
+    },
+    {
+      "name": "2025 Malvaceae 记录数",
+      "expected": "938",
+      "actual": "938",
+      "match": true
+    },
+    {
+      "name": "2025 Rubiaceae 记录数",
+      "expected": "936",
+      "actual": "936",
+      "match": true
+    },
+    {
+      "name": "2025 Fabaceae 记录数",
+      "expected": "860",
+      "actual": "860",
+      "match": true
+    },
+    {
+      "name": "2025 Arecaceae 记录数",
+      "expected": "749",
+      "actual": "749",
+      "match": true
+    },
+    {
+      "name": "2026 Asteraceae 记录数",
+      "expected": "779",
+      "actual": "779",
+      "match": true
+    },
+    {
+      "name": "2026 Moraceae 记录数",
+      "expected": "618",
+      "actual": "618",
+      "match": true
+    },
+    {
+      "name": "2026 Columbidae 记录数",
+      "expected": "592",
+      "actual": "592",
+      "match": true
+    },
+    {
+      "name": "2026 Poaceae 记录数",
+      "expected": "541",
+      "actual": "541",
+      "match": true
+    },
+    {
+      "name": "2026 Pycnonotidae 记录数",
+      "expected": "461",
+      "actual": "461",
+      "match": true
+    },
+    {
+      "name": "2026 Oxalidaceae 记录数",
+      "expected": "449",
+      "actual": "449",
+      "match": true
+    },
+    {
+      "name": "2026 Passeridae 记录数",
+      "expected": "435",
+      "actual": "435",
+      "match": true
+    },
+    {
+      "name": "2026 Rubiaceae 记录数",
+      "expected": "432",
+      "actual": "432",
+      "match": true
+    },
+    {
+      "name": "2026 Fabaceae 记录数",
+      "expected": "422",
+      "actual": "422",
+      "match": true
+    },
+    {
+      "name": "2026 Formicidae 记录数",
+      "expected": "418",
+      "actual": "418",
+      "match": true
+    },
+    {
+      "name": "2025 time_observed_at 缺失数 (报告: 402)",
+      "expected": "402",
+      "actual": "402",
+      "match": true
+    },
+    {
+      "name": "2026 time_observed_at 缺失数 (报告: 327)",
+      "expected": "327",
+      "actual": "327",
+      "match": true
+    }
+  ]
+}
