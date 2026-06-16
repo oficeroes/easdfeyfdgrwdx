@@ -1,0 +1,35 @@
+{
+  "generated_at": "2026-06-16T18:33:13",
+  "rule": "按 id 对比：异常数据 = 原始表格数据中存在、正确数据中不存在的整行记录。",
+  "output_dir": "表格数据\\原始对比异常数据",
+  "datasets": [
+    {
+      "year": "2025",
+      "source_file": "表格数据\\2025 團隊賽數據包_Sheet1.csv",
+      "clean_file": "表格数据\\正确数据\\2025 團隊賽數據包_Sheet1.csv",
+      "output_file": "表格数据\\原始对比异常数据\\异常数据_2025_由原始减正确.csv",
+      "source_rows": 33571,
+      "clean_rows": 33486,
+      "abnormal_rows": 85,
+      "expected_abnormal_rows": 85,
+      "matches_expected_count": true,
+      "source_unique_ids": 33571,
+      "clean_unique_ids": 33486,
+      "duplicate_source_ids": 0
+    },
+    {
+      "year": "2026",
+      "source_file": "表格数据\\副本2026 團隊賽數據包_Sheet1.csv",
+      "clean_file": "表格数据\\正确数据\\副本2026 團隊賽數據包_Sheet1.csv",
+      "output_file": "表格数据\\原始对比异常数据\\异常数据_2026_由原始减正确.csv",
+      "source_rows": 18437,
+      "clean_rows": 18367,
+      "abnormal_rows": 70,
+      "expected_abnormal_rows": 70,
+      "matches_expected_count": true,
+      "source_unique_ids": 18437,
+      "clean_unique_ids": 18367,
+      "duplicate_source_ids": 0
+    }
+  ]
+}

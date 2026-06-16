@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>澳门生物多样性点位详情图</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      :root {
+        --panel-bg: rgba(255, 255, 255, 0.95);
+        --accent: #1f8a70;
+        --danger: #c23b3b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+      #map {
+        position: absolute;
+        inset: 0;
+        background: #aadaff;
+      }
+      .panel {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        z-index: 1000;
+        width: 300px;
+        max-height: calc(100% - 28px);
+        overflow-y: auto;
+        background: var(--panel-bg);
+        border-radius: 10px;
+        padding: 14px 16px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(4px);
+      }
+      .panel h1 {
+        font-size: 17px;
+        line-height: 1.25;
+        margin: 0 0 3px;
+        color: #13503f;
+      }
+      .sub {
+        font-size: 12px;
+        color: #667;
+        margin-bottom: 12px;
+      }
+      .toggle {
+        display: flex;
+        background: #e7efec;
+        border-radius: 9px;
+        padding: 4px;
+        margin-bottom: 10px;
+      }
+      .toggle button {
+        flex: 1;
+        border: 0;
+        background: transparent;
+        padding: 8px 0;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #557;
+        cursor: pointer;
+        transition: 0.18s;
+      }
+      .toggle button.active {
+        background: var(--accent);
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(31, 138, 112, 0.35);
+      }
+      .toggle button.active[data-status="abnormal"] {
+        background: var(--danger);
+        box-shadow: 0 2px 6px rgba(194, 59, 59, 0.35);
+      }
+      .link {
+        display: block;
+        margin-bottom: 12px;
+        padding: 7px 9px;
+        border: 1px solid #cdd8d4;
+        border-radius: 7px;
+        color: #13503f;
+        text-decoration: none;
+        font-size: 12px;
+        text-align: center;
+        background: #fff;
+      }
+      .link:hover {
+        background: #f3f7f5;
+      }
+      .stat {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin: 9px 0 10px;
+        font-size: 13px;
+        color: #444;
+      }
+      .stat b {
+        font-size: 22px;
+        color: var(--accent);
+      }
+      .sec-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: #888;
+        margin: 8px 0 8px;
+      }
+      .cat-actions {
+        display: flex;
+        gap: 8px;
+        margin: 4px 0 10px;
+      }
+      .cat-actions button {
+        flex: 1;
+        border: 1px solid #cdd8d4;
+        background: #fff;
+        border-radius: 6px;
+        padding: 5px 0;
+        font-size: 12px;
+        color: #557;
+        cursor: pointer;
+      }
+      .cat-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .cat-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 6px;
+        border-radius: 7px;
+        cursor: pointer;
+        font-size: 13px;
+        user-select: none;
+      }
+      .cat-item:hover {
+        background: #eef4f2;
+      }
+      .cat-item.off {
+        opacity: 0.38;
+      }
+      .swatch {
+        width: 13px;
+        height: 13px;
+        border-radius: 3px;
+        flex: none;
+      }
+      .cat-name {
+        flex: 1;
+        color: #333;
+      }
+      .cat-count {
+        color: #888;
+        font-variant-numeric: tabular-nums;
+        font-size: 12px;
+      }
+      .hint {
+        font-size: 11px;
+        color: #889;
+        line-height: 1.5;
+        margin-top: 10px;
+      }
+      .loading {
+        position: absolute;
+        inset: 0;
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.86);
+        font-size: 15px;
+        color: #557;
+      }
+      .popup-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #13503f;
+        margin-bottom: 6px;
+      }
+      .popup-grid {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 3px 8px;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+      .popup-grid span:nth-child(odd) {
+        color: #778;
+      }
+      .detail-tip {
+        min-width: 210px;
+        white-space: normal;
+      }
+      .tip-title {
+        font-weight: 700;
+        color: #13503f;
+        margin-bottom: 4px;
+      }
+      .tip-row {
+        display: grid;
+        grid-template-columns: 42px 1fr;
+        gap: 4px 7px;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+      .tip-row span:nth-child(odd) {
+        color: #778;
+      }
+      @media (max-width: 700px) {
+        .panel {
+          top: 8px;
+          left: 8px;
+          width: calc(100% - 16px);
+          max-height: 44vh;
+          border-radius: 9px;
+          padding: 10px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div class="panel">
+      <h1>澳门生物多样性点位详情图</h1>
+      <div class="sub">每个圆点代表一条观测记录</div>
+
+      <div class="toggle" id="yearToggle">
+        <button data-year="2025">2025 年</button>
+        <button data-year="2026" class="active">2026 年</button>
+      </div>
+
+      <div class="toggle" id="statusToggle">
+        <button data-status="clean" class="active">正确数据</button>
+        <button data-status="abnormal">异常数据</button>
+      </div>
+
+      <a class="link" href="澳门生物多样性热点图.html">返回热点图</a>
+
+      <div class="stat">
+        <span>当前显示点位</span><b id="visibleCount">—</b>
+      </div>
+
+      <div class="sec-title">物种类别</div>
+      <div class="cat-actions">
+        <button id="selAll">全选</button>
+        <button id="selNone">全不选</button>
+      </div>
+      <ul class="cat-list" id="catList"></ul>
+      <div class="hint">
+        鼠标悬停或点击点位可查看物种、分类、日期和坐标。异常数据点用红色系强调。
+      </div>
+    </div>
+
+    <div class="loading" id="loading">正在加载点位…</div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="热点图数据.js"></script>
+    <script src="中文名数据.js"></script>
+    <script>
+      (function () {
+        const DATA = window.HEATMAP_DATA;
+        const CHINESE_NAMES =
+          (window.CHINESE_NAME_DATA && window.CHINESE_NAME_DATA.names) || {};
+        const CATS = DATA.categories;
+        const PALETTE = [
+          "#2e7d32",
+          "#1565c0",
+          "#ef6c00",
+          "#6a1b9a",
+          "#00838f",
+          "#5d4037",
+          "#c2185b",
+          "#827717",
+          "#0277bd",
+          "#ad1457",
+          "#37474f",
+          "#9e9d24",
+          "#777",
+        ];
+        const ABNORMAL_PALETTE = [
+          "#b71c1c",
+          "#c62828",
+          "#d84315",
+          "#8e24aa",
+          "#00838f",
+          "#795548",
+          "#ad1457",
+          "#6d4c41",
+          "#0277bd",
+          "#ad1457",
+          "#455a64",
+          "#827717",
+          "#777",
+        ];
+
+        const canvasRenderer = L.canvas({ padding: 0.5 });
+        const map = L.map("map", {
+          renderer: canvasRenderer,
+          preferCanvas: true,
+        }).setView([22.15, 113.55], 12);
+        L.tileLayer(
+          "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+          {
+            attribution: "© OpenStreetMap, © CARTO",
+            maxZoom: 19,
+            subdomains: "abcd",
+          },
+        ).addTo(map);
+
+        let currentYear = "2026";
+        let currentStatus = "clean";
+        const active = new Set(CATS.map((c) => c.index));
+        let layerGroup = L.layerGroup().addTo(map);
+
+        function escapeHtml(value) {
+          return String(value || "").replace(
+            /[&<>"']/g,
+            (ch) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[ch],
+          );
+        }
+
+        function scientificName(rec) {
+          return (
+            rec.taxon_species_name ||
+            rec.taxon_genus_name ||
+            rec.iconic_taxon_name ||
+            "未分类记录"
+          );
+        }
+
+        function chineseName(rec) {
+          const scientific = scientificName(rec);
+          const item = CHINESE_NAMES[scientific];
+          return item && item.chinese_name ? item.chinese_name : "";
+        }
+
+        function displayName(rec) {
+          return chineseName(rec) || scientificName(rec);
+        }
+
+        function popupHtml(rec) {
+          const cat = CATS[rec.cat] ? CATS[rec.cat].label : "未分类";
+          const cn = chineseName(rec);
+          return (
+            `<div class="popup-title">${escapeHtml(displayName(rec))}</div>` +
+            `<div class="popup-grid">` +
+            `<span>ID</span><span>${escapeHtml(rec.id)}</span>` +
+            `<span>中文名</span><span>${escapeHtml(cn || "暂未匹配")}</span>` +
+            `<span>学名</span><span><i>${escapeHtml(scientificName(rec))}</i></span>` +
+            `<span>状态</span><span>${rec.status === "abnormal" ? "异常数据" : "正确数据"}</span>` +
+            `<span>类别</span><span>${escapeHtml(cat)} / ${escapeHtml(rec.iconic_taxon_name)}</span>` +
+            `<span>日期</span><span>${escapeHtml(rec.observed_on)}</span>` +
+            `<span>时间</span><span>${escapeHtml(rec.time_observed_at)}</span>` +
+            `<span>属</span><span>${escapeHtml(rec.taxon_genus_name)}</span>` +
+            `<span>科</span><span>${escapeHtml(rec.taxon_family_name)}</span>` +
+            `<span>目</span><span>${escapeHtml(rec.taxon_order_name)}</span>` +
+            `<span>经纬度</span><span>${rec.lng}, ${rec.lat}</span>` +
+            `</div>`
+          );
+        }
+
+        function tooltipHtml(rec) {
+          const cat = CATS[rec.cat] ? CATS[rec.cat].label : "未分类";
+          const cn = chineseName(rec);
+          return (
+            `<div class="tip-title">${escapeHtml(displayName(rec))}</div>` +
+            `<div class="tip-row">` +
+            `<span>中文</span><span>${escapeHtml(cn || "暂未匹配")}</span>` +
+            `<span>学名</span><span><i>${escapeHtml(scientificName(rec))}</i></span>` +
+            `<span>状态</span><span>${rec.status === "abnormal" ? "异常数据" : "正确数据"}</span>` +
+            `<span>类别</span><span>${escapeHtml(cat)} / ${escapeHtml(rec.iconic_taxon_name)}</span>` +
+            `<span>日期</span><span>${escapeHtml(rec.observed_on || rec.time_observed_at)}</span>` +
+            `<span>属科</span><span>${escapeHtml(rec.taxon_genus_name || "未记录")} / ${escapeHtml(rec.taxon_family_name || "未记录")}</span>` +
+            `<span>坐标</span><span>${rec.lng}, ${rec.lat}</span>` +
+            `</div>`
+          );
+        }
+
+        function renderCatList() {
+          const counts = DATA.years[currentYear][currentStatus].counts;
+          const catList = document.getElementById("catList");
+          catList.innerHTML = "";
+          CATS.forEach((c) => {
+            const n = counts[c.index] || 0;
+            if (n === 0) return;
+            const li = document.createElement("li");
+            li.className = "cat-item" + (active.has(c.index) ? "" : " off");
+            li.innerHTML =
+              `<span class="swatch" style="background:${PALETTE[c.index]}"></span>` +
+              `<span class="cat-name">${c.label}</span>` +
+              `<span class="cat-count">${n.toLocaleString()}</span>`;
+            li.onclick = () => {
+              if (active.has(c.index)) active.delete(c.index);
+              else active.add(c.index);
+              renderCatList();
+              refreshPoints();
+            };
+            catList.appendChild(li);
+          });
+        }
+
+        function refreshPoints() {
+          layerGroup.clearLayers();
+          const records = DATA.years[currentYear][currentStatus].records;
+          const palette =
+            currentStatus === "abnormal" ? ABNORMAL_PALETTE : PALETTE;
+          let visible = 0;
+          const bounds = [];
+
+          for (let i = 0; i < records.length; i++) {
+            const rec = records[i];
+            if (!active.has(rec.cat)) continue;
+            visible++;
+            const marker = L.circleMarker([rec.lat, rec.lng], {
+              renderer: canvasRenderer,
+              radius: currentStatus === "abnormal" ? 5 : 3,
+              weight: currentStatus === "abnormal" ? 1.3 : 0.8,
+              color: currentStatus === "abnormal" ? "#7f1d1d" : "#ffffff",
+              fillColor: palette[rec.cat],
+              fillOpacity: currentStatus === "abnormal" ? 0.88 : 0.62,
+            });
+            marker.bindTooltip(tooltipHtml(rec), {
+              sticky: true,
+              className: "detail-tip",
+            });
+            marker.bindPopup(popupHtml(rec), { maxWidth: 320 });
+            marker.addTo(layerGroup);
+            bounds.push([rec.lat, rec.lng]);
+          }
+
+          document.getElementById("visibleCount").textContent =
+            visible.toLocaleString();
+          if (bounds.length && currentStatus === "abnormal")
+            map.fitBounds(bounds, { padding: [30, 30], maxZoom: 13 });
+        }
+
+        function bindToggle(id, attr, setter) {
+          document.getElementById(id).addEventListener("click", (e) => {
+            const btn = e.target.closest("button");
+            if (!btn) return;
+            setter(btn.dataset[attr]);
+            [...e.currentTarget.children].forEach((b) =>
+              b.classList.toggle("active", b === btn),
+            );
+            renderCatList();
+            refreshPoints();
+          });
+        }
+
+        bindToggle("yearToggle", "year", (value) => {
+          currentYear = value;
+        });
+        bindToggle("statusToggle", "status", (value) => {
+          currentStatus = value;
+        });
+
+        document.getElementById("selAll").onclick = () => {
+          CATS.forEach((c) => active.add(c.index));
+          renderCatList();
+          refreshPoints();
+        };
+        document.getElementById("selNone").onclick = () => {
+          active.clear();
+          renderCatList();
+          refreshPoints();
+        };
+
+        renderCatList();
+        refreshPoints();
+        document.getElementById("loading").style.display = "none";
+      })();
+    </script>
+  </body>
+</html>

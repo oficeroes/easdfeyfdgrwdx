@@ -72,12 +72,16 @@
     .legend .bar{width:120px;height:8px;}
   }
 
-  .year-toggle{display:flex;background:#e7efec;border-radius:9px;padding:4px;margin-bottom:14px;}
-  .year-toggle button{
+  .year-toggle,.status-toggle{display:flex;background:#e7efec;border-radius:9px;padding:4px;margin-bottom:10px;}
+  .year-toggle button,.status-toggle button{
     flex:1;border:0;background:transparent;padding:8px 0;border-radius:7px;
     font-size:14px;font-weight:600;color:#557;cursor:pointer;transition:.18s;
   }
-  .year-toggle button.active{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(31,138,112,.4);}
+  .year-toggle button.active,.status-toggle button.active{background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(31,138,112,.4);}
+  .status-toggle button.active[data-status="abnormal"]{background:#c23b3b;box-shadow:0 2px 6px rgba(194,59,59,.35);}
+  .view-link{display:block;margin:0 0 12px;padding:7px 9px;border:1px solid #cdd8d4;border-radius:7px;
+             color:#13503f;text-decoration:none;font-size:12px;text-align:center;background:#fff;}
+  .view-link:hover{background:#f3f7f5;}
 
   .stat{display:flex;justify-content:space-between;align-items:baseline;
         font-size:13px;color:#444;margin-bottom:10px;}
@@ -130,6 +134,13 @@
     <button data-year="2026" class="active">2026 年</button>
   </div>
 
+  <div class="status-toggle" id="statusToggle">
+    <button data-status="clean" class="active">正确数据</button>
+    <button data-status="abnormal">异常数据</button>
+  </div>
+
+  <a class="view-link" href="澳门生物多样性点位详情图.html">打开点位详情图</a>
+
   <div class="stat"><span>当前可见记录</span><b id="visibleCount">—</b></div>
 
   <div class="sec-title">物种类别（点击筛选）</div>
@@ -170,6 +181,7 @@
     gradient:{0.2:'#2b6cff',0.4:'#22d3a6',0.6:'#ffe14d',0.8:'#ff8c1a',1.0:'#ff2d2d'}}).addTo(map);
 
   let currentYear = "2026";
+  let currentStatus = "clean";
   const active = new Set(CATS.map(c=>c.index));   // 默认全部类别开启
 
   // ---- 面板折叠/展开 ----
@@ -217,7 +229,7 @@
   // ---- 构建类别筛选列表 ----
   const catList = document.getElementById('catList');
   function renderCatList(){
-    const counts = DATA.years[currentYear].counts;
+    const counts = DATA.years[currentYear][currentStatus].counts;
     catList.innerHTML = "";
     CATS.forEach(c=>{
       const n = counts[c.index] || 0;
@@ -237,7 +249,7 @@
 
   // ---- 刷新热力图 ----
   function refresh(){
-    const pts = DATA.years[currentYear].points;
+    const pts = DATA.years[currentYear][currentStatus].points;
     const out = [];
     for(let i=0;i<pts.length;i++){
       if(active.has(pts[i][2])) out.push([pts[i][0],pts[i][1],0.6]);
@@ -250,6 +262,14 @@
   document.getElementById('yearToggle').addEventListener('click',e=>{
     const btn = e.target.closest('button'); if(!btn) return;
     currentYear = btn.dataset.year;
+    [...e.currentTarget.children].forEach(b=>b.classList.toggle('active',b===btn));
+    renderCatList(); refresh();
+  });
+
+  // ---- 数据类型切换 ----
+  document.getElementById('statusToggle').addEventListener('click',e=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    currentStatus = btn.dataset.status;
     [...e.currentTarget.children].forEach(b=>b.classList.toggle('active',b===btn));
     renderCatList(); refresh();
   });

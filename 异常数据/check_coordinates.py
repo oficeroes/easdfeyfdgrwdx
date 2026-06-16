@@ -1,428 +1,522 @@
 # -*- coding: utf-8 -*-
 """
-澳门生物多样性数据坐标验证脚本
-检测数据包中动植物记录的经纬度是否落在澳门陆地区域内，
-找出落在海上（不合理）的坐标记录。
+澳门生物多样性数据坐标验证脚本。
+
+判定目标：每条观测记录的经纬度是否落在澳门陆地或可作为陆地观测点的
+填海区、湿地/岸边步道、横琴澳大校区范围内。落在这些区域之外的记录
+标注为疑似海上或超出澳门陆地范围。
 """
 
+from __future__ import annotations
+
 import csv
-import os
 import json
+import math
+from collections import Counter
+from datetime import datetime
+from pathlib import Path
+from typing import Any
 
-# ============================================================
-# 1. 定义澳门陆地边界多边形
-# ============================================================
-# 澳门由澳门半岛、氹仔、路环、路氹城（填海区）等组成
-# 以下多边形坐标基于实际地理信息，考虑了填海扩展区域
-# 坐标格式: [(lng, lat), (lng, lat), ...]
+try:
+    from shapely.geometry import Point, Polygon, shape
+    from shapely.ops import unary_union
+except ImportError as exc:  # pragma: no cover - 环境提示
+    raise SystemExit(
+        "缺少 shapely。请先运行: pip install shapely\n"
+        "shapely 用于精确判断点是否落在澳门陆地多边形内。"
+    ) from exc
 
-# --- 澳门半岛 (Macau Peninsula) ---
-# 包括青洲、筷子基、新口岸、外港、港珠澳大桥人工岛等填海区
-# 采用较宽松的边界以涵盖所有填海区域
-MACAU_PENINSULA = [
-    (113.5300, 22.2180),  # 西北角（跨境工业区/茂盛围）
-    (113.5550, 22.2170),  # 北侧（关闸/边境）
-    (113.5650, 22.2140),  # 东北（港珠澳大桥人工岛/新城A区）
-    (113.5680, 22.2080),  # 东侧（友谊大桥起点）
-    (113.5680, 22.2030),  # 东侧（外港填海区）
-    (113.5680, 22.2000),  # 东南（新口岸/文化中心）
-    (113.5650, 22.1950),  # 南侧（南湾湖）
-    (113.5600, 22.1910),  # 南侧（西湾湖/妈阁）
-    (113.5540, 22.1880),  # 南端（旅游塔附近）
-    (113.5480, 22.1860),  # 西南（内港码头）
-    (113.5400, 22.1860),  # 西侧
-    (113.5350, 22.1880),  # 西侧
-    (113.5310, 22.1920),  # 西侧
-    (113.5290, 22.1970),  # 西侧（跨境工业区）
-    (113.5290, 22.2050),  # 西侧
-    (113.5300, 22.2120),  # 西北
-    (113.5300, 22.2180),  # 闭合
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT_DIR = SCRIPT_DIR.parent
+TABLE_DIR = ROOT_DIR / "表格数据"
+OUTPUT_DIR = SCRIPT_DIR
+REFERENCE_GEOJSON = SCRIPT_DIR / "macau_land_reference.geojson"
+
+# 约 70 米。用于吸收 GPS 浮动、岸线/步道/湿地边缘的微小地图误差。
+# 早期脚本用 0.002 度（约 220 米）会把部分明显海面点也吞进去，这里收窄。
+GPS_TOLERANCE_DEGREES = 0.00065
+
+REQUIRED_COLUMNS = [
+    "id",
+    "observed_on",
+    "time_observed_at",
+    "captive_cultivated",
+    "longitude",
+    "latitude",
+    "iconic_taxon_name",
+    "taxon_kingdom_name",
+    "taxon_phylum_name",
+    "taxon_class_name",
+    "taxon_order_name",
+    "taxon_family_name",
+    "taxon_genus_name",
+    "taxon_species_name",
+    "taxon_subspecies_name",
 ]
 
-# --- 氹仔 (Taipa) ---
-# 包括机场、北安码头等填海区
-TAIPA = [
-    (113.5700, 22.1720),  # 东北（友谊大桥氹仔端）
-    (113.5800, 22.1700),  # 东侧（机场/北安）
-    (113.5820, 22.1650),  # 机场跑道
-    (113.5800, 22.1580),  # 东南（机场南端）
-    (113.5730, 22.1550),  # 南侧（路氹城边界/威尼斯人）
-    (113.5650, 22.1540),  # 西南（路氹城/银河）
-    (113.5600, 22.1550),  # 西侧
-    (113.5530, 22.1570),  # 西北（嘉乐庇总督大桥）
-    (113.5500, 22.1600),  # 西侧（海洋花园）
-    (113.5500, 22.1650),  # 北侧
-    (113.5540, 22.1690),  # 北侧
-    (113.5600, 22.1710),  # 东北
-    (113.5700, 22.1720),  # 闭合
-]
-
-# --- 路环 (Coloane) ---
-# 包括九澳、黑沙、竹湾等
-COLOANE = [
-    (113.5730, 22.1420),  # 东北角
-    (113.5850, 22.1400),  # 东侧（九澳）
-    (113.5870, 22.1350),  # 东南（黑沙海滩）
-    (113.5830, 22.1260),  # 南侧
-    (113.5780, 22.1180),  # 西南（竹湾）
-    (113.5700, 22.1140),  # 西南端
-    (113.5600, 22.1140),  # 西侧
-    (113.5540, 22.1180),  # 西侧
-    (113.5520, 22.1240),  # 西北
-    (113.5550, 22.1300),  # 北侧（路氹城边界）
-    (113.5600, 22.1360),  # 北侧
-    (113.5670, 22.1410),  # 东北
-    (113.5730, 22.1420),  # 闭合
-]
-
-# --- 路氹城 (Cotai) 填海区 ---
-# 连接氹仔和路环的大型填海区（赌场度假村集中区）
-COTAI = [
-    (113.5730, 22.1550),  # 北侧（氹仔边界/威尼斯人）
-    (113.5780, 22.1530),  # 东北
-    (113.5800, 22.1480),  # 东侧
-    (113.5770, 22.1430),  # 东南
-    (113.5700, 22.1410),  # 南侧（路环边界）
-    (113.5620, 22.1400),  # 西南
-    (113.5560, 22.1410),  # 西侧
-    (113.5530, 22.1460),  # 西北
-    (113.5550, 22.1520),  # 北侧
-    (113.5620, 22.1540),  # 北侧
-    (113.5730, 22.1550),  # 闭合
-]
-
-# --- 横琴澳大校区 (Hengqin UM Campus) ---
-# 澳门大学横琴校区（通过河底隧道连接）
-UM_CAMPUS = [
-    (113.5400, 22.1330),
-    (113.5530, 22.1330),
-    (113.5530, 22.1220),
-    (113.5400, 22.1220),
-    (113.5400, 22.1330),
-]
-
-# 合并所有澳门陆地区域
-MACAU_LAND_POLYGONS = [
-    ("澳门半岛", MACAU_PENINSULA),
-    ("氹仔", TAIPA),
-    ("路环", COLOANE),
-    ("路氹城", COTAI),
-    ("横琴澳大校区", UM_CAMPUS),
-]
-
-# GPS 精度容差（约 200 米 ≈ 0.002 度）
-# 考虑 GPS 误差以及澳门广泛的填海造地，给予较大容差
-GPS_TOLERANCE = 0.002  # 约 200 米
-
-
-# ============================================================
-# 2. 射线法判断点是否在多边形内
-# ============================================================
-def point_in_polygon(lng, lat, polygon):
-    """
-    使用射线法（Ray Casting）判断点是否在多边形内部
-    返回 True 表示点在多边形内
-    """
-    n = len(polygon)
-    inside = False
-    j = n - 1
-    for i in range(n):
-        xi, yi = polygon[i]
-        xj, yj = polygon[j]
-        # 检查射线是否与边相交
-        if ((yi > lat) != (yj > lat)) and (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi):
-            inside = not inside
-        j = i
-    return inside
-
-
-def point_near_polygon(lng, lat, polygon, tolerance=GPS_TOLERANCE):
-    """
-    判断点是否在多边形内部或边缘容差范围内
-    """
-    # 先检查是否在多边形内
-    if point_in_polygon(lng, lat, polygon):
-        return True
-    
-    # 再检查是否在容差范围内的边缘附近
-    n = len(polygon)
-    for i in range(n):
-        j = (i + 1) % n
-        x1, y1 = polygon[i]
-        x2, y2 = polygon[j]
-        # 计算点到线段的最短距离
-        dist = point_to_segment_distance(lng, lat, x1, y1, x2, y2)
-        if dist <= tolerance:
-            return True
-    
-    return False
-
-
-def point_to_segment_distance(px, py, x1, y1, x2, y2):
-    """计算点到线段的最短距离（单位：度）"""
-    dx = x2 - x1
-    dy = y2 - y1
-    if dx == 0 and dy == 0:
-        # 线段退化为点
-        return ((px - x1) ** 2 + (py - y1) ** 2) ** 0.5
-    
-    # 计算投影参数 t
-    t = max(0, min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)))
-    # 投影点
-    proj_x = x1 + t * dx
-    proj_y = y1 + t * dy
-    return ((px - proj_x) ** 2 + (py - proj_y) ** 2) ** 0.5
-
-
-def is_on_macau_land(lng, lat):
-    """
-    判断给定经纬度是否在澳门陆地区域内
-    """
-    for name, polygon in MACAU_LAND_POLYGONS:
-        if point_near_polygon(lng, lat, polygon):
-            return True, name
-    return False, None
-
-
-# ============================================================
-# 3. 数据分析
-# ============================================================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE_DIR, "表格数据")
-OUTPUT_DIR = BASE_DIR
-
-# 注意：2025年数据列顺序为 longitude, latitude（索引4,5）
-# 2026年数据列顺序为 latitude, longitude（索引4,5）
 DATASETS = {
     "2025": {
         "file": "2025 團隊賽數據包_Sheet1.csv",
-        "lng_col": 4,
-        "lat_col": 5,
     },
     "2026": {
         "file": "副本2026 團隊賽數據包_Sheet1.csv",
-        "lng_col": 5,
-        "lat_col": 4,
     },
 }
 
 
-def analyze_dataset(year, cfg):
-    """分析单年数据集"""
-    filepath = os.path.join(DATA_DIR, cfg["file"])
-    lng_col = cfg["lng_col"]
-    lat_col = cfg["lat_col"]
-    
-    total = 0
-    on_land = 0
-    on_sea = 0
-    error_records = []
-    
-    # 用于统计每个区域的数量
-    area_counts = {}
-    
-    # 用于统计海上点的分类
-    sea_by_taxon = {}
-    
-    with open(filepath, encoding="utf-8-sig") as f:
-        reader = csv.reader(f)
-        header = next(reader)  # 跳过表头
-        
-        for row in reader:
-            total += 1
-            try:
-                lng = float(row[lng_col])
-                lat = float(row[lat_col])
-            except (ValueError, IndexError):
+FALLBACK_POLYGONS = {
+    "澳门半岛": [
+        (113.5282, 22.2171),
+        (113.5637, 22.2170),
+        (113.5639, 22.2044),
+        (113.5608, 22.1985),
+        (113.5545, 22.1882),
+        (113.5400, 22.1813),
+        (113.5282, 22.1813),
+        (113.5282, 22.2171),
+    ],
+    "氹仔": [
+        (113.5389, 22.1715),
+        (113.5984, 22.1715),
+        (113.5984, 22.1206),
+        (113.5389, 22.1206),
+        (113.5389, 22.1715),
+    ],
+    "路氹城": [
+        (113.5508, 22.1555),
+        (113.5889, 22.1555),
+        (113.5889, 22.1283),
+        (113.5508, 22.1283),
+        (113.5508, 22.1555),
+    ],
+    "路环": [
+        (113.5491, 22.1431),
+        (113.5926, 22.1431),
+        (113.5926, 22.1098),
+        (113.5491, 22.1098),
+        (113.5491, 22.1431),
+    ],
+    "横琴澳大校区": [
+        (113.5400, 22.1363),
+        (113.5536, 22.1363),
+        (113.5536, 22.1205),
+        (113.5400, 22.1205),
+        (113.5400, 22.1363),
+    ],
+}
+
+OSM_AREA_GROUPS = {
+    "澳门半岛": {
+        "macau_se",
+        "macau_fatima",
+        "macau_santo_antonio",
+        "macau_sao_lazaro",
+        "macau_sao_lourenco",
+    },
+    "氹仔": {
+        "macau_taipa_island",
+    },
+    "路氹城": {
+        "macau_cotai_island",
+    },
+    "路环": {
+        "macau_coloane_island",
+    },
+    "新城A区": {
+        "macau_new_zone_a",
+    },
+}
+
+
+def detect_encoding(path: Path) -> str:
+    with path.open("rb") as file:
+        return "utf-8-sig" if file.read(3) == b"\xef\xbb\xbf" else "utf-8"
+
+
+def normalize_header(header: list[str]) -> list[str]:
+    normalized: list[str] = []
+    empty_count = 0
+    for name in header:
+        clean = (name or "").strip()
+        if clean:
+            normalized.append(clean)
+        else:
+            empty_count += 1
+            normalized.append(f"_empty_{empty_count}")
+    return normalized
+
+
+def row_to_record(header: list[str], row: list[str]) -> dict[str, str]:
+    record = {name: row[i] if i < len(row) else "" for i, name in enumerate(header)}
+    return record
+
+
+def read_csv_rows(path: Path) -> tuple[list[str], list[dict[str, str]]]:
+    encoding = detect_encoding(path)
+    with path.open("r", encoding=encoding, newline="") as file:
+        reader = csv.reader(file)
+        raw_header = next(reader)
+        header = normalize_header(raw_header)
+        rows = [row_to_record(header, row) for row in reader]
+    return header, rows
+
+
+def build_polygon(points: list[tuple[float, float]]) -> Polygon:
+    polygon = Polygon(points)
+    if not polygon.is_valid:
+        polygon = polygon.buffer(0)
+    return polygon
+
+
+def load_reference_geometries() -> tuple[dict[str, Any], str]:
+    if REFERENCE_GEOJSON.exists():
+        with REFERENCE_GEOJSON.open("r", encoding=detect_encoding(REFERENCE_GEOJSON)) as file:
+            feature_collection = json.load(file)
+
+        features_by_name: dict[str, list[Any]] = {}
+        for feature in feature_collection.get("features", []):
+            name = feature.get("properties", {}).get("name")
+            geometry = feature.get("geometry")
+            if not name or not geometry:
                 continue
-            
-            on_land_flag, area_name = is_on_macau_land(lng, lat)
-            
-            if on_land_flag:
-                on_land += 1
-                area_counts[area_name] = area_counts.get(area_name, 0) + 1
-            else:
-                on_sea += 1
-                taxon = row[6] if len(row) > 6 else "未知"
-                sea_by_taxon[taxon] = sea_by_taxon.get(taxon, 0) + 1
-                
-                error_records.append({
-                    "id": row[0],
-                    "observed_on": row[1],
-                    "longitude": lng,
-                    "latitude": lat,
-                    "iconic_taxon_name": taxon,
-                    "taxon_species_name": row[13] if len(row) > 13 else "",
-                    "taxon_genus_name": row[12] if len(row) > 12 else "",
-                    "captive_cultivated": row[3] if len(row) > 3 else "",
-                    "full_data": row,
-                })
-    
+            features_by_name.setdefault(name, []).append(shape(geometry))
+
+        grouped: dict[str, Any] = {}
+        for area_name, source_names in OSM_AREA_GROUPS.items():
+            geometries = [
+                geometry
+                for source_name in source_names
+                for geometry in features_by_name.get(source_name, [])
+            ]
+            if geometries:
+                grouped[area_name] = unary_union(geometries)
+
+        grouped["横琴澳大校区"] = build_polygon(FALLBACK_POLYGONS["横琴澳大校区"])
+        if grouped:
+            return grouped, str(REFERENCE_GEOJSON.relative_to(ROOT_DIR))
+
+    fallback = {
+        name: build_polygon(points)
+        for name, points in FALLBACK_POLYGONS.items()
+    }
+    return fallback, "内置简化多边形"
+
+
+AREA_GEOMETRIES, GEOMETRY_SOURCE = load_reference_geometries()
+MACAU_LAND_GEOMETRY = unary_union(list(AREA_GEOMETRIES.values()))
+
+
+def meters_from_degrees(distance_degrees: float, latitude: float) -> float:
+    # 小范围近似：1 度纬度约 111.32 km，经度按纬度余弦缩放。
+    # distance_degrees 由 Shapely 在经纬坐标下给出，报告里仅用于可读的近似距离。
+    scale = 111_320 * max(math.cos(math.radians(latitude)), 0.01)
+    return distance_degrees * scale
+
+
+def point_status(longitude: float, latitude: float) -> tuple[bool, str | None, float]:
+    point = Point(longitude, latitude)
+
+    for area_name, geometry in AREA_GEOMETRIES.items():
+        if geometry.covers(point):
+            return True, area_name, 0.0
+
+    nearest_area: str | None = None
+    nearest_distance = float("inf")
+    for area_name, geometry in AREA_GEOMETRIES.items():
+        distance = geometry.distance(point)
+        if distance < nearest_distance:
+            nearest_distance = distance
+            nearest_area = area_name
+
+    if nearest_distance <= GPS_TOLERANCE_DEGREES:
+        return True, f"{nearest_area}边界容差内", nearest_distance
+
+    return False, nearest_area, nearest_distance
+
+
+def get_float(record: dict[str, str], column: str) -> float:
+    value = record.get(column, "").strip()
+    if not value:
+        raise ValueError(f"{column} 为空")
+    return float(value)
+
+
+def issue_text(longitude: float, latitude: float, nearest_area: str | None, distance_degrees: float) -> str:
+    distance_meters = round(meters_from_degrees(distance_degrees, latitude))
+    nearest = nearest_area or "澳门陆地区域"
+    return (
+        f"坐标({longitude}, {latitude})不在澳门陆地区域内，"
+        f"距离最近区域“{nearest}”约{distance_meters}米，疑似位于海上或超出正常陆地范围"
+    )
+
+
+def analyze_dataset(year: str, cfg: dict[str, str]) -> dict[str, Any]:
+    path = TABLE_DIR / cfg["file"]
+    header, rows = read_csv_rows(path)
+    missing = [column for column in ("id", "longitude", "latitude") if column not in header]
+    if missing:
+        raise ValueError(f"{path} 缺少必要列: {', '.join(missing)}")
+
+    area_counts: Counter[str] = Counter()
+    abnormal_by_taxon: Counter[str] = Counter()
+    invalid_coordinate_records: list[dict[str, Any]] = []
+    abnormal_records: list[dict[str, Any]] = []
+    normal_count = 0
+
+    for record in rows:
+        try:
+            longitude = get_float(record, "longitude")
+            latitude = get_float(record, "latitude")
+        except ValueError as exc:
+            invalid_coordinate_records.append(
+                {
+                    "record": record,
+                    "longitude": record.get("longitude", ""),
+                    "latitude": record.get("latitude", ""),
+                    "issue": str(exc),
+                }
+            )
+            continue
+
+        is_normal, area_name, distance_degrees = point_status(longitude, latitude)
+        if is_normal:
+            normal_count += 1
+            area_counts[area_name or "澳门陆地区域"] += 1
+            continue
+
+        taxon = record.get("iconic_taxon_name", "") or "未知"
+        abnormal_by_taxon[taxon] += 1
+        abnormal_records.append(
+            {
+                "record": record,
+                "longitude": longitude,
+                "latitude": latitude,
+                "nearest_area": area_name,
+                "distance_degrees": distance_degrees,
+                "issue": issue_text(longitude, latitude, area_name, distance_degrees),
+            }
+        )
+
+    abnormal_total = len(abnormal_records) + len(invalid_coordinate_records)
+    total = len(rows)
     return {
+        "year": year,
+        "path": path,
+        "header": header,
         "total": total,
-        "on_land": on_land,
-        "on_sea": on_sea,
-        "on_sea_pct": round(on_sea / total * 100, 2) if total > 0 else 0,
-        "area_counts": area_counts,
-        "sea_by_taxon": sea_by_taxon,
-        "error_records": error_records,
+        "normal_count": normal_count,
+        "abnormal_count": abnormal_total,
+        "abnormal_pct": round(abnormal_total / total * 100, 2) if total else 0.0,
+        "area_counts": dict(area_counts),
+        "abnormal_by_taxon": dict(abnormal_by_taxon),
+        "abnormal_records": abnormal_records,
+        "invalid_coordinate_records": invalid_coordinate_records,
     }
 
 
-def export_errors_to_csv(year, error_records, header):
-    """将错误记录导出为CSV"""
-    output_path = os.path.join(OUTPUT_DIR, f"坐标异常数据_{year}.csv")
-    
-    with open(output_path, "w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.writer(f)
-        # 写入表头
-        writer.writerow([
-            "id", "observed_on", "longitude", "latitude",
-            "iconic_taxon_name", "taxon_species_name", "taxon_genus_name",
-            "captive_cultivated", "问题说明"
-        ])
-        
-        for rec in error_records:
-            writer.writerow([
-                rec["id"],
-                rec["observed_on"],
-                rec["longitude"],
-                rec["latitude"],
-                rec["iconic_taxon_name"],
-                rec["taxon_species_name"],
-                rec["taxon_genus_name"],
-                rec["captive_cultivated"],
-                f"坐标({rec['longitude']}, {rec['latitude']})不在澳门陆地区域内，疑似位于海上"
-            ])
-    
-    return output_path
-
-
-def export_detailed_errors_to_csv(year, error_records):
-    """导出包含完整数据的详细错误CSV"""
-    output_path = os.path.join(OUTPUT_DIR, f"坐标异常数据_{year}_详细版.csv")
-    
-    # 完整列名（基于2025年的列结构）
-    columns = [
-        "id", "observed_on", "time_observed_at", "captive_cultivated",
-        "longitude", "latitude", "iconic_taxon_name",
-        "taxon_kingdom_name", "taxon_phylum_name", "taxon_class_name",
-        "taxon_order_name", "taxon_family_name", "taxon_genus_name",
-        "taxon_species_name", "taxon_subspecies_name", "问题说明"
+def export_simple_errors(year: str, result: dict[str, Any]) -> Path:
+    output_path = OUTPUT_DIR / f"坐标异常数据_{year}.csv"
+    fieldnames = [
+        "id",
+        "observed_on",
+        "longitude",
+        "latitude",
+        "iconic_taxon_name",
+        "taxon_species_name",
+        "taxon_genus_name",
+        "captive_cultivated",
+        "nearest_area",
+        "distance_to_land_m",
+        "问题说明",
     ]
-    
-    with open(output_path, "w", encoding="utf-8-sig", newline="") as f:
-        writer = csv.writer(f)
-        writer.writerow(columns)
-        
-        for rec in error_records:
-            row_data = rec["full_data"]
-            # 确保经纬度使用正确的值
-            out_row = list(row_data[:15])  # 取前15列
-            # 补全可能缺失的列
-            while len(out_row) < 15:
-                out_row.append("")
-            out_row.append(f"坐标({rec['longitude']}, {rec['latitude']})不在澳门陆地区域内，疑似位于海上")
-            writer.writerow(out_row)
-    
+
+    with output_path.open("w", encoding="utf-8-sig", newline="") as file:
+        writer = csv.writer(file)
+        writer.writerow(fieldnames)
+
+        for item in result["abnormal_records"]:
+            record = item["record"]
+            writer.writerow(
+                [
+                    record.get("id", ""),
+                    record.get("observed_on", ""),
+                    item["longitude"],
+                    item["latitude"],
+                    record.get("iconic_taxon_name", ""),
+                    record.get("taxon_species_name", ""),
+                    record.get("taxon_genus_name", ""),
+                    record.get("captive_cultivated", ""),
+                    item.get("nearest_area") or "",
+                    round(meters_from_degrees(item["distance_degrees"], item["latitude"])),
+                    item["issue"],
+                ]
+            )
+
+        for item in result["invalid_coordinate_records"]:
+            record = item["record"]
+            writer.writerow(
+                [
+                    record.get("id", ""),
+                    record.get("observed_on", ""),
+                    item["longitude"],
+                    item["latitude"],
+                    record.get("iconic_taxon_name", ""),
+                    record.get("taxon_species_name", ""),
+                    record.get("taxon_genus_name", ""),
+                    record.get("captive_cultivated", ""),
+                    "",
+                    "",
+                    item["issue"],
+                ]
+            )
+
     return output_path
 
 
-def main():
+def export_detailed_errors(year: str, result: dict[str, Any]) -> Path:
+    output_path = OUTPUT_DIR / f"坐标异常数据_{year}_详细版.csv"
+    fieldnames = REQUIRED_COLUMNS + [
+        "nearest_area",
+        "distance_to_land_m",
+        "问题说明",
+    ]
+
+    with output_path.open("w", encoding="utf-8-sig", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=fieldnames, extrasaction="ignore")
+        writer.writeheader()
+
+        for item in result["abnormal_records"]:
+            record = item["record"].copy()
+            row = {column: record.get(column, "") for column in REQUIRED_COLUMNS}
+            row["nearest_area"] = item.get("nearest_area") or ""
+            row["distance_to_land_m"] = round(
+                meters_from_degrees(item["distance_degrees"], item["latitude"])
+            )
+            row["问题说明"] = item["issue"]
+            writer.writerow(row)
+
+        for item in result["invalid_coordinate_records"]:
+            record = item["record"].copy()
+            row = {column: record.get(column, "") for column in REQUIRED_COLUMNS}
+            row["nearest_area"] = ""
+            row["distance_to_land_m"] = ""
+            row["问题说明"] = item["issue"]
+            writer.writerow(row)
+
+    return output_path
+
+
+def geometry_summary() -> list[dict[str, Any]]:
+    summary: list[dict[str, Any]] = []
+    for area_name, geometry in AREA_GEOMETRIES.items():
+        min_lng, min_lat, max_lng, max_lat = geometry.bounds
+        part_count = len(geometry.geoms) if hasattr(geometry, "geoms") else 1
+        vertex_count = 0
+        polygons = geometry.geoms if hasattr(geometry, "geoms") else [geometry]
+        for polygon in polygons:
+            vertex_count += len(polygon.exterior.coords)
+            vertex_count += sum(len(interior.coords) for interior in polygon.interiors)
+        summary.append(
+            {
+                "区域": area_name,
+                "几何块数": part_count,
+                "顶点数": vertex_count,
+                "经度范围": [round(min_lng, 7), round(max_lng, 7)],
+                "纬度范围": [round(min_lat, 7), round(max_lat, 7)],
+            }
+        )
+    return summary
+
+
+def export_summary(results: dict[str, dict[str, Any]]) -> Path:
+    output_path = OUTPUT_DIR / "坐标验证报告.json"
+    report = {
+        "生成时间": datetime.now().isoformat(timespec="seconds"),
+        "判定规则": "观测点落在澳门陆地参考多边形内，或距离边界不超过 GPS 容差时视为正常；否则标注为疑似海上/超出陆地范围。",
+        "边界来源": GEOMETRY_SOURCE,
+        "GPS容差_度": GPS_TOLERANCE_DEGREES,
+        "GPS容差_约米": round(GPS_TOLERANCE_DEGREES * 111_320),
+        "陆地区域定义": geometry_summary(),
+        "数据集": {},
+    }
+
+    for year, result in results.items():
+        report["数据集"][year] = {
+            "源文件": str(result["path"].relative_to(ROOT_DIR)),
+            "总记录数": result["total"],
+            "正常记录数": result["normal_count"],
+            "异常记录数": result["abnormal_count"],
+            "异常比例": f"{result['abnormal_pct']}%",
+            "区域分布": result["area_counts"],
+            "异常类型分布": result["abnormal_by_taxon"],
+            "坐标格式错误数": len(result["invalid_coordinate_records"]),
+            "异常文件": [
+                str((OUTPUT_DIR / f"坐标异常数据_{year}.csv").relative_to(ROOT_DIR)),
+                str((OUTPUT_DIR / f"坐标异常数据_{year}_详细版.csv").relative_to(ROOT_DIR)),
+            ],
+        }
+
+    with output_path.open("w", encoding="utf-8", newline="") as file:
+        json.dump(report, file, ensure_ascii=False, indent=2)
+    return output_path
+
+
+def print_result(result: dict[str, Any]) -> None:
+    print(f"\n分析 {result['year']} 年数据")
+    print("-" * 60)
+    print(f"源文件: {result['path'].relative_to(ROOT_DIR)}")
+    print(f"总记录数: {result['total']}")
+    print(f"正常记录数: {result['normal_count']}")
+    print(f"异常记录数: {result['abnormal_count']} ({result['abnormal_pct']}%)")
+
+    print("\n正常记录区域分布:")
+    for area, count in sorted(result["area_counts"].items(), key=lambda item: -item[1]):
+        print(f"  {area}: {count}")
+
+    print("\n异常记录类型分布:")
+    for taxon, count in sorted(result["abnormal_by_taxon"].items(), key=lambda item: -item[1]):
+        print(f"  {taxon}: {count}")
+
+    if result["abnormal_records"]:
+        print("\n前 8 条异常记录:")
+        for item in result["abnormal_records"][:8]:
+            record = item["record"]
+            distance_m = round(meters_from_degrees(item["distance_degrees"], item["latitude"]))
+            print(
+                f"  {record.get('id', '')}: "
+                f"({item['longitude']}, {item['latitude']}) "
+                f"{record.get('iconic_taxon_name', '')} "
+                f"距 {item.get('nearest_area') or '陆地'} 约 {distance_m} 米"
+            )
+
+
+def main() -> None:
     print("=" * 60)
     print("澳门生物多样性数据 - 坐标合理性验证")
     print("=" * 60)
-    print()
-    
-    # 打印澳门边界信息
-    print("澳门陆地区域定义：")
-    for name, polygon in MACAU_LAND_POLYGONS:
-        lngs = [p[0] for p in polygon]
-        lats = [p[1] for p in polygon]
-        print(f"  {name}:")
-        print(f"    经度范围: {min(lngs):.4f}° ~ {max(lngs):.4f}°")
-        print(f"    纬度范围: {min(lats):.4f}° ~ {max(lats):.4f}°")
-        print(f"    顶点数: {len(polygon)}")
-    print(f"  GPS容差: ±{GPS_TOLERANCE}° (约 {GPS_TOLERANCE*111000:.0f} 米)")
-    print()
-    
-    # 读取2025年数据表头以获取完整列名
-    filepath_2025 = os.path.join(DATA_DIR, DATASETS["2025"]["file"])
-    with open(filepath_2025, encoding="utf-8-sig") as f:
-        reader = csv.reader(f)
-        header_2025 = next(reader)
-    
-    all_results = {}
-    
-    for year in ["2025", "2026"]:
-        print(f"\n{'=' * 60}")
-        print(f"分析 {year} 年数据...")
-        print(f"{'=' * 60}")
-        
-        cfg = DATASETS[year]
+    print(f"边界来源: {GEOMETRY_SOURCE}")
+    print(f"GPS 容差: ±{GPS_TOLERANCE_DEGREES} 度 (约 {round(GPS_TOLERANCE_DEGREES * 111_320)} 米)")
+    print("\n陆地区域定义:")
+    for area in geometry_summary():
+        print(
+            f"  {area['区域']}: 几何块 {area['几何块数']}，顶点 {area['顶点数']}，"
+            f"经度 {area['经度范围'][0]}~{area['经度范围'][1]}，"
+            f"纬度 {area['纬度范围'][0]}~{area['纬度范围'][1]}"
+        )
+
+    results: dict[str, dict[str, Any]] = {}
+    for year, cfg in DATASETS.items():
         result = analyze_dataset(year, cfg)
-        all_results[year] = result
-        
-        print(f"  总记录数: {result['total']}")
-        print(f"  陆地区域内: {result['on_land']} ({100 - result['on_sea_pct']:.2f}%)")
-        print(f"  疑似海上（异常）: {result['on_sea']} ({result['on_sea_pct']:.2f}%)")
-        print()
-        print(f"  各区域记录分布:")
-        for area, count in sorted(result['area_counts'].items(), key=lambda x: -x[1]):
-            print(f"    {area}: {count} 条")
-        print()
-        print(f"  异常坐标按物种类型分布:")
-        for taxon, count in sorted(result['sea_by_taxon'].items(), key=lambda x: -x[1]):
-            print(f"    {taxon}: {count} 条")
-        
-        # 导出错误数据
-        if result['error_records']:
-            # 导出简洁版
-            simple_path = export_errors_to_csv(year, result['error_records'], header_2025)
-            print(f"\n  简洁版错误数据已导出: {simple_path}")
-            
-            # 导出详细版
-            detailed_path = export_detailed_errors_to_csv(year, result['error_records'])
-            print(f"  详细版错误数据已导出: {detailed_path}")
-        
-        # 显示前几条异常数据示例
-        if result['error_records']:
-            print(f"\n  前10条异常数据示例:")
-            print(f"  {'ID':<12} {'经度':<12} {'纬度':<12} {'物种类型':<18} {'物种名'}")
-            print(f"  {'-'*70}")
-            for rec in result['error_records'][:10]:
-                print(f"  {rec['id']:<12} {rec['longitude']:<12.5f} {rec['latitude']:<12.5f} {rec['iconic_taxon_name']:<18} {rec['taxon_species_name']}")
-    
-    # 生成汇总报告
-    print(f"\n\n{'=' * 60}")
-    print("汇总报告")
-    print(f"{'=' * 60}")
-    for year in ["2025", "2026"]:
-        r = all_results[year]
-        print(f"\n{year} 年:")
-        print(f"  总计: {r['total']} | 正常: {r['on_land']} | 异常: {r['on_sea']} ({r['on_sea_pct']}%)")
-    
-    total_abnormal = sum(all_results[y]['on_sea'] for y in ["2025", "2026"])
-    total_all = sum(all_results[y]['total'] for y in ["2025", "2026"])
-    print(f"\n两年合计: {total_all} 条记录, 其中 {total_abnormal} 条异常 ({round(total_abnormal/total_all*100, 2)}%)")
-    
-    # 保存分析摘要JSON
-    summary = {}
-    for year in ["2025", "2026"]:
-        r = all_results[year]
-        summary[year] = {
-            "总记录数": r["total"],
-            "陆地区域内": r["on_land"],
-            "异常记录数": r["on_sea"],
-            "异常比例": f"{r['on_sea_pct']}%",
-            "区域分布": r["area_counts"],
-            "异常类型分布": r["sea_by_taxon"],
-        }
-    
-    summary_path = os.path.join(OUTPUT_DIR, "坐标验证报告.json")
-    with open(summary_path, "w", encoding="utf-8") as f:
-        json.dump(summary, f, ensure_ascii=False, indent=2)
-    print(f"\n分析报告已保存: {summary_path}")
+        results[year] = result
+        print_result(result)
+        simple_path = export_simple_errors(year, result)
+        detailed_path = export_detailed_errors(year, result)
+        print(f"\n已导出: {simple_path.relative_to(ROOT_DIR)}")
+        print(f"已导出: {detailed_path.relative_to(ROOT_DIR)}")
+
+    summary_path = export_summary(results)
+    print("\n汇总报告已保存:", summary_path.relative_to(ROOT_DIR))
 
 
 if __name__ == "__main__":

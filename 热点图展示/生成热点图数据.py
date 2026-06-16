@@ -1,17 +1,31 @@
 # -*- coding: utf-8 -*-
-"""读取表格数据中的 2025 / 2026 CSV，提取经纬度与物种类别，生成供网页热点图使用的 热点图数据.js"""
-import csv, json, os
+"""生成供热点图和点位详情图使用的 热点图数据.js。"""
+
+from __future__ import annotations
+
+import csv
+import json
+import os
+from collections import Counter
+
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.path.join(BASE, "..", "表格数据")  # 数据在上层目录
+TABLE_DIR = os.path.normpath(os.path.join(BASE, "..", "表格数据"))
+CLEAN_DIR = os.path.join(TABLE_DIR, "正确数据")
+ABNORMAL_DIR = os.path.join(TABLE_DIR, "原始对比异常数据")
+OUT_FILE = os.path.join(BASE, "热点图数据.js")
 
-# 数据集配置：注意两年的经纬度列顺序不同
 DATASETS = {
-    "2025": {"file": "2025 團隊賽數據包_Sheet1.csv", "lat": 5, "lng": 4},
-    "2026": {"file": "副本2026 團隊賽數據包_Sheet1.csv", "lat": 4, "lng": 5},
+    "2025": {
+        "clean": os.path.join(CLEAN_DIR, "2025 團隊賽數據包_Sheet1.csv"),
+        "abnormal": os.path.join(ABNORMAL_DIR, "异常数据_2025_由原始减正确.csv"),
+    },
+    "2026": {
+        "clean": os.path.join(CLEAN_DIR, "副本2026 團隊賽數據包_Sheet1.csv"),
+        "abnormal": os.path.join(ABNORMAL_DIR, "异常数据_2026_由原始减正确.csv"),
+    },
 }
 
-# iconic_taxon_name -> 中文名（用于图例 / 筛选）
 CAT_LABELS = {
     "Plantae": "植物",
     "Aves": "鸟类",
@@ -28,55 +42,118 @@ CAT_LABELS = {
     "": "未分类",
 }
 
-# 固定类别顺序（保证两年索引一致）
 CATEGORIES = list(CAT_LABELS.keys())
-CAT_INDEX = {c: i for i, c in enumerate(CATEGORIES)}
+CAT_INDEX = {category: index for index, category in enumerate(CATEGORIES)}
 
 
-def load(cfg):
-    points = []
-    counts = {}
-    path = os.path.join(DATA_DIR, cfg["file"])
-    with open(path, encoding="utf-8-sig") as fh:
-        r = csv.reader(fh)
-        next(r)  # 跳过表头
-        for row in r:
+def parse_float(row: dict[str, str], field: str) -> float:
+    value = (row.get(field) or "").strip()
+    return float(value)
+
+
+def clean_text(value: str | None) -> str:
+    return (value or "").strip()
+
+
+def compact_record(row: dict[str, str], year: str, status: str, lat: float, lng: float, cat_index: int) -> dict:
+    return {
+        "id": clean_text(row.get("id")),
+        "year": year,
+        "status": status,
+        "lat": round(lat, 6),
+        "lng": round(lng, 6),
+        "cat": cat_index,
+        "observed_on": clean_text(row.get("observed_on")),
+        "time_observed_at": clean_text(row.get("time_observed_at")),
+        "captive_cultivated": clean_text(row.get("captive_cultivated")),
+        "iconic_taxon_name": clean_text(row.get("iconic_taxon_name")),
+        "taxon_kingdom_name": clean_text(row.get("taxon_kingdom_name")),
+        "taxon_phylum_name": clean_text(row.get("taxon_phylum_name")),
+        "taxon_class_name": clean_text(row.get("taxon_class_name")),
+        "taxon_order_name": clean_text(row.get("taxon_order_name")),
+        "taxon_family_name": clean_text(row.get("taxon_family_name")),
+        "taxon_genus_name": clean_text(row.get("taxon_genus_name")),
+        "taxon_species_name": clean_text(row.get("taxon_species_name")),
+        "taxon_subspecies_name": clean_text(row.get("taxon_subspecies_name")),
+    }
+
+
+def load_csv(path: str, year: str, status: str) -> tuple[list[list[float | int]], list[dict], Counter, int]:
+    points: list[list[float | int]] = []
+    records: list[dict] = []
+    counts: Counter = Counter()
+    skipped = 0
+
+    if not os.path.exists(path):
+        raise FileNotFoundError(path)
+
+    with open(path, newline="", encoding="utf-8-sig") as file:
+        reader = csv.DictReader(file)
+        required = {"id", "latitude", "longitude", "iconic_taxon_name"}
+        missing = required - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"{path} 缺少必要字段: {', '.join(sorted(missing))}")
+
+        for row in reader:
             try:
-                lat = round(float(row[cfg["lat"]]), 5)
-                lng = round(float(row[cfg["lng"]]), 5)
-            except (ValueError, IndexError):
+                lat = parse_float(row, "latitude")
+                lng = parse_float(row, "longitude")
+            except ValueError:
+                skipped += 1
                 continue
-            cat = row[6] if len(row) > 6 else ""
-            if cat not in CAT_INDEX:
-                cat = ""
-            ci = CAT_INDEX[cat]
-            points.append([lat, lng, ci])
-            counts[cat] = counts.get(cat, 0) + 1
-    return points, counts
+
+            category = clean_text(row.get("iconic_taxon_name"))
+            if category not in CAT_INDEX:
+                category = ""
+            cat_index = CAT_INDEX[category]
+
+            points.append([round(lat, 5), round(lng, 5), cat_index])
+            records.append(compact_record(row, year, status, lat, lng, cat_index))
+            counts[category] += 1
+
+    return points, records, counts, skipped
 
 
-def main():
+def counts_by_index(counts: Counter) -> dict[int, int]:
+    return {CAT_INDEX[category]: count for category, count in counts.items()}
+
+
+def main() -> None:
     out = {
-        "categories": [{"key": c, "label": CAT_LABELS[c], "index": i}
-                       for i, c in enumerate(CATEGORIES)],
+        "categories": [
+            {"key": category, "label": CAT_LABELS[category], "index": index}
+            for index, category in enumerate(CATEGORIES)
+        ],
+        "statuses": [
+            {"key": "clean", "label": "正确数据"},
+            {"key": "abnormal", "label": "异常数据"},
+        ],
         "years": {},
     }
-    for year, cfg in DATASETS.items():
-        pts, counts = load(cfg)
-        out["years"][year] = {
-            "points": pts,
-            "total": len(pts),
-            "counts": {CAT_INDEX[k]: v for k, v in counts.items()},
-        }
-        print(f"{year}: {len(pts)} 条有效记录")
+
+    for year, paths in DATASETS.items():
+        year_data = {}
+        for status, path in paths.items():
+            points, records, counts, skipped = load_csv(path, year, status)
+            year_data[status] = {
+                "points": points,
+                "records": records,
+                "total": len(points),
+                "counts": counts_by_index(counts),
+            }
+            msg = f"{year} {status}: {len(points)} 条有效记录"
+            if skipped:
+                msg += f"，跳过 {skipped} 条经纬度缺失/无效记录"
+            print(msg)
+        out["years"][year] = year_data
 
     js = "// 自动生成，请勿手动编辑。运行 生成热点图数据.py 重新生成。\n"
     js += "window.HEATMAP_DATA = " + json.dumps(out, ensure_ascii=False, separators=(",", ":")) + ";\n"
-    out_path = os.path.join(BASE, "热点图数据.js")
-    with open(out_path, "w", encoding="utf-8") as fh:
-        fh.write(js)
-    size = os.path.getsize(out_path) / 1024 / 1024
-    print(f"已生成 {out_path}（{size:.2f} MB）")
+    with open(OUT_FILE, "w", encoding="utf-8") as file:
+        file.write(js)
+
+    size = os.path.getsize(OUT_FILE) / 1024 / 1024
+    print(f"已生成 {OUT_FILE}（{size:.2f} MB）")
 
 
 if __name__ == "__main__":
