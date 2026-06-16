@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-06-16T12:52:14",
+  "rule": "按异常数据 CSV 中的 id 删除原表对应整行，原始表格数据不修改。",
+  "output_dir": "表格数据\\正确数据",
+  "datasets": [
+    {
+      "year": "2025",
+      "anomaly_file": "异常数据\\坐标异常数据_2025.csv",
+      "anomaly_rows": 1062,
+      "unique_anomaly_ids": 1062,
+      "detail_file": "异常数据\\坐标异常数据_2025_详细版.csv",
+      "detail_rows": 1062,
+      "detail_ids_match_simple_file": true,
+      "unmatched_anomaly_ids": 0,
+      "source_file": "表格数据\\2025 團隊賽數據包_Sheet1.csv",
+      "output_file": "表格数据\\正确数据\\2025 團隊賽數據包_Sheet1.csv",
+      "source_rows": 33571,
+      "removed_rows": 1062,
+      "output_rows": 32509,
+      "remaining_anomaly_rows": 0
+    },
+    {
+      "year": "2026",
+      "anomaly_file": "异常数据\\坐标异常数据_2026.csv",
+      "anomaly_rows": 661,
+      "unique_anomaly_ids": 661,
+      "detail_file": "异常数据\\坐标异常数据_2026_详细版.csv",
+      "detail_rows": 661,
+      "detail_ids_match_simple_file": true,
+      "unmatched_anomaly_ids": 0,
+      "source_file": "表格数据\\副本2026 團隊賽數據包_Sheet1.csv",
+      "output_file": "表格数据\\正确数据\\副本2026 團隊賽數據包_Sheet1.csv",
+      "source_rows": 18437,
+      "removed_rows": 661,
+      "output_rows": 17776,
+      "remaining_anomaly_rows": 0
+    }
+  ]
+}
