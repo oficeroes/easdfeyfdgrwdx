@@ -1,4 +1,18 @@
 # -*- coding: utf-8 -*-
+"""根据坐标异常清单生成“正确数据”。
+
+用法：
+    python scripts/data_cleaning/clean_correct_data.py
+
+输入：
+    表格数据/*.csv
+    异常数据/坐标异常数据_*.csv
+
+输出：
+    表格数据/正确数据/*.csv
+    表格数据/正确数据/清理报告.json
+"""
+
 from __future__ import annotations
 
 import csv
@@ -8,7 +22,7 @@ from datetime import datetime
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
 TABLE_DIR = ROOT / "表格数据"
 ANOMALY_DIR = ROOT / "异常数据"
 OUTPUT_DIR = TABLE_DIR / "正确数据"
@@ -40,7 +54,7 @@ def load_anomaly_ids(path: Path) -> tuple[set[str], int]:
     with path.open("r", encoding=detect_encoding(path), newline="") as file:
         reader = csv.DictReader(file)
         if not reader.fieldnames or "id" not in reader.fieldnames:
-            raise ValueError(f"异常文件缺少 id 列: {path}")
+            raise ValueError(f"异常文件缺少 id 列：{path}")
         for row in reader:
             total_rows += 1
             record_id = (row.get("id") or "").strip()
@@ -49,7 +63,8 @@ def load_anomaly_ids(path: Path) -> tuple[set[str], int]:
     return anomaly_ids, total_rows
 
 
-def remove_anomalies_from_copy(source: Path, target: Path, anomaly_ids: set[str]) -> dict:
+def remove_anomalies_from_copy(source: Path, target: Path, anomaly_ids: set[str]) -> dict[str, int | str]:
+    target.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(source, target)
 
     encoding = detect_encoding(target)
@@ -67,10 +82,10 @@ def remove_anomalies_from_copy(source: Path, target: Path, anomaly_ids: set[str]
         try:
             header = next(reader)
         except StopIteration as exc:
-            raise ValueError(f"源文件为空: {source}") from exc
+            raise ValueError(f"源文件为空：{source}") from exc
 
         if "id" not in header:
-            raise ValueError(f"源文件缺少 id 列: {source}")
+            raise ValueError(f"源文件缺少 id 列：{source}")
 
         id_index = header.index("id")
         writer.writerow(header)
@@ -107,9 +122,9 @@ def remove_anomalies_from_copy(source: Path, target: Path, anomaly_ids: set[str]
 def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    report = {
+    report: dict[str, object] = {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
-        "rule": "按异常数据 CSV 中的 id 删除原表对应整行，原始表格数据不修改。",
+        "rule": "按异常数据 CSV 中的 id 删除原始表格的对应整行，原始表格数据不修改。",
         "output_dir": str(OUTPUT_DIR.relative_to(ROOT)),
         "datasets": [],
     }
@@ -117,11 +132,9 @@ def main() -> None:
     for dataset in DATASETS:
         anomaly_ids, anomaly_rows = load_anomaly_ids(dataset["anomaly"])
         detail_ids, detail_rows = load_anomaly_ids(dataset["anomaly_detail"])
-        detail_matches = anomaly_ids == detail_ids
-
         target = OUTPUT_DIR / dataset["source"].name
         result = remove_anomalies_from_copy(dataset["source"], target, anomaly_ids)
-        unmatched_ids = len(anomaly_ids) - result["removed_rows"]
+        unmatched_ids = len(anomaly_ids) - int(result["removed_rows"])
 
         report["datasets"].append(
             {
@@ -131,7 +144,7 @@ def main() -> None:
                 "unique_anomaly_ids": len(anomaly_ids),
                 "detail_file": str(dataset["anomaly_detail"].relative_to(ROOT)),
                 "detail_rows": detail_rows,
-                "detail_ids_match_simple_file": detail_matches,
+                "detail_ids_match_simple_file": anomaly_ids == detail_ids,
                 "unmatched_anomaly_ids": max(unmatched_ids, 0),
                 **result,
             }

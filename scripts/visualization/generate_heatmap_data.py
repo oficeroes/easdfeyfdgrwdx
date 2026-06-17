@@ -1,28 +1,37 @@
 # -*- coding: utf-8 -*-
-"""生成供热点图和点位详情图使用的 热点图数据.js。"""
+"""生成供热点图和点位详情图使用的 JavaScript 数据。
+
+用法：
+    python scripts/visualization/generate_heatmap_data.py
+
+输出：
+    热点图展示/热点图数据.js
+"""
 
 from __future__ import annotations
 
 import csv
 import json
-import os
 from collections import Counter
+from pathlib import Path
+from typing import Any
 
 
-BASE = os.path.dirname(os.path.abspath(__file__))
-TABLE_DIR = os.path.normpath(os.path.join(BASE, "..", "表格数据"))
-CLEAN_DIR = os.path.join(TABLE_DIR, "正确数据")
-ABNORMAL_DIR = os.path.join(TABLE_DIR, "原始对比异常数据")
-OUT_FILE = os.path.join(BASE, "热点图数据.js")
+ROOT = Path(__file__).resolve().parents[2]
+TABLE_DIR = ROOT / "表格数据"
+CLEAN_DIR = TABLE_DIR / "正确数据"
+ABNORMAL_DIR = TABLE_DIR / "原始对比异常数据"
+WEB_DIR = ROOT / "热点图展示"
+OUT_FILE = WEB_DIR / "热点图数据.js"
 
 DATASETS = {
     "2025": {
-        "clean": os.path.join(CLEAN_DIR, "2025 團隊賽數據包_Sheet1.csv"),
-        "abnormal": os.path.join(ABNORMAL_DIR, "异常数据_2025_由原始减正确.csv"),
+        "clean": CLEAN_DIR / "2025 團隊賽數據包_Sheet1.csv",
+        "abnormal": ABNORMAL_DIR / "异常数据_2025_由原始减正确.csv",
     },
     "2026": {
-        "clean": os.path.join(CLEAN_DIR, "副本2026 團隊賽數據包_Sheet1.csv"),
-        "abnormal": os.path.join(ABNORMAL_DIR, "异常数据_2026_由原始减正确.csv"),
+        "clean": CLEAN_DIR / "副本2026 團隊賽數據包_Sheet1.csv",
+        "abnormal": ABNORMAL_DIR / "异常数据_2026_由原始减正确.csv",
     },
 }
 
@@ -46,16 +55,16 @@ CATEGORIES = list(CAT_LABELS.keys())
 CAT_INDEX = {category: index for index, category in enumerate(CATEGORIES)}
 
 
-def parse_float(row: dict[str, str], field: str) -> float:
-    value = (row.get(field) or "").strip()
-    return float(value)
-
-
 def clean_text(value: str | None) -> str:
     return (value or "").strip()
 
 
-def compact_record(row: dict[str, str], year: str, status: str, lat: float, lng: float, cat_index: int) -> dict:
+def parse_float(row: dict[str, str], field: str) -> float:
+    value = clean_text(row.get(field))
+    return float(value)
+
+
+def compact_record(row: dict[str, str], year: str, status: str, lat: float, lng: float, cat_index: int) -> dict[str, Any]:
     return {
         "id": clean_text(row.get("id")),
         "year": year,
@@ -78,21 +87,21 @@ def compact_record(row: dict[str, str], year: str, status: str, lat: float, lng:
     }
 
 
-def load_csv(path: str, year: str, status: str) -> tuple[list[list[float | int]], list[dict], Counter, int]:
+def load_csv(path: Path, year: str, status: str) -> tuple[list[list[float | int]], list[dict[str, Any]], Counter[str], int]:
     points: list[list[float | int]] = []
-    records: list[dict] = []
-    counts: Counter = Counter()
+    records: list[dict[str, Any]] = []
+    counts: Counter[str] = Counter()
     skipped = 0
 
-    if not os.path.exists(path):
+    if not path.exists():
         raise FileNotFoundError(path)
 
-    with open(path, newline="", encoding="utf-8-sig") as file:
+    with path.open(newline="", encoding="utf-8-sig") as file:
         reader = csv.DictReader(file)
         required = {"id", "latitude", "longitude", "iconic_taxon_name"}
         missing = required - set(reader.fieldnames or [])
         if missing:
-            raise ValueError(f"{path} 缺少必要字段: {', '.join(sorted(missing))}")
+            raise ValueError(f"{path} 缺少必要字段：{', '.join(sorted(missing))}")
 
         for row in reader:
             try:
@@ -114,12 +123,12 @@ def load_csv(path: str, year: str, status: str) -> tuple[list[list[float | int]]
     return points, records, counts, skipped
 
 
-def counts_by_index(counts: Counter) -> dict[int, int]:
+def counts_by_index(counts: Counter[str]) -> dict[int, int]:
     return {CAT_INDEX[category]: count for category, count in counts.items()}
 
 
 def main() -> None:
-    out = {
+    payload: dict[str, Any] = {
         "categories": [
             {"key": category, "label": CAT_LABELS[category], "index": index}
             for index, category in enumerate(CATEGORIES)
@@ -141,19 +150,19 @@ def main() -> None:
                 "total": len(points),
                 "counts": counts_by_index(counts),
             }
-            msg = f"{year} {status}: {len(points)} 条有效记录"
+            message = f"{year} {status}: {len(points)} 条有效记录"
             if skipped:
-                msg += f"，跳过 {skipped} 条经纬度缺失/无效记录"
-            print(msg)
-        out["years"][year] = year_data
+                message += f"，跳过 {skipped} 条经纬度缺失或无效记录"
+            print(message)
+        payload["years"][year] = year_data
 
-    js = "// 自动生成，请勿手动编辑。运行 生成热点图数据.py 重新生成。\n"
-    js += "window.HEATMAP_DATA = " + json.dumps(out, ensure_ascii=False, separators=(",", ":")) + ";\n"
-    with open(OUT_FILE, "w", encoding="utf-8") as file:
-        file.write(js)
+    WEB_DIR.mkdir(parents=True, exist_ok=True)
+    js = "// 自动生成，请勿手动编辑。运行 scripts/visualization/generate_heatmap_data.py 重新生成。\n"
+    js += "window.HEATMAP_DATA = " + json.dumps(payload, ensure_ascii=False, separators=(",", ":")) + ";\n"
+    OUT_FILE.write_text(js, encoding="utf-8")
 
-    size = os.path.getsize(OUT_FILE) / 1024 / 1024
-    print(f"已生成 {OUT_FILE}（{size:.2f} MB）")
+    size = OUT_FILE.stat().st_size / 1024 / 1024
+    print(f"已生成 {OUT_FILE.relative_to(ROOT)} ({size:.2f} MB)")
 
 
 if __name__ == "__main__":

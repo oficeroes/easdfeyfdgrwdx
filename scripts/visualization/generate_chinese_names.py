@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 """为点位详情图生成物种中文名数据包。
 
-数据来源优先使用 iNaturalist 分类接口的中文常用名。脚本会把查询结果缓存下来，
-以后重新运行时只补查新增物种。
+数据来源优先使用 iNaturalist 分类接口的中文常用名。脚本会缓存查询结果，
+后续重复运行时只补查新增或失败的物种。
+
+常用命令：
+    python scripts/visualization/generate_chinese_names.py --no-query
+    python scripts/visualization/generate_chinese_names.py --limit 100 --delay 2.5
 """
-'''有些物种暂时会显示“暂未匹配”，因为 iNaturalist 查询时触发过限流。我已经把脚本改成可断点续跑、低频查询。以后想继续补全中文名，可以运行：
-python -X utf8 "生成中文名数据.py" --limit 100 --delay 2.5
-'''
-'''当前生成结果：
-    唯一物种：3606 个
-    已匹配中文名：1248 个
-    按实际点位记录算，约 72.9% 的点位已经能显示中文名
-'''
+
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import re
-import argparse
 import time
 import urllib.parse
 import urllib.request
@@ -26,7 +23,7 @@ from pathlib import Path
 from typing import Any
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
 TABLE_DIR = ROOT / "表格数据"
 CLEAN_DIR = TABLE_DIR / "正确数据"
 ABNORMAL_DIR = TABLE_DIR / "原始对比异常数据"
@@ -119,7 +116,6 @@ def choose_chinese_name(item: dict[str, Any]) -> str:
 
     names = item.get("names") if isinstance(item.get("names"), list) else []
     valid_names = [name for name in names if name.get("is_valid", True)]
-
     preference_order = [
         ("zh-CN", "chinese-simplified"),
         ("zh-Hans", "chinese-simplified"),
@@ -140,7 +136,6 @@ def choose_chinese_name(item: dict[str, Any]) -> str:
         lexicon = clean_text(name.get("lexicon")).lower()
         if (locale.startswith("zh") or "chinese" in lexicon) and has_chinese(value):
             return value
-
     return ""
 
 
@@ -157,22 +152,12 @@ def query_one(scientific_name: str) -> dict[str, Any]:
 
     for attempt in range(3):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-            with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as response:
+            request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(request, timeout=REQUEST_TIMEOUT) as response:
                 data = json.load(response)
             item = choose_result(scientific_name, data.get("results", []))
             if not item:
-                return {
-                    "scientific_name": scientific_name,
-                    "chinese_name": "",
-                    "matched_scientific_name": "",
-                    "inaturalist_taxon_id": "",
-                    "rank": "",
-                    "observations_count": "",
-                    "source": "iNaturalist",
-                    "error": "not_found",
-                    "queried_at": datetime.now().isoformat(timespec="seconds"),
-                }
+                return build_empty_result(scientific_name, "not_found")
             return {
                 "scientific_name": scientific_name,
                 "chinese_name": choose_chinese_name(item),
@@ -184,10 +169,13 @@ def query_one(scientific_name: str) -> dict[str, Any]:
                 "error": "",
                 "queried_at": datetime.now().isoformat(timespec="seconds"),
             }
-        except Exception as exc:  # 网络查询失败时保留错误，方便下次补查
+        except Exception as exc:
             last_error = f"{type(exc).__name__}: {exc}"
             time.sleep(1.2 * (attempt + 1))
+    return build_empty_result(scientific_name, last_error)
 
+
+def build_empty_result(scientific_name: str, error: str) -> dict[str, Any]:
     return {
         "scientific_name": scientific_name,
         "chinese_name": "",
@@ -196,13 +184,14 @@ def query_one(scientific_name: str) -> dict[str, Any]:
         "rank": "",
         "observations_count": "",
         "source": "iNaturalist",
-        "error": last_error,
+        "error": error,
         "queried_at": datetime.now().isoformat(timespec="seconds"),
     }
 
 
 def write_outputs(records: list[dict[str, Any]]) -> None:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    WEB_OUT.parent.mkdir(parents=True, exist_ok=True)
     fields = [
         "scientific_name",
         "chinese_name",
@@ -240,11 +229,9 @@ def write_outputs(records: list[dict[str, Any]]) -> None:
             for item in records
         },
     }
-    with JSON_FILE.open("w", encoding="utf-8", newline="") as file:
-        json.dump(payload, file, ensure_ascii=False, indent=2)
-
+    JSON_FILE.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     WEB_OUT.write_text(
-        "// 自动生成，请运行 生成中文名数据.py 更新。\n"
+        "// 自动生成，请运行 scripts/visualization/generate_chinese_names.py 更新。\n"
         + "window.CHINESE_NAME_DATA = "
         + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
         + ";\n",
@@ -253,11 +240,11 @@ def write_outputs(records: list[dict[str, Any]]) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="生成物种中文名数据包")
-    parser.add_argument("--limit", type=int, default=0, help="本次最多查询多少个未缓存物种；0 表示不限制")
-    parser.add_argument("--skip-errors", action="store_true", help="跳过之前已经查询失败的物种")
-    parser.add_argument("--no-query", action="store_true", help="不访问网络，只用现有缓存生成数据包")
-    parser.add_argument("--delay", type=float, default=DEFAULT_DELAY, help="两次查询之间的等待秒数，避免接口限流")
+    parser = argparse.ArgumentParser(description="生成物种中文名数据包。")
+    parser.add_argument("--limit", type=int, default=0, help="本次最多查询多少个未缓存物种；0 表示不限制。")
+    parser.add_argument("--skip-errors", action="store_true", help="跳过之前已经查询失败的物种。")
+    parser.add_argument("--no-query", action="store_true", help="不访问网络，只用现有缓存生成数据包。")
+    parser.add_argument("--delay", type=float, default=DEFAULT_DELAY, help="两次查询之间的等待秒数。")
     args = parser.parse_args()
 
     species = read_species()
@@ -267,12 +254,13 @@ def main() -> None:
     else:
         missing = [name for name in species if name not in cache or cache[name].get("error")]
     missing.sort(key=lambda name: (-species[name]["record_count"], name))
+
     if args.no_query:
         missing = []
     if args.limit and args.limit > 0:
         missing = missing[: args.limit]
-    print(f"共发现 {len(species)} 个唯一物种；缓存已有 {len(cache)} 个；需要查询 {len(missing)} 个。")
 
+    print(f"共发现 {len(species)} 个唯一物种；缓存已有 {len(cache)} 个；本次需要查询 {len(missing)} 个。")
     for index, name in enumerate(missing, 1):
         cache[name] = query_one(name)
         if index % 10 == 0 or index == len(missing):
@@ -283,16 +271,13 @@ def main() -> None:
     if missing:
         save_cache(cache)
 
-    records = []
-    for name in sorted(species):
-        record = {**species[name], **cache.get(name, {})}
-        records.append(record)
+    records = [{**species[name], **cache.get(name, {})} for name in sorted(species)]
     write_outputs(records)
 
     with_name = sum(1 for item in records if item.get("chinese_name"))
-    print(f"已生成 {CSV_FILE}")
-    print(f"已生成 {JSON_FILE}")
-    print(f"已生成 {WEB_OUT}")
+    print(f"已生成 {CSV_FILE.relative_to(ROOT)}")
+    print(f"已生成 {JSON_FILE.relative_to(ROOT)}")
+    print(f"已生成 {WEB_OUT.relative_to(ROOT)}")
     print(f"中文名覆盖：{with_name}/{len(records)}")
 
 

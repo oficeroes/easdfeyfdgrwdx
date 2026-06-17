@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
-#以后如果你更新了 表格数据/正确数据，直接运行：
-# python -X utf8 update_abnormal_from_clean.py  
-# PowerShell
+"""根据“原始数据 - 正确数据”重新生成异常数据。
+
+如果更新过 表格数据/正确数据，可以运行本脚本同步
+表格数据/原始对比异常数据。
+
+用法：
+    python scripts/data_cleaning/update_abnormal_from_clean.py
+"""
+
 from __future__ import annotations
 
 import csv
@@ -10,7 +16,7 @@ from datetime import datetime
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
 TABLE_DIR = ROOT / "表格数据"
 CLEAN_DIR = TABLE_DIR / "正确数据"
 ABNORMAL_DIR = TABLE_DIR / "原始对比异常数据"
@@ -42,7 +48,7 @@ def read_header_and_rows(path: Path) -> tuple[list[str], list[list[str]]]:
         try:
             header = next(reader)
         except StopIteration as exc:
-            raise ValueError(f"CSV 文件为空: {path}") from exc
+            raise ValueError(f"CSV 文件为空：{path}") from exc
         return header, list(reader)
 
 
@@ -50,7 +56,7 @@ def id_index(header: list[str], path: Path) -> int:
     try:
         return header.index("id")
     except ValueError as exc:
-        raise ValueError(f"CSV 文件缺少 id 列: {path}") from exc
+        raise ValueError(f"CSV 文件缺少 id 列：{path}") from exc
 
 
 def row_id(row: list[str], index: int) -> str:
@@ -110,7 +116,7 @@ def export_difference(dataset: dict[str, Path | str]) -> dict[str, object]:
 
 
 def main() -> None:
-    report = {
+    report: dict[str, object] = {
         "generated_at": datetime.now().isoformat(timespec="seconds"),
         "rule": "按 id 对比：异常数据 = 原始表格数据中存在、正确数据中不存在的整行记录。",
         "output_dir": str(ABNORMAL_DIR.relative_to(ROOT)),

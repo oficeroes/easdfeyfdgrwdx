@@ -1,205 +1,224 @@
-# 🦜 澳门生物多样性数据分析 — 校际团队挑战赛
+# 澳门生物多样性数据分析项目
 
-> **2026 年澳门校际团队挑战赛 · 生物多样性数据科学项目**  
-> 比赛时间：2026 年 5 月 18 日 — 7 月 3 日
+本项目用于参加 2026 年澳门校际团队挑战赛。我们围绕 2025 与 2026 年澳门生物多样性观测数据，完成数据读取、格式转换、坐标异常识别、清洗、统计验证、中文物种名补全，以及交互式热点地图展示。
 
----
+项目的核心目标不是只做一张图，而是建立一条可以复查的数据分析流程：从原始数据包开始，逐步得到可分析的 CSV、可追踪的异常记录、用于报告的正确数据，以及可以向评委和同学展示的可视化页面。
 
-## 👥 团队成员
+## 团队成员
 
-| 姓名 | 角色 |
-|------|------|
-| **黄语萱** | 队长 |
-| **莫欣睿** | 队员 |
-| **林俊宇** | 队员 |
+| 成员 | 角色 | 主要工作 |
+| --- | --- | --- |
+| 黄语萱 | 队长 | 统筹研究方向、整合分析报告、把控展示表达 |
+| 莫欣睿 | 队员 | 数据清洗、异常点复核、物种与生态指标整理 |
+| 林俊宇 | 队员 | 脚本开发、地图可视化、统计数值验证 |
 
----
+## 项目内容
 
-## 📋 项目简介
+我们从比赛提供的数据包中提取观测记录，并围绕以下问题开展分析：
 
-本项目参加 **2026 年澳门校际团队挑战赛**，围绕澳门生物多样性数据展开系统性的数据科学分析与可视化研究。项目分为两大部分：
+1. 澳门不同年份的生物多样性记录数量、物种数量和类群结构有什么变化。
+2. 哪些物种是高频优势物种，哪些物种较稀有，哪些物种适合作为生态指示物种。
+3. 观测点坐标是否落在澳门陆地区域内，异常点如何识别和剔除。
+4. 清洗后的数据如何支撑 Shannon 指数、Simpson 指数、Pielou 均匀度等报告数值。
+5. 如何把正确数据和异常数据以交互式地图方式展示出来。
 
-### 第一部分：生物多样性基础分析
+## 目录结构
 
-- 📊 计算 **香农指数（Shannon Index）** 与 **辛普森多样性指数（Simpson's Diversity Index）**
-- 🔍 识别优势物种、稀有物种及生态指示物种
-- 🗺️ 绘制生物多样性科普地图，展示具生态价值物种的空间分布
-
-### 第二部分：进阶数据科学与分析
-
-选题方向（四选一或综合）：
-
-| 方向 | 研究内容 |
-|------|---------|
-| A | 物種之间的相互作用（食物网、共生、竞争、网络分析） |
-| B | 气候变化对生物多样性的影响（SDM、气候情景预测） |
-| C | 生态系统功能与服务（碳汇、水质净化、传粉评估） |
-| D | 生物多样性与环境数据的关系（RDA/CCA、城市化梯度） |
-
-> 📌 详见 [`第二部分选题建议与理由.md`](./报告文档/第二部分选题建议与理由.md)，内含国际竞赛获奖趋势分析与三套推荐选题方案。
-
-### 最终产出
-
-- 📜 **学术海报**（A0 尺寸，300 dpi 物种空间分布图）
-- 🎬 **科普短片**（≤ 5 分钟）
-
----
-
-## 📁 项目结构
-
-```
+```text
 Biodiversity_competition/
-├── README.md                          # 项目说明（本文件）
-├── requirements.txt                   # Python 依赖清单
-├── server.py                          # 🚀 一键本地服务器（支持外网穿透）
-├── cloudflared-windows-386.exe        # Cloudflare Tunnel 工具
-├── convert_to_csv.py                  # xlsx → CSV 批量转换工具
-├── read_data.py                       # 原始数据读取脚本
-├── .gitignore
-│
-├── .github/                           # ⚙️ Copilot Agent 自定义配置
-│   └── skills/
-│       └── organize-project/
-│           └── SKILL.md               # 项目整理技能
-│
-├── 图片素材/                          # 🖼️ 图片资源
-│   └── 校際團隊挑戰賽.jpg
-│
-├── 热点图展示/                        # 🔥 交互式 Web 地图应用 ⭐
-│   ├── 澳门生物多样性热点图.html       # Leaflet 热点图主页
-│   ├── 热点图数据.js                   # 预处理后的地图数据
-│   └── 生成热点图数据.py               # CSV → 热点图数据 转换脚本
-│
-├── 报告文档/                          # 📝 分析类 Markdown 文档
-│   ├── a.txt                          # 比赛要求文本
-│   ├── Python环境配置说明.md
-│   ├── 校际团队挑战赛要求.md
-│   ├── 第二部分选题建议与理由.md
-│   ├── 生物多样性指数分析报告.md       # ⭐ 香农指数/辛普森指数计算
-│   ├── 优势物种分析报告.md             # ⭐ Top20优势物种及各分类群分析
-│   ├── 稀有物种分析报告.md             # ⭐ Singletons/稀有物种识别
-│   ├── 生态指示物种分析报告.md         # ⭐ 湿地/森林/入侵指示物种
-│   └── 十大选题深度分析.md             # 🏆 10个进阶选题+评审偏好+获奖趋势
-│
-├── 往届作品参考/                      # 🏆 历届比赛信息
-│   ├── 2025年比赛信息汇总.md
-│   └── 国际竞赛获奖趋势分析.md
-│
-├── 数据包/                            # 📦 原始数据（xlsx + pdf）
-│   ├── 2025 團隊賽數據包.xlsx
-│   ├── 副本2026 團隊賽數據包.xlsx
-│   ├── 2025 團隊賽數據包說明.pdf
-│   ├── 2026 團隊賽數據包說明.pdf
-│   └── read_data.py                   # 数据包读取脚本
-│
-├── 表格数据/                          # 📊 转换后的 CSV 数据
-│   ├── 2025 團隊賽數據包_Sheet1.csv    # 33,571 条记录
-│   ├── 副本2026 團隊賽數據包_Sheet1.csv # 18,437 条记录
-│   ├── _元数据摘要.json
-│   └── 数据预览/
-│
-└── venv/                              # Python 虚拟环境
+├── README.md
+├── requirements.txt
+├── scripts/                         # 全部可运行脚本
+│   ├── data_conversion/             # 数据读取与格式转换
+│   │   ├── convert_to_csv.py
+│   │   ├── export_readable_text.py
+│   │   └── preview_raw_data.py
+│   ├── data_cleaning/               # 数据清洗与异常数据同步
+│   │   ├── clean_correct_data.py
+│   │   └── update_abnormal_from_clean.py
+│   ├── validation/                  # 坐标验证与报告数值验证
+│   │   ├── check_coordinates.py
+│   │   └── verify_reports.py
+│   ├── visualization/               # 地图数据与中文名数据生成
+│   │   ├── generate_heatmap_data.py
+│   │   └── generate_chinese_names.py
+│   └── serve/
+│       └── server.py                # 本地地图服务器
+├── 工具/                            # 可执行工具
+│   ├── cloudflared-windows-386.exe
+│   └── mutagen.exe
+├── 数据包/                          # 原始 Excel 和说明 PDF
+├── 表格数据/                        # 转换后的 CSV、正确数据、中文名数据
+├── 异常数据/                        # 坐标异常结果和澳门陆地参考边界
+├── 热点图展示/                      # 交互式 HTML 地图和生成后的 JS 数据
+├── 报告文档/                        # 分析报告、比赛要求、验证报告
+├── 图片素材/                        # 展示图片素材
+└── 往届作品参考/                    # 往届项目与选题参考
 ```
 
----
+## 环境配置
 
-## 🚀 快速开始
+建议使用 Python 3.10 或以上版本。
 
-### 环境要求
-
-- **Python** ≥ 3.10（项目使用 3.14.3）
-- **依赖包**：`openpyxl`、`pdfplumber`
-
-### 安装与运行
-
-```bash
-# 1. 克隆仓库
-git clone <repo-url>
-cd Biodiversity_competition
-
-# 2. 创建虚拟环境
+```powershell
 python -m venv venv
-
-# 3. 激活虚拟环境（Windows PowerShell）
 .\venv\Scripts\Activate.ps1
-
-# 4. 安装依赖
 pip install -r requirements.txt
-
-# 5. 读取原始数据
-python read_data.py
 ```
 
-### 🗺️ 启动交互式地图
+如果只查看 `热点图展示/*.html`，浏览器可以直接打开；如果要完整加载本地 JS 数据和分享页面，建议用服务器脚本启动。
 
-```bash
-# 仅本地访问 → 自动打开浏览器
-python server.py
+## 推荐运行流程
 
-# 本地 + 生成外网链接（需要 cloudflared）→ 可分享给他人
-python server.py --tunnel
+从项目根目录运行以下命令：
 
-# 重新生成热点图数据（CSV 有变动时）
-cd 热点图展示
-python 生成热点图数据.py
+```powershell
+# 1. 将原始 Excel 数据包转换为 CSV
+python scripts/data_conversion/convert_to_csv.py
+
+# 2. 检查坐标异常，生成异常清单
+python scripts/validation/check_coordinates.py
+
+# 3. 根据坐标异常清单生成正确数据
+python scripts/data_cleaning/clean_correct_data.py
+
+# 4. 反推出原始对比异常数据，供地图同时展示正确点和异常点
+python scripts/data_cleaning/update_abnormal_from_clean.py
+
+# 5. 生成热点图使用的数据文件
+python scripts/visualization/generate_heatmap_data.py
+
+# 6. 使用现有缓存生成中文物种名数据
+python scripts/visualization/generate_chinese_names.py --no-query
+
+# 7. 验证报告关键数值
+python scripts/validation/verify_reports.py
+
+# 8. 启动本地地图页面
+python scripts/serve/server.py
 ```
 
-> 💡 详细的环境配置说明见 [`Python环境配置说明.md`](./报告文档/Python环境配置说明.md)
+## 脚本说明
 
----
+### 数据转换
 
-## 🛠️ 技术栈
+`scripts/data_conversion/convert_to_csv.py`
 
-| 类别 | 工具/库 |
-|------|--------|
-| 编程语言 | Python 3.14 |
-| 数据处理 | `openpyxl`（Excel 读取）、`pdfplumber`（PDF 解析） |
-| 数据分析 | `pandas`、`numpy`（规划中） |
-| 可视化 | `matplotlib`、`seaborn`、`folium`/`geopandas`（规划中） |
-| 生物多样性指数 | Shannon Index、Simpson's Diversity Index |
-| 高级分析 | RDA/CCA 分析、物种共现网络、SDM（规划中） |
-| AI 工具 | 辅助数据分析与可视化呈现 |
+将 `数据包/` 中的 Excel 转换为 CSV，输出到 `表格数据/`，并生成前 100 行预览和 `_元数据摘要.json`。
 
----
-
-## 📊 数据分析流程
-
-```mermaid
-graph TD
-    A[原始数据 .xlsx / .pdf] --> B[数据读取与清洗]
-    B --> C[物种-样方矩阵构建]
-    C --> D[生物多样性指数计算]
-    D --> E1[Shannon Index]
-    D --> E2[Simpson Index]
-    C --> F[优势物种 / 稀有物种识别]
-    C --> G[空间分布分析]
-    G --> H[物种分布地图绘制]
-    E1 --> I[城市化梯度分析]
-    E2 --> I
-    I --> J[环境-多样性关联分析]
-    J --> K[生态保护建议]
+```powershell
+python scripts/data_conversion/convert_to_csv.py
+python scripts/data_conversion/convert_to_csv.py "2025 團隊賽數據包.xlsx" --preview-rows 50
 ```
 
----
+`scripts/data_conversion/preview_raw_data.py`
 
-## ⚠️ AI 工具使用声明
+在终端中快速预览原始 PDF 和 Excel 的前几行，适合检查数据包是否能正常读取。
 
-本项目在数据分析与可视化呈现环节中使用了 **AI 辅助工具**（包括 GitHub Copilot）。根据比赛要求，最终提交的学术海报及科普短片上均将标注「使用 AI 工具」。
+```powershell
+python scripts/data_conversion/preview_raw_data.py --rows 20
+```
 
----
+`scripts/data_conversion/export_readable_text.py`
 
-## 📝 许可
+把 PDF 说明和 Excel 内容导出为文本，输出到 `可读文本/`，方便搜索和整理。
 
-本项目为学术竞赛作品，仅供学习与交流使用。
+```powershell
+python scripts/data_conversion/export_readable_text.py --max-rows 500
+```
 
----
+### 数据验证与清洗
 
-## 📮 联系方式
+`scripts/validation/check_coordinates.py`
 
-如有问题或建议，欢迎通过 GitHub Issues 联系我们。
+使用 `异常数据/macau_land_reference.geojson` 判断观测坐标是否落在澳门陆地区域或边界容差内。输出坐标异常 CSV 和 `坐标验证报告.json`。
 
----
+```powershell
+python scripts/validation/check_coordinates.py
+```
 
-<p align="center">
-  <b>🐾 守护澳门生物多样性，从数据科学开始 🌿</b>
-</p>
+`scripts/data_cleaning/clean_correct_data.py`
+
+读取坐标异常清单，按 `id` 从原始表格数据中剔除异常记录，生成 `表格数据/正确数据/`。
+
+```powershell
+python scripts/data_cleaning/clean_correct_data.py
+```
+
+`scripts/data_cleaning/update_abnormal_from_clean.py`
+
+根据“原始数据减正确数据”重新生成异常数据，输出到 `表格数据/原始对比异常数据/`。当正确数据更新后应运行一次。
+
+```powershell
+python scripts/data_cleaning/update_abnormal_from_clean.py
+```
+
+`scripts/validation/verify_reports.py`
+
+重新计算总记录数、物种数、Shannon 指数、Simpson 指数、Pielou 均匀度、Top 物种和跨年份共同物种，检查是否与报告关键数值一致。
+
+```powershell
+python scripts/validation/verify_reports.py
+```
+
+### 可视化
+
+`scripts/visualization/generate_heatmap_data.py`
+
+读取正确数据和原始对比异常数据，生成 `热点图展示/热点图数据.js`，供两个 HTML 地图页面加载。
+
+```powershell
+python scripts/visualization/generate_heatmap_data.py
+```
+
+`scripts/visualization/generate_chinese_names.py`
+
+为地图点位详情补充中文物种名。默认会访问 iNaturalist API；如果只想使用已有缓存，使用 `--no-query`。
+
+```powershell
+python scripts/visualization/generate_chinese_names.py --no-query
+python scripts/visualization/generate_chinese_names.py --limit 100 --delay 2.5
+```
+
+`scripts/serve/server.py`
+
+启动本地静态服务器并打开热点图页面。需要外网临时分享链接时可加 `--tunnel`，脚本会尝试调用 `工具/cloudflared-windows-386.exe`。
+
+```powershell
+python scripts/serve/server.py
+python scripts/serve/server.py --port 8081
+python scripts/serve/server.py --tunnel
+```
+
+## 主要输出
+
+| 输出位置 | 内容 |
+| --- | --- |
+| `表格数据/` | Excel 转换后的原始 CSV 和预览 CSV |
+| `异常数据/` | 坐标异常清单、详细版异常清单、坐标验证报告 |
+| `表格数据/正确数据/` | 剔除异常坐标后的可分析数据 |
+| `表格数据/原始对比异常数据/` | 用原始数据减正确数据得到的异常记录 |
+| `表格数据/中文名数据/` | 物种中文名缓存、CSV 和 JSON 数据包 |
+| `热点图展示/` | 交互式地图页面及其 JS 数据 |
+| `报告文档/` | 分析报告与数值验证报告 |
+
+## 分析报告
+
+项目已整理多份 Markdown 报告，主要包括：
+
+| 报告 | 说明 |
+| --- | --- |
+| `报告文档/数据综合分析报告.md` | 总体数据结构和核心发现 |
+| `报告文档/生物多样性指数分析报告.md` | Shannon、Simpson、Pielou 等指数分析 |
+| `报告文档/优势物种分析报告.md` | 高频物种和类群优势结构 |
+| `报告文档/稀有物种分析报告.md` | 低频物种和稀有性分析 |
+| `报告文档/生态指示物种分析报告.md` | 湿地、森林、入侵和城市适应指示物种 |
+| `报告文档/十大选题深度分析.md` | 后续展示和研究选题储备 |
+
+## AI 工具使用说明
+
+本项目在代码整理、数据处理脚本编写、报告结构梳理和可视化呈现中使用了 AI 辅助工具。最终提交学术海报和科普短片时，应按比赛要求标注 AI 工具参与情况。
+
+## 许可与用途
+
+本仓库用于校际团队挑战赛项目开发、学习和展示交流。数据来源、边界数据来源及外部 API 结果应在最终作品中按要求注明。
