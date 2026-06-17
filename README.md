@@ -36,6 +36,8 @@ Biodiversity_competition/
 │   ├── data_cleaning/               # 数据清洗与异常数据同步
 │   │   ├── clean_correct_data.py
 │   │   └── update_abnormal_from_clean.py
+│   ├── analysis/                    # 专题分析与研究大纲生成
+│   │   └── generate_ecological_nocturne.py
 │   ├── validation/                  # 坐标验证与报告数值验证
 │   │   ├── check_coordinates.py
 │   │   └── verify_reports.py
@@ -94,7 +96,10 @@ python scripts/visualization/generate_chinese_names.py --no-query
 # 7. 验证报告关键数值
 python scripts/validation/verify_reports.py
 
-# 8. 启动本地地图页面
+# 8. 生成“澳门生态昼夜曲”专题分析和研究大纲
+python scripts/analysis/generate_ecological_nocturne.py
+
+# 9. 启动本地地图页面
 python scripts/serve/server.py
 ```
 
@@ -161,6 +166,16 @@ python scripts/data_cleaning/update_abnormal_from_clean.py
 python scripts/validation/verify_reports.py
 ```
 
+### 专题分析
+
+`scripts/analysis/generate_ecological_nocturne.py`
+
+围绕“澳门生态昼夜曲：年度变迁下的不夜城与生物多样性”生成专题分析结果。脚本会复用正确数据和坐标验证区域口径，输出年度类群变化、昼夜节律、简化光污染梯度、入侵物种预警点位，以及可用于 A0 海报和 5 分钟短片的研究大纲。
+
+```powershell
+python scripts/analysis/generate_ecological_nocturne.py
+```
+
 ### 可视化
 
 `scripts/visualization/generate_heatmap_data.py`
@@ -199,6 +214,7 @@ python scripts/serve/server.py --tunnel
 | `表格数据/正确数据/` | 剔除异常坐标后的可分析数据 |
 | `表格数据/原始对比异常数据/` | 用原始数据减正确数据得到的异常记录 |
 | `表格数据/中文名数据/` | 物种中文名缓存、CSV 和 JSON 数据包 |
+| `表格数据/生态昼夜曲/` | 年度变迁、昼夜节律、光污染梯度和入侵预警专题 CSV |
 | `热点图展示/` | 交互式地图页面及其 JS 数据 |
 | `报告文档/` | 分析报告与数值验证报告 |
 
@@ -214,6 +230,7 @@ python scripts/serve/server.py --tunnel
 | `报告文档/稀有物种分析报告.md` | 低频物种和稀有性分析 |
 | `报告文档/生态指示物种分析报告.md` | 湿地、森林、入侵和城市适应指示物种 |
 | `报告文档/十大选题深度分析.md` | 后续展示和研究选题储备 |
+| `报告文档/澳门生态昼夜曲研究大纲.md` | 年度变迁、不夜城梯度、昆虫乐声、鸟类日班夜班和入侵预警的最终主线大纲 |
 
 ## AI 工具使用说明
 

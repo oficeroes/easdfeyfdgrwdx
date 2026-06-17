@@ -1,0 +1,6 @@
+﻿taxon,taxon_label,total_records,timed_records,missing_time,夜间,晨间,白天,黄昏,night_records,night_percentage,peak_hour,peak_hour_records
+Aves,鸟类,3007,2943,64,90,128,2215,510,90,3.1,10,378
+Insecta,昆虫,3673,3609,64,676,41,2634,258,676,18.7,15,487
+Amphibia,两栖类,303,300,3,215,3,63,19,215,71.7,19,103
+Mollusca,软体动物,273,268,5,86,8,136,38,86,32.1,21,31
+Arachnida,蛛形纲,212,209,3,21,2,171,15,21,10.0,15,44
