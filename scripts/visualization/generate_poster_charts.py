@@ -2,7 +2,8 @@
 """Generate poster charts for the Macau ecological nocturne project.
 
 All figures are computed from the cleaned datasets under 表格数据/正确数据.
-Spatial figures use 异常数据/macau_land_reference.geojson as the land outline.
+Spatial figures prefer the official Macau Freg WGS84 vector layer as a clean
+land outline, and fall back to 异常数据/macau_land_reference.geojson.
 """
 
 from __future__ import annotations
@@ -10,8 +11,7 @@ from __future__ import annotations
 import csv
 import json
 import math
-import urllib.parse
-import urllib.request
+import textwrap
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -26,7 +26,7 @@ from matplotlib.ticker import FormatStrFormatter
 import numpy as np
 
 try:
-    from shapely.geometry import MultiPolygon, Polygon, shape
+    from shapely.geometry import MultiPolygon, Point, Polygon, shape
     from shapely.ops import unary_union
 
     HAS_SHAPELY = True
@@ -38,10 +38,9 @@ ROOT = Path(__file__).resolve().parents[2]
 CLEAN_DIR = ROOT / "表格数据" / "正确数据"
 DATA_2025 = CLEAN_DIR / "2025 團隊賽數據包_Sheet1.csv"
 DATA_2026 = CLEAN_DIR / "副本2026 團隊賽數據包_Sheet1.csv"
+OFFICIAL_GEOJSON_PATH = ROOT / "异常数据" / "macau_official_freg_wgs84.geojson"
 GEOJSON_PATH = ROOT / "异常数据" / "macau_land_reference.geojson"
 OUT_DIR = ROOT / "生态昼夜曲资料" / "图表"
-OFFICIAL_BASEMAP = OUT_DIR / "_official_macau_wgs84_basemap.png"
-OFFICIAL_BASEMAP_URL = "https://webmap.gis.gov.mo/arcgis/rest/services/WebMap/Macau_T_WGS84/MapServer/export"
 MAP_BBOX = (113.518, 22.098, 113.603, 22.223)
 
 FONT_PATH = Path("C:/Windows/Fonts/msyh.ttc")
@@ -126,6 +125,32 @@ LOW_LIGHT_FEATURES = {
     "macau_coloane_admin",
     "macau_coloane_island",
 }
+OFFICIAL_LOW_NAMES = {"圣方济各堂区", "聖方濟各堂區", "São Francisco Xavier"}
+OFFICIAL_MID_NAMES = {
+    "嘉模堂区",
+    "嘉模堂區",
+    "Nossa Senhora do Carmo",
+    "路氹填海区",
+    "路氹填海區",
+    "Zona de Aterro entre Taipa e Coloane",
+}
+OFFICIAL_PENINSULA_NAMES = {
+    "花地玛堂区",
+    "花地瑪堂區",
+    "Nossa Senhora de Fátima",
+    "花王堂区",
+    "花王堂區",
+    "Santo António",
+    "大堂区",
+    "大堂區",
+    "Sé",
+    "望德堂区",
+    "望德堂區",
+    "São Lázaro",
+    "风顺堂区",
+    "風順堂區",
+    "São Lourenço",
+}
 
 
 def style_axes(ax) -> None:
@@ -145,7 +170,8 @@ def add_title(fig, title: str, subtitle: str | None = None) -> None:
 
 
 def add_note(fig, text: str) -> None:
-    fig.text(0.5, 0.035, text, ha="center", va="bottom", fontsize=8.2,
+    wrapped = "\n".join(textwrap.wrap(text, width=74, break_long_words=False))
+    fig.text(0.5, 0.027, wrapped, ha="center", va="bottom", fontsize=8.2,
              color=MUTED, linespacing=1.4)
 
 
@@ -256,6 +282,28 @@ def feature_zone(name: str) -> str | None:
     return None
 
 
+def official_feature_zone(props: dict, geom) -> str | None:
+    """Classify official Macau Freg polygons into the poster's three map zones."""
+    names = {
+        str(props.get(key) or "").strip()
+        for key in ("SNAME", "CNAME", "PNAME")
+        if str(props.get(key) or "").strip()
+    }
+    if names & OFFICIAL_LOW_NAMES:
+        return "相对低光区"
+    if names & OFFICIAL_MID_NAMES:
+        return "中高光区"
+
+    # The official layer stores New Zone A fragments under Fatima parish names.
+    # Keep them in the mid-light group to match the chart's existing definition.
+    point = geom.representative_point()
+    if point.x >= 113.558 or not names:
+        return "中高光区"
+    if names & OFFICIAL_PENINSULA_NAMES:
+        return "高光区"
+    return None
+
+
 def geometry_to_polygons(geom) -> list[list[tuple[float, float]]]:
     if geom.geom_type == "Polygon":
         return [list(geom.exterior.coords)]
@@ -264,25 +312,50 @@ def geometry_to_polygons(geom) -> list[list[tuple[float, float]]]:
     return []
 
 
+def build_land_union(zones: dict[str, list]):
+    if not HAS_SHAPELY:
+        return None
+    geoms = []
+    for polygons in zones.values():
+        for poly in polygons:
+            if len(poly) >= 3:
+                fixed = Polygon(poly).buffer(0)
+                if not fixed.is_empty:
+                    geoms.append(fixed)
+    return unary_union(geoms) if geoms else None
+
+
+def within_land_tolerance(point: dict, land_union, tolerance: float = 0.003) -> bool:
+    if land_union is None:
+        return True
+    geom = Point(point["lon"], point["lat"])
+    return land_union.covers(geom) or geom.distance(land_union) <= tolerance
+
+
 def load_macau_zones() -> dict[str, list[list[tuple[float, float]]]]:
     zones: dict[str, list] = {"高光区": [], "中高光区": [], "相对低光区": []}
-    if not GEOJSON_PATH.exists():
+    source_path = OFFICIAL_GEOJSON_PATH if OFFICIAL_GEOJSON_PATH.exists() else GEOJSON_PATH
+    if not source_path.exists():
         return zones
-    data = json.loads(GEOJSON_PATH.read_text(encoding="utf-8-sig"))
+    data = json.loads(source_path.read_text(encoding="utf-8-sig"))
+    use_official = source_path == OFFICIAL_GEOJSON_PATH
 
     if HAS_SHAPELY:
         geoms: dict[str, list] = defaultdict(list)
         for feat in data.get("features", []):
-            zone = feature_zone((feat.get("properties") or {}).get("name", ""))
+            props = feat.get("properties") or {}
+            geom = shape(feat["geometry"])
+            zone = official_feature_zone(props, geom) if use_official else feature_zone(props.get("name", ""))
             if zone:
-                geoms[zone].append(shape(feat["geometry"]))
+                geoms[zone].append(geom)
         for zone, items in geoms.items():
             merged = unary_union(items)
             zones[zone] = geometry_to_polygons(merged)
         return zones
 
     for feat in data.get("features", []):
-        zone = feature_zone((feat.get("properties") or {}).get("name", ""))
+        props = feat.get("properties") or {}
+        zone = feature_zone(props.get("name", ""))
         if not zone:
             continue
         geom = feat.get("geometry", {})
@@ -292,6 +365,12 @@ def load_macau_zones() -> dict[str, list[list[tuple[float, float]]]]:
             for poly in geom["coordinates"]:
                 zones[zone].append([(p[0], p[1]) for p in poly[0]])
     return zones
+
+
+def map_source_label() -> str:
+    if OFFICIAL_GEOJSON_PATH.exists():
+        return "澳门官方地理信息系统 Freg WGS84 面图层，已抽取为干净陆地外轮廓"
+    return "OpenStreetMap/Nominatim 澳门陆地参考多边形，已抽取为干净陆地外轮廓"
 
 
 def draw_zone_map(ax, zones: dict[str, list], *, colored: bool = True) -> None:
@@ -305,81 +384,26 @@ def draw_zone_map(ax, zones: dict[str, list], *, colored: bool = True) -> None:
                     linewidth=0.65, zorder=1)
 
 
-def ensure_official_basemap() -> Path | None:
-    """Download and cache the Macau official WGS84 map image used as basemap."""
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    if OFFICIAL_BASEMAP.exists() and OFFICIAL_BASEMAP.stat().st_size > 10_000:
-        return OFFICIAL_BASEMAP
-
-    params = {
-        "bbox": ",".join(str(v) for v in MAP_BBOX),
-        "bboxSR": "4326",
-        "imageSR": "4326",
-        "size": "1800,2600",
-        "format": "png32",
-        "transparent": "false",
-        "f": "image",
-    }
-    url = OFFICIAL_BASEMAP_URL + "?" + urllib.parse.urlencode(params)
-    try:
-        urllib.request.urlretrieve(url, OFFICIAL_BASEMAP)
-    except Exception as exc:  # pragma: no cover - network fallback
-        print(f"  WARN official basemap download failed: {exc}")
-        return None
-    return OFFICIAL_BASEMAP if OFFICIAL_BASEMAP.exists() else None
-
-
 def draw_clean_basemap(ax, zones: dict[str, list]) -> None:
-    """绘制干净的澳门轮廓底图：海水 + 三区柔和底色 + 海岸线。无建筑物纹理。"""
-    ax.set_facecolor("#E8F0F2")  # 海水：极浅蓝灰
+    """绘制干净澳门底图：海水、浅色分区填充、合并后的外部海岸线。"""
+    ax.set_facecolor("#E8F0F2")
     for zone, polygons in zones.items():
         color = ZONE_COLORS.get(zone, LAND_BASE)
         for poly in polygons:
             xs = [p[0] for p in poly]
             ys = [p[1] for p in poly]
             ax.fill(xs, ys, facecolor=color, alpha=0.78, edgecolor="none", zorder=2)
-            ax.plot(xs, ys, color=LAND_EDGE, linewidth=0.6, zorder=3)
 
-    # 合并外轮廓画粗海岸线
+    # Only the dissolved exterior coastline is drawn. No building, road, or
+    # internal parish boundary strokes are used, so markers remain legible.
     if HAS_SHAPELY:
-        all_geoms = []
-        for polygons in zones.values():
-            for poly in polygons:
-                if len(poly) >= 3:
-                    all_geoms.append(Polygon(poly))
-        if all_geoms:
-            merged = unary_union(all_geoms)
+        merged = build_land_union(zones)
+        if merged is not None:
             outlines = geometry_to_polygons(merged)
             for outline in outlines:
                 xs = [p[0] for p in outline]
                 ys = [p[1] for p in outline]
-                ax.plot(xs, ys, color="#8A9B8E", linewidth=1.5, zorder=4)
-
-
-def draw_official_basemap(ax) -> bool:
-    basemap = ensure_official_basemap()
-    if not basemap:
-        return False
-    ax.patch.set_alpha(0)
-    image = plt.imread(basemap)
-    if image.shape[-1] == 3:
-        rgb = image[..., :3].copy()
-        alpha = np.ones(rgb.shape[:2])
-    else:
-        rgb = image[..., :3].copy()
-        alpha = image[..., 3].copy()
-
-    # The official map service uses very thin pale lines. Strengthen non-white
-    # pixels so coastlines and roads remain visible after poster scaling.
-    darkness = 1 - rgb.mean(axis=2)
-    mask = darkness > 0.025
-    rgb[mask] = rgb[mask] * 0.45
-    alpha = np.where(mask, np.maximum(alpha, 0.72), 1.0)
-    enhanced = np.dstack([rgb, alpha])
-    extent = (MAP_BBOX[0], MAP_BBOX[2], MAP_BBOX[1], MAP_BBOX[3])
-    ax.imshow(enhanced, extent=extent, origin="upper", zorder=1,
-              interpolation="nearest", aspect="auto")
-    return True
+                ax.plot(xs, ys, color="#778A7F", linewidth=1.65, zorder=4)
 
 
 def format_map_axis(ax) -> None:
@@ -592,7 +616,7 @@ def draw_light_pollution_map(points: list[dict], zones: dict[str, list]) -> Path
     }
 
     fig = plt.figure(figsize=(10.8, 7.2), facecolor="white")
-    add_title(fig, "图 4  简化光污染梯度与夜行点位", "底图使用 OpenStreetMap 澳门陆地轮廓；右侧展示简化梯度统计。")
+    add_title(fig, "图 4  简化光污染梯度与夜行点位", "底图使用澳门官方干净陆地外轮廓；右侧展示简化梯度统计。")
     gs = fig.add_gridspec(1, 2, left=0.04, right=0.96, top=0.84, bottom=0.14,
                           width_ratios=[1.42, 0.78], wspace=0.10)
     ax = fig.add_subplot(gs[0, 0])
@@ -600,12 +624,18 @@ def draw_light_pollution_map(points: list[dict], zones: dict[str, list]) -> Path
     ax_panel.axis("off")
 
     draw_clean_basemap(ax, zones)
+    land_union = build_land_union(zones)
+    total_focus_points = 0
+    plotted_focus_points = 0
     for taxon, (label, color, marker, size) in taxa_style.items():
-        pts = [p for p in points if p["taxon"] == taxon and p["is_night"]]
+        raw_pts = [p for p in points if p["taxon"] == taxon and p["is_night"]]
+        pts = [p for p in raw_pts if within_land_tolerance(p, land_union)]
+        total_focus_points += len(raw_pts)
+        plotted_focus_points += len(pts)
         ax.scatter([p["lon"] for p in pts], [p["lat"] for p in pts],
                    s=size, color=color, marker=marker, alpha=0.72,
                    edgecolors="white", linewidth=0.25, label=f"{label} 夜间",
-                   zorder=3)
+                   zorder=6)
     format_map_axis(ax)
     ax.legend(loc="lower right", frameon=True, facecolor="white",
               edgecolor="#d5ddd7", fontsize=8)
@@ -639,7 +669,9 @@ def draw_light_pollution_map(points: list[dict], zones: dict[str, list]) -> Path
                   transform=ax_panel.transAxes, fontsize=8.7, color=MUTED,
                   linespacing=1.45)
 
-    add_note(fig, "底图：OpenStreetMap/Nominatim 澳门陆地参考多边形；分区是简化光污染梯度，不等同于精确遥感灯光强度。数据口径：2026 年正确数据，已剔除坐标异常。")
+    excluded = total_focus_points - plotted_focus_points
+    exclusion_note = f"；{excluded} 条夜行点超过 0.003° 边界核查阈值，未画入主图" if excluded else ""
+    add_note(fig, f"底图：{map_source_label()}；不含建筑物、道路或黑色底图标志。点位未移动坐标{exclusion_note}。分区是简化光污染梯度，不等同于精确遥感灯光强度。")
     fig.savefig(out_path, dpi=300, facecolor="white")
     plt.close(fig)
     return out_path
@@ -663,19 +695,25 @@ def draw_invasive_species(points: list[dict], zones: dict[str, list]) -> Path:
     ax_cards.axis("off")
 
     draw_clean_basemap(ax, zones)
+    land_union = build_land_union(zones)
+    total_invasive_points = 0
+    plotted_invasive_points = 0
     risk_colors = {"高": RED, "中": "#f07c18"}
     risk_markers = {"高": "X", "中": "D"}
     summary = []
     for sp, (cn_name, risk) in INVASIVE_SPECIES.items():
-        recs = invasive_records.get(sp, [])
+        raw_recs = invasive_records.get(sp, [])
+        recs = [r for r in raw_recs if within_land_tolerance(r, land_union)]
+        total_invasive_points += len(raw_recs)
+        plotted_invasive_points += len(recs)
         color = risk_colors[risk]
         marker = risk_markers[risk]
         if recs:
             ax.scatter([r["lon"] for r in recs], [r["lat"] for r in recs],
                        s=28 if risk == "高" else 34, color=color, marker=marker,
-                       edgecolors="white", linewidth=0.55, alpha=0.78, zorder=3,
+                       edgecolors="white", linewidth=0.55, alpha=0.78, zorder=6,
                        label=f"{cn_name} ({len(recs)}条)")
-        summary.append((cn_name, risk, len(recs), color))
+        summary.append((cn_name, risk, len(raw_recs), color))
     format_map_axis(ax)
     ax.legend(loc="lower right", frameon=True, facecolor="white",
               edgecolor="#d5ddd7", fontsize=7.6)
@@ -698,7 +736,9 @@ def draw_invasive_species(points: list[dict], zones: dict[str, list]) -> Path:
                       va="center")
         y -= 0.16
 
-    add_note(fig, "底图：OpenStreetMap/Nominatim 澳门陆地参考多边形。清单物种：南美蟛蜞菊、长足捷蚁、红火蚁、温室蟾、新几内亚扁虫。数据口径：2026 年正确数据。")
+    excluded = total_invasive_points - plotted_invasive_points
+    exclusion_note = f"；{excluded} 条预警点超过 0.003° 边界核查阈值，未画入主图" if excluded else ""
+    add_note(fig, f"底图：{map_source_label()}；不含建筑物、道路或黑色底图标志。点位未移动坐标{exclusion_note}。清单物种：南美蟛蜞菊、长足捷蚁、红火蚁、温室蟾、新几内亚扁虫。")
     fig.savefig(out_path, dpi=300, facecolor="white")
     plt.close(fig)
     return out_path
