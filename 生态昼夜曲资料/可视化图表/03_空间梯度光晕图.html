@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空间梯度 - 路环暗夜孤岛</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #FFFEF7;
+            padding: 40px;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .controls label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .controls input {
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2d5016;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #5a7a3d;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 900px;
+            height: 600px;
+            margin: 20px auto;
+        }
+
+        .glow-ring {
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+
+        .glow-ring:hover {
+            transform: scale(1.05);
+        }
+
+        .ring-outer {
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(255,215,0,0.3), rgba(255,165,0,0.6));
+            border: 4px solid #FFD700;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring-middle {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,200,100,0.3), rgba(255,180,80,0.6));
+            border: 4px solid #FFA500;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring-inner {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(60,179,113,0.3), rgba(46,139,87,0.7));
+            border: 4px solid #3CB371;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring-label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d5016;
+            text-align: center;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+        }
+
+        .ring-percent {
+            font-size: 48px;
+            font-weight: bold;
+            color: #2d5016;
+            text-shadow: 0 2px 6px rgba(255,255,255,0.9);
+        }
+
+        .ring-info {
+            font-size: 14px;
+            color: #555;
+            text-align: center;
+            margin-top: 8px;
+            line-height: 1.6;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.8);
+        }
+
+        .center-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .center-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2d5016;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.9);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .legend-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .legend-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2d5016;
+        }
+
+        .legend-percent {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .insight {
+            margin-top: 40px;
+            padding: 20px 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d5016;
+            margin-bottom: 10px;
+        }
+
+        .insight-text {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .ring-inner {
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <label>背景颜色：</label>
+        <input type="color" id="bgColor" value="#FFFEF7">
+
+        <button onclick="resetColors()" style="width: 100%; padding: 8px; margin-top: 10px; border: none; background: #8FBC8F; color: white; border-radius: 6px; cursor: pointer;">重置颜色</button>
+    </div>
+
+    <div class="title">澳门光污染梯度与夜行生命</div>
+    <div class="subtitle">同一个时钟，在不同地方转速不一样</div>
+
+    <div class="chart-container">
+        <!-- 外圈：澳门半岛 -->
+        <div class="glow-ring ring-outer">
+            <div class="ring-label">🏙️ 澳门半岛<br>高光区</div>
+            <div class="ring-percent">16.9%</div>
+            <div class="ring-info">
+                夜行物种记录：848条<br>
+                两栖类：55条<br>
+                "时钟夜半圆几乎停滞"
+            </div>
+        </div>
+
+        <!-- 中圈：氹仔/路氹 -->
+        <div class="glow-ring ring-middle">
+            <div class="ring-label">🌆 氹仔/路氹<br>中高光区</div>
+            <div class="ring-percent">5.3%</div>
+            <div class="ring-info">
+                夜行物种记录：1,178条<br>
+                两栖类：44条<br>
+                "夜晚几乎被灯光吞没"
+            </div>
+        </div>
+
+        <!-- 内圈：路环 -->
+        <div class="glow-ring ring-inner">
+            <div class="ring-label">🌲 路环<br>相对低光区</div>
+            <div class="ring-percent">37.6%</div>
+            <div class="ring-info">
+                夜行物种记录：1,633条<br>
+                两栖类：204条<br>
+                <strong>⭐ 暗夜避难区</strong>
+            </div>
+        </div>
+
+        <div class="center-label">
+            <div class="center-text">夜行比例</div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #FFD700, #FFA500);"></div>
+            <div class="legend-name">澳门半岛</div>
+            <div class="legend-percent">16.9%</div>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #FFA500, #FF8C00);"></div>
+            <div class="legend-name">氹仔/路氹</div>
+            <div class="legend-percent">5.3%</div>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(135deg, #3CB371, #2E8B57);"></div>
+            <div class="legend-name">路环</div>
+            <div class="legend-percent">37.6%</div>
+        </div>
+    </div>
+
+    <div class="insight">
+        <div class="insight-title">📍 空间洞察</div>
+        <div class="insight-text">
+            路环的夜行比例是澳门半岛的<strong>2.2倍</strong>，是氹仔/路氹的<strong>7.1倍</strong>。<br>
+            这不是巧合——路环是澳门灯光最少的地方，两栖类记录204条（全澳最高），昆虫记录1,633条（全澳最高）。<br>
+            <strong>路环像一座"暗夜孤岛"，是夜行生命还能按生物钟活动的地方。</strong>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('bgColor').addEventListener('input', function(e) {
+            document.body.style.backgroundColor = e.target.value;
+        });
+
+        function resetColors() {
+            document.getElementById('bgColor').value = '#FFFEF7';
+            document.body.style.backgroundColor = '#FFFEF7';
+        }
+    </script>
+</body>
+</html>

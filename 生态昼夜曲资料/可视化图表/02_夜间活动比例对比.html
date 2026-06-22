@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>夜间活动比例对比</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Microsoft YaHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #FFFEF7;
+            padding: 40px;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .controls label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .controls input {
+            width: 100%;
+            margin-bottom: 12px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2d5016;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #5a7a3d;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+        }
+
+        .bar-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .bar-wrapper {
+            position: relative;
+            width: 120px;
+            height: 400px;
+            background: linear-gradient(to top, #f0f0f0 0%, #fff 100%);
+            border-radius: 60px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .bar-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            transition: height 1s ease-out;
+            border-radius: 60px 60px 0 0;
+        }
+
+        .bar-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .category-info {
+            text-align: center;
+        }
+
+        .category-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2d5016;
+            margin-bottom: 8px;
+        }
+
+        .category-stats {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .insight {
+            margin-top: 40px;
+            padding: 20px 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .insight-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2d5016;
+            margin-bottom: 10px;
+        }
+
+        .insight-text {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        @keyframes fillUp {
+            from { height: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <label>背景颜色：</label>
+        <input type="color" id="bgColor" value="#FFFEF7">
+
+        <label>主题色：</label>
+        <input type="color" id="themeColor" value="#8FBC8F">
+
+        <button onclick="resetColors()" style="width: 100%; padding: 8px; margin-top: 10px; border: none; background: #8FBC8F; color: white; border-radius: 6px; cursor: pointer;">重置颜色</button>
+    </div>
+
+    <div class="title">夜间活动比例对比</div>
+    <div class="subtitle">2026年焦点类群的昼夜节律差异</div>
+
+    <div class="chart-container">
+        <div class="bar-item">
+            <div class="icon">🦜</div>
+            <div class="category-name">鸟类</div>
+            <div class="bar-wrapper">
+                <div class="bar-fill" id="birdBar" style="background: linear-gradient(to top, #8FBC8F, #98FB98); height: 0%;">
+                    <div class="bar-label">3.1%</div>
+                </div>
+            </div>
+            <div class="category-info">
+                <div class="category-stats">
+                    总记录：3,007条<br>
+                    夜间记录：90条<br>
+                    高峰时间：10:00<br>
+                    <strong>典型日班制</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="bar-item">
+            <div class="icon">🐝</div>
+            <div class="category-name">昆虫</div>
+            <div class="bar-wrapper">
+                <div class="bar-fill" id="insectBar" style="background: linear-gradient(to top, #FFA500, #FFD700); height: 0%;">
+                    <div class="bar-label">18.7%</div>
+                </div>
+            </div>
+            <div class="category-info">
+                <div class="category-stats">
+                    总记录：3,673条<br>
+                    夜间记录：676条<br>
+                    高峰时间：15:00<br>
+                    <strong>全天活跃</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="bar-item">
+            <div class="icon">🐸</div>
+            <div class="category-name">两栖类</div>
+            <div class="bar-wrapper">
+                <div class="bar-fill" id="amphibianBar" style="background: linear-gradient(to top, #4B0082, #6A5ACD); height: 0%;">
+                    <div class="bar-label">71.7%</div>
+                </div>
+            </div>
+            <div class="category-info">
+                <div class="category-stats">
+                    总记录：303条<br>
+                    夜间记录：215条<br>
+                    高峰时间：19:00<br>
+                    <strong>夜行主导</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="insight">
+        <div class="insight-title">📊 数据洞察</div>
+        <div class="insight-text">
+            两栖类的夜间比例是鸟类的<strong>23倍</strong>，是昆虫的<strong>3.8倍</strong>。<br>
+            这说明在澳门的生态系统中，夜晚并非静止——而是属于两栖类和部分昆虫的活跃时段。<br>
+            鸟类仅有3.1%的夜间记录，这些异常信号可能提示城市灯光正在干扰它们的生物钟。
+        </div>
+    </div>
+
+    <script>
+        function animateBars() {
+            setTimeout(() => {
+                document.getElementById('birdBar').style.height = '3.1%';
+            }, 200);
+
+            setTimeout(() => {
+                document.getElementById('insectBar').style.height = '18.7%';
+            }, 400);
+
+            setTimeout(() => {
+                document.getElementById('amphibianBar').style.height = '71.7%';
+            }, 600);
+        }
+
+        document.getElementById('bgColor').addEventListener('input', function(e) {
+            document.body.style.backgroundColor = e.target.value;
+        });
+
+        function resetColors() {
+            document.getElementById('bgColor').value = '#FFFEF7';
+            document.body.style.backgroundColor = '#FFFEF7';
+        }
+
+        // 页面加载后触发动画
+        window.addEventListener('load', animateBars);
+    </script>
+</body>
+</html>
