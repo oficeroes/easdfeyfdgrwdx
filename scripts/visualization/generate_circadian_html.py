@@ -1,0 +1,316 @@
+# -*- coding: utf-8 -*-
+"""生成「24 小时昼夜节律环」交互式 HTML（自带数据、纯离线、单文件）。
+
+为什么用 HTML 而不是 PNG：
+    方便在浏览器里自行调整尺寸截图，并可一键把背景色换成海报背景色，
+    贴进海报时不突兀。图表风格沿用「第一版」可读的环形柱状图（每类群一个环，
+    按白天/晨/黄昏/夜间着色），三个环并排放在一起。
+
+数据：实算自 `表格数据/正确数据/副本2026 團隊賽數據包_Sheet1.csv`，不手填数字。
+输出：`生态昼夜曲资料/图表/图3_24小时昼夜节律环.html`
+
+用法：
+    python scripts/visualization/generate_circadian_html.py
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+from collections import Counter
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[2]
+DATA_2026 = ROOT / "表格数据" / "正确数据" / "副本2026 團隊賽數據包_Sheet1.csv"
+OUT_DIR = ROOT / "生态昼夜曲资料" / "图表"
+OUT_FILE = OUT_DIR / "图3_24小时昼夜节律环.html"
+
+NIGHT_HOURS = {19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5}
+
+# 焦点类群：鸟类（日班）/ 昆虫（全天）/ 两栖类（夜班）
+FOCUS = [
+    ("Aves", "鸟类", "日班"),
+    ("Insecta", "昆虫", "全天"),
+    ("Amphibia", "两栖类", "夜班"),
+]
+
+
+def load_hourly_counts(path: Path) -> dict[str, Counter]:
+    counts: dict[str, Counter] = {}
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            taxon = (row.get("iconic_taxon_name") or "").strip()
+            stamp = (row.get("time_observed_at") or "").strip()
+            if not taxon or "T" not in stamp:
+                continue
+            hh = stamp.split("T", 1)[1][:2]
+            if not hh.isdigit():
+                continue
+            hour = int(hh)
+            if 0 <= hour <= 23:
+                counts.setdefault(taxon, Counter())[hour] += 1
+    return counts
+
+
+def build_payload(counts: dict[str, Counter]) -> list[dict]:
+    payload = []
+    for taxon, label, tag in FOCUS:
+        counter = counts.get(taxon, Counter())
+        hours = [counter.get(h, 0) for h in range(24)]
+        timed = sum(hours)
+        night = sum(c for h, c in enumerate(hours) if h in NIGHT_HOURS)
+        peak = max(range(24), key=lambda h: hours[h]) if timed else 0
+        payload.append({
+            "label": label,
+            "tag": tag,
+            "hours": hours,
+            "timed": timed,
+            "peak": peak,
+            "night_pct": round(night / timed * 100, 1) if timed else 0.0,
+        })
+    return payload
+
+
+HTML_TEMPLATE = """<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>澳门生态昼夜曲 · 24 小时节律环</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 24px;
+    font-family: "Microsoft YaHei", "微软雅黑", system-ui, sans-serif;
+    background: #ffffff; color: #2b2b2b;
+    transition: background .2s ease, color .2s ease;
+  }
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+    padding: 12px 16px; margin-bottom: 18px; border-radius: 10px;
+    background: rgba(127,127,127,.10); font-size: 14px;
+  }
+  .controls label { display: flex; align-items: center; gap: 6px; }
+  .controls input[type=text] {
+    width: 96px; padding: 5px 8px; border: 1px solid #bbb; border-radius: 6px;
+    font-family: monospace; font-size: 13px;
+  }
+  .controls input[type=color] {
+    width: 38px; height: 30px; border: 1px solid #bbb; border-radius: 6px;
+    background: none; cursor: pointer; padding: 2px;
+  }
+  .controls button {
+    padding: 6px 14px; border: none; border-radius: 6px; cursor: pointer;
+    background: #2e7d32; color: #fff; font-size: 13px;
+  }
+  .controls button.ghost { background: rgba(127,127,127,.25); color: inherit; }
+  .swatch { display: flex; gap: 6px; }
+  .swatch span {
+    width: 26px; height: 26px; border-radius: 6px; cursor: pointer;
+    border: 2px solid rgba(255,255,255,.6);
+  }
+  #poster-title { margin: 0 0 4px; font-size: 22px; }
+  #poster-sub { margin: 0 0 20px; font-size: 13px; opacity: .75; }
+  #capture { display: inline-block; padding: 8px; }
+  .rings { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+  .ring { text-align: center; }
+  .ring .cap { margin-top: 4px; font-size: 14px; font-weight: bold; }
+  .ring .meta { font-size: 12px; opacity: .78; }
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 16px; margin-top: 18px; font-size: 13px;
+  }
+  .legend i {
+    display: inline-block; width: 14px; height: 14px; border-radius: 3px;
+    margin-right: 6px; vertical-align: -2px;
+  }
+  .footnote { margin-top: 16px; font-size: 12px; opacity: .65; max-width: 760px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <label>背景色
+    <input type="color" id="bgColor" value="#ffffff">
+    <input type="text" id="bgHex" value="#ffffff" maxlength="9">
+  </label>
+  <button id="applyBg">应用</button>
+  <div class="swatch" id="presets" title="常用背景预设"></div>
+  <label>文字
+    <select id="textMode">
+      <option value="auto">自动对比</option>
+      <option value="dark">深色</option>
+      <option value="light">浅色</option>
+    </select>
+  </label>
+  <label>环大小
+    <input type="range" id="size" min="170" max="460" value="280">
+    <span id="sizeVal">280</span>px
+  </label>
+  <button class="ghost" id="reset">重置</button>
+</div>
+
+<div id="capture">
+  <h1 id="poster-title">澳门生态昼夜曲：焦点类群的 24 小时记录节律</h1>
+  <p id="poster-sub">2026 年澳门正确观测数据 · 已剔除坐标异常 · 仅统计含时间记录</p>
+  <div class="rings" id="rings"></div>
+  <div class="legend" id="legend"></div>
+  <div class="footnote" id="footnote"></div>
+</div>
+
+<script>
+const DATA = __DATA__;
+const NIGHT = new Set([19,20,21,22,23,0,1,2,3,4,5]);
+const DAWN = new Set([6,7,8]);
+const DUSK = new Set([17,18]);
+// 绿色生物主题：白天/晨/黄昏用不同深浅的绿，夜间用深青绿突出
+const C = { day:"#43a047", dawn:"#9ccc65", dusk:"#7cb342", night:"#00695c" };
+function binColor(h){
+  if (NIGHT.has(h)) return C.night;
+  if (DAWN.has(h)) return C.dawn;
+  if (DUSK.has(h)) return C.dusk;
+  return C.day;
+}
+const PRESETS = ["#ffffff","#f5f7f4","#0d1f1a","#16322b","#1b5e20","#fff8e1","#e8f5e9"];
+
+function polar(cx, cy, r, hour){
+  // 0:00 在正上方，顺时针
+  const a = (hour*15 - 90) * Math.PI/180;
+  return [cx + r*Math.cos(a), cy + r*Math.sin(a)];
+}
+function wedge(cx, cy, ri, ro, hour, halfDeg){
+  const a1 = (hour*15 - 90 - halfDeg) * Math.PI/180;
+  const a2 = (hour*15 - 90 + halfDeg) * Math.PI/180;
+  const p1 = [cx+ri*Math.cos(a1), cy+ri*Math.sin(a1)];
+  const p2 = [cx+ro*Math.cos(a1), cy+ro*Math.sin(a1)];
+  const p3 = [cx+ro*Math.cos(a2), cy+ro*Math.sin(a2)];
+  const p4 = [cx+ri*Math.cos(a2), cy+ri*Math.sin(a2)];
+  return `M${p1} L${p2} A${ro} ${ro} 0 0 1 ${p3} L${p4} A${ri} ${ri} 0 0 0 ${p1} Z`;
+}
+
+function renderRing(d, size, textColor){
+  const S = size, cx = S/2, cy = S/2;
+  const margin = S*0.16;                    // 给小时标签留出边距，避免裁切
+  const ro = S/2 - margin;                  // 柱条外半径
+  const ri = ro*0.32;                       // 柱条内半径
+  const font = Math.min(13, Math.max(9, S*0.045));
+  const labelR = ro + font;
+  const maxv = Math.max(...d.hours, 1);     // 每个环按自身峰值缩放（沿用第一版）
+  const grid = "rgba(127,127,127,.30)";
+  let svg = `<svg width="${S}" height="${S}" viewBox="0 0 ${S} ${S}">`;
+
+  // 夜间扇区底纹（19:00-05:59）
+  for (let h=0; h<24; h++){
+    if (!NIGHT.has(h)) continue;
+    svg += `<path d="${wedge(cx,cy,ri-ro*0.04,ro+font*0.4,h,7.5)}" fill="${C.night}" opacity="0.07"/>`;
+  }
+  // 同心参考圈 + 内圈
+  svg += `<circle cx="${cx}" cy="${cy}" r="${ro}" fill="none" stroke="${grid}" stroke-width="1"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="${(ri+ro)/2}" fill="none" stroke="${grid}" stroke-width=".6" stroke-dasharray="2 3"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="${ri}" fill="none" stroke="${grid}" stroke-width="1"/>`;
+
+  // 柱条
+  for (let h=0; h<24; h++){
+    const len = (ro-ri) * (d.hours[h]/maxv);
+    if (len <= 0) continue;
+    const isPeak = (h === d.peak);
+    svg += `<path d="${wedge(cx,cy,ri,ri+len,h,6.4)}" fill="${binColor(h)}" `
+        +  `stroke="${isPeak?textColor:'none'}" stroke-width="${isPeak?1.4:0}"/>`;
+  }
+  // 小时刻度 0/6/12/18（两位数，避免边缘裁切）
+  for (const h of [0,6,12,18]){
+    const [tx,ty] = polar(cx,cy,labelR,h);
+    svg += `<text x="${tx}" y="${ty}" fill="${textColor}" font-size="${font}" `
+        +  `text-anchor="middle" dominant-baseline="middle" opacity=".8">${String(h).padStart(2,'0')}:00</text>`;
+  }
+  // 中心「日班/全天/夜班」提示
+  svg += `<text x="${cx}" y="${cy-2}" fill="${textColor}" font-size="${Math.max(11,S*0.05)}" `
+      +  `text-anchor="middle" font-weight="bold" opacity=".55">${d.tag}</text>`;
+  svg += `</svg>`;
+  return svg;
+}
+
+function luminance(hex){
+  const h = hex.replace('#','');
+  if (h.length < 6) return 1;
+  const r=parseInt(h.slice(0,2),16)/255, g=parseInt(h.slice(2,4),16)/255, b=parseInt(h.slice(4,6),16)/255;
+  return 0.2126*r + 0.7152*g + 0.0722*b;
+}
+
+function render(){
+  const size = +document.getElementById('size').value;
+  document.getElementById('sizeVal').textContent = size;
+  const bg = document.getElementById('bgHex').value.trim() || '#ffffff';
+  const mode = document.getElementById('textMode').value;
+  let textColor = '#2b2b2b';
+  if (mode === 'light') textColor = '#f2f2f2';
+  else if (mode === 'dark') textColor = '#2b2b2b';
+  else textColor = luminance(bg) < 0.5 ? '#f2f2f2' : '#2b2b2b';
+
+  document.body.style.background = bg;
+  document.body.style.color = textColor;
+
+  const rings = DATA.map(d =>
+    `<div class="ring">${renderRing(d, size, textColor)}`
+    + `<div class="cap">${d.label}（${d.tag}）</div>`
+    + `<div class="meta">峰值 ${String(d.peak).padStart(2,'0')}:00 ｜ 夜间 ${d.night_pct}% ｜ n=${d.timed}</div></div>`
+  ).join('');
+  document.getElementById('rings').innerHTML = rings;
+
+  document.getElementById('legend').innerHTML =
+    [["白天 09:00–16:59",C.day],["晨间 06:00–08:59",C.dawn],
+     ["黄昏 17:00–18:59",C.dusk],["夜间 19:00–05:59",C.night]]
+    .map(([t,c]) => `<span><i style="background:${c}"></i>${t}</span>`).join('');
+
+  document.getElementById('footnote').textContent =
+    "每个环按自身峰值缩放，柱长表示该类群在当天各小时的记录占比节奏（非跨类群绝对数量）。"
+    + "灰绿底纹为夜间时段。数据：2026 年澳门正确数据，n 为该类群含时间记录数。";
+}
+
+// ---- 控件交互 ----
+function setBg(hex){
+  document.getElementById('bgHex').value = hex;
+  if (/^#[0-9a-fA-F]{6}$/.test(hex)) document.getElementById('bgColor').value = hex.slice(0,7);
+  render();
+}
+document.getElementById('applyBg').onclick = () => setBg(document.getElementById('bgHex').value.trim());
+document.getElementById('bgHex').addEventListener('keydown', e => { if (e.key==='Enter') setBg(e.target.value.trim()); });
+document.getElementById('bgColor').addEventListener('input', e => setBg(e.target.value));
+document.getElementById('textMode').addEventListener('change', render);
+document.getElementById('size').addEventListener('input', render);
+document.getElementById('reset').onclick = () => {
+  document.getElementById('size').value = 280;
+  document.getElementById('textMode').value = 'auto';
+  setBg('#ffffff');
+};
+// 背景预设色块
+document.getElementById('presets').innerHTML =
+  PRESETS.map(c => `<span style="background:${c}" data-c="${c}" title="${c}"></span>`).join('');
+document.getElementById('presets').addEventListener('click', e => {
+  if (e.target.dataset.c) setBg(e.target.dataset.c);
+});
+
+render();
+</script>
+</body>
+</html>
+"""
+
+
+def main() -> None:
+    counts = load_hourly_counts(DATA_2026)
+    payload = build_payload(counts)
+
+    print("=== 自检（应与 02_数据证据表一致）===")
+    for d in payload:
+        print(f"  {d['label']}: n={d['timed']} 峰值={d['peak']:02d}:00 夜间={d['night_pct']}%")
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    html = HTML_TEMPLATE.replace("__DATA__", json.dumps(payload, ensure_ascii=False))
+    OUT_FILE.write_text(html, encoding="utf-8")
+    print(f"\n已生成：{OUT_FILE.relative_to(ROOT)}")
+    print("用浏览器打开即可：调环大小、输入背景色代码、按预设色块，然后截图。")
+
+
+if __name__ == "__main__":
+    main()
