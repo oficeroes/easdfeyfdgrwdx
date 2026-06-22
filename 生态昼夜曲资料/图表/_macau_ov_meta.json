@@ -1,0 +1,89 @@
+{
+ "currentVersion": 10.61,
+ "serviceDescription": "MacauMap Overview WGS84 published by Johan @ 2022.01.26",
+ "mapName": "Layers",
+ "description": "",
+ "copyrightText": "",
+ "supportsDynamicLayers": true,
+ "layers": [
+  {
+   "id": 0,
+   "name": "Freg",
+   "parentLayerId": -1,
+   "defaultVisibility": true,
+   "subLayerIds": null,
+   "minScale": 0,
+   "maxScale": 40001
+  }
+ ],
+ "tables": [],
+ "spatialReference": {
+  "wkid": 4326,
+  "latestWkid": 4326
+ },
+ "singleFusedMapCache": true,
+ "tileInfo": {
+  "rows": 512,
+  "cols": 512,
+  "dpi": 120,
+  "format": "PNG32",
+  "compressionQuality": 0,
+  "origin": {
+   "x": 113.51,
+   "y": 22.22
+  },
+  "spatialReference": {
+   "wkid": 4326,
+   "latestWkid": 4326
+  },
+  "lods": [
+   {
+    "level": 0,
+    "resolution": 9.137130262388275E-4,
+    "scale": 480000
+   }
+  ]
+ },
+ "initialExtent": {
+  "xmin": 113.05951758737189,
+  "ymin": 21.821449525609466,
+  "xmax": 114.07830761162819,
+  "ymax": 22.466759350390646,
+  "spatialReference": {
+   "cs": "gcs",
+   "wkid": 4326
+  }
+ },
+ "fullExtent": {
+  "xmin": 113.507686,
+  "ymin": 22.06776,
+  "xmax": 113.630139,
+  "ymax": 22.220449,
+  "spatialReference": {
+   "cs": "gcs",
+   "wkid": 4326
+  }
+ },
+ "minScale": 480000,
+ "maxScale": 480000,
+ "units": "esriDecimalDegrees",
+ "supportedImageFormatTypes": "PNG32,PNG24,PNG,JPG,DIB,TIFF,EMF,PS,PDF,GIF,SVG,SVGZ,BMP",
+ "documentInfo": {
+  "Title": "",
+  "Author": "",
+  "Comments": "WebMap basemap T published by Johan @ 2019.12.03",
+  "Subject": "WebMap basemap T",
+  "Category": "",
+  "AntialiasingMode": "None",
+  "TextAntialiasingMode": "Force",
+  "Keywords": "overview map,wgs84"
+ },
+ "capabilities": "Map,Query,Data",
+ "supportedQueryFormats": "JSON, AMF, geoJSON",
+ "exportTilesAllowed": false,
+ "supportsDatumTransformation": true,
+ "maxRecordCount": 1000,
+ "maxImageHeight": 4096,
+ "maxImageWidth": 4096,
+ "supportedExtensions": ""
+}
