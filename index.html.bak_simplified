@@ -3,19 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>澳門生態晝夜曲 · 誰還按自己的生物鐘生活？</title>
-<meta name="description" content="2025-2026 澳門生物多樣性公民科學資料 · 光汙染梯度與晝夜節律研究" />
+<title>澳门生态昼夜曲 · 谁还按自己的生物钟生活？</title>
+<meta name="description" content="2025-2026 澳门生物多样性公民科学数据 · 光污染梯度与昼夜节律研究" />
 <style>
 /* ===========================================================
-   Design tokens — 直接對映"海報製作/時鐘內容"中的配色規範
+   Design tokens — 直接映射"海报制作/时钟内容"中的配色规范
    =========================================================== */
 :root {
-  /* 深夜色（時鐘12點起點） */
+  /* 深夜色（时钟12点起点） */
   --night-green-1: #1E3D3B;
   --night-green-2: #152A28;
   --warm-white: #D4C8B8;
 
-  /* 琥珀金 — 貫穿全海報的關鍵數字色 */
+  /* 琥珀金 — 贯穿全海报的关键数字色 */
   --amber-gold: #C8963E;
   --amber-soft: #E1B864;
 
@@ -23,18 +23,18 @@
   --clay-red: #C4725A;
   --warn-orange: #C45A3C;
 
-  /* 自然生態色 */
+  /* 自然生态色 */
   --forest-deep: #3B5245;
   --forest-mid: #5C8D6F;
   --sage-green: #8FA889;
   --hope-green: #4A7C59;
 
-  /* 日間暖沙背景（學術乾淨底） */
+  /* 日间暖沙背景（学术干净底） */
   --sand-1: #FAF6EE;
   --sand-2: #F5F0E5;
   --sand-3: #E8DFD0;
 
-  /* 海洋藍（澳門海港意象，作為輔助點綴色） */
+  /* 海洋蓝（澳门海港意象，作为辅助点缀色） */
   --ocean-blue: #2C5F7C;
   --ocean-light: #6FA7C0;
 
@@ -71,7 +71,7 @@ a { color: var(--ocean-blue); text-decoration: none; }
 a:hover { color: var(--amber-gold); }
 
 /* ===========================================================
-   Top navigation — 固定頂部 + 當前章節高亮
+   Top navigation — 固定顶部 + 当前章节高亮
    =========================================================== */
 .topnav {
   position: fixed;
@@ -150,7 +150,7 @@ a:hover { color: var(--amber-gold); }
 }
 
 /* ===========================================================
-   Sections — 多檢視（同一頁內切換）
+   Sections — 多视图（同一页内切换）
    =========================================================== */
 main { padding-top: var(--nav-height); }
 .section {
@@ -167,7 +167,7 @@ main { padding-top: var(--nav-height); }
 }
 
 /* ===========================================================
-   Hero (主頁) — 時鐘主視覺 + 深夜色背景
+   Hero (主页) — 时钟主视觉 + 深夜色背景
    =========================================================== */
 .hero {
   position: relative;
@@ -179,7 +179,7 @@ main { padding-top: var(--nav-height); }
   box-shadow: var(--shadow-card);
 }
 .hero::before {
-  /* 星點 + 燈光質感 */
+  /* 星点 + 灯光质感 */
   content: "";
   position: absolute;
   inset: 0;
@@ -233,7 +233,7 @@ main { padding-top: var(--nav-height); }
   margin-bottom: 36px;
 }
 
-/* 核心數字條 */
+/* 核心数字条 */
 .keynums {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -341,7 +341,7 @@ main { padding-top: var(--nav-height); }
 }
 
 /* ===========================================================
-   Number cards — 關鍵數字小卡
+   Number cards — 关键数字小卡
    =========================================================== */
 .numcards {
   display: grid;
@@ -484,7 +484,7 @@ main { padding-top: var(--nav-height); }
 .tbl td.amber { color: var(--amber-gold); font-weight: 700; }
 
 /* ===========================================================
-   Discovery cards — 核心發現
+   Discovery cards — 核心发现
    =========================================================== */
 .disc-card {
   background: #fff;
@@ -521,7 +521,7 @@ main { padding-top: var(--nav-height); }
 .disc-card.hope .badge { background: var(--hope-green); color: #fff; }
 
 /* ===========================================================
-   Species chips — 物種條
+   Species chips — 物种条
    =========================================================== */
 .species-row {
   display: flex;
@@ -543,7 +543,7 @@ main { padding-top: var(--nav-height); }
 .chip.warn strong { color: var(--warn-orange); }
 
 /* ===========================================================
-   Action cards (未來展望 — 保護行動四張卡)
+   Action cards (未来展望 — 保护行动四张卡)
    =========================================================== */
 .action-grid {
   display: grid;
@@ -709,7 +709,7 @@ main { padding-top: var(--nav-height); }
 }
 
 /* ===========================================================
-   "開啟互動式熱點圖"按鈕 + 模態 iframe
+   "打开交互式热点图"按钮 + 模态 iframe
    =========================================================== */
 .btn-open-map {
   display: inline-flex;
@@ -803,7 +803,7 @@ body.modal-open { overflow: hidden; }
 .hotspot-figure img:hover { opacity: 0.92; }
 
 /* ===========================================================
-   手機版強化適配 — 字號階梯 + 間距壓縮 + 表格滾動 + nav 摺疊
+   手机版强化适配 — 字号阶梯 + 间距压缩 + 表格滚动 + nav 折叠
    =========================================================== */
 @media (max-width: 760px) {
   :root {
@@ -814,7 +814,7 @@ body.modal-open { overflow: hidden; }
 
   body { font-size: 15px; line-height: 1.7; }
 
-  /* 頂部導航：摺疊為漢堡選單形態 */
+  /* 顶部导航：折叠为汉堡菜单形态 */
   .topnav { position: sticky; }
   .topnav-inner {
     flex-direction: column;
@@ -890,7 +890,7 @@ body.modal-open { overflow: hidden; }
   .figure { padding: 10px; }
   .figure figcaption { font-size: 12px; line-height: 1.6; }
 
-  /* TABLE — 橫向滾動並保持可讀性 */
+  /* TABLE — 横向滚动并保持可读性 */
   .tbl { font-size: 12.5px; min-width: 100%; }
   .tbl th, .tbl td { padding: 8px 10px; }
   .tbl th { font-size: 11.5px; }
@@ -947,7 +947,7 @@ body.modal-open { overflow: hidden; }
   .footer .sources { font-size: 11px; }
 }
 
-/* 更窄屏（≤400px，小屏 iPhone SE 等）字號再壓一檔 */
+/* 更窄屏（≤400px，小屏 iPhone SE 等）字号再压一档 */
 @media (max-width: 400px) {
   .hero h1 { font-size: 26px; }
   .hero h2 { font-size: 14.5px; }
@@ -960,20 +960,20 @@ body.modal-open { overflow: hidden; }
 <body>
 
 <!-- =========================================================
-     固定頂部導航
+     固定顶部导航
      ========================================================= -->
-<nav class="topnav" aria-label="主導航">
+<nav class="topnav" aria-label="主导航">
   <div class="topnav-inner">
     <div class="brand">
       <div class="brand-clock" aria-hidden="true"></div>
-      <span>澳門生態晝夜曲</span>
+      <span>澳门生态昼夜曲</span>
     </div>
     <ul class="navlinks" role="tablist">
-      <li><button data-target="home"       class="active">主頁</button></li>
+      <li><button data-target="home"       class="active">主页</button></li>
       <li><button data-target="background">研究背景</button></li>
-      <li><button data-target="analysis">資料分析</button></li>
-      <li><button data-target="findings">核心發現</button></li>
-      <li><button data-target="outlook">未來展望</button></li>
+      <li><button data-target="analysis">数据分析</button></li>
+      <li><button data-target="findings">核心发现</button></li>
+      <li><button data-target="outlook">未来展望</button></li>
     </ul>
   </div>
 </nav>
@@ -981,89 +981,89 @@ body.modal-open { overflow: hidden; }
 <main>
 
 <!-- =========================================================
-     SECTION 1 · 主頁 (Home)
+     SECTION 1 · 主页 (Home)
      ========================================================= -->
-<section id="home" class="section active" data-title="主頁">
+<section id="home" class="section active" data-title="主页">
   <div class="hero">
-    <span class="hero-tag">2025 — 2026 公民科學資料 · 澳門</span>
-    <h1>澳門生態晝夜曲</h1>
-    <h2>誰還按自己的<em>生物鐘</em>生活？</h2>
+    <span class="hero-tag">2025 — 2026 公民科学数据 · 澳门</span>
+    <h1>澳门生态昼夜曲</h1>
+    <h2>谁还按自己的<em>生物钟</em>生活？</h2>
     <p class="hero-lede">
-      光汙染的擴散程度正以每年約 10% 的速度從地表擴散，是全球變化中最快卻最被忽視的維度之一。
-      澳門作為世界人口密度最高的 24 小時運轉的"不夜城"，其獨特的光環境對本地生物多樣性構成何種壓力，此前缺乏系統性評估。
-      本研究基於 2025—2026 年澳門 51,853 條公民科學記錄，
-      首次將公民科學資料與光汙染梯度相結合，揭示城市燈光下的生態晝夜節律。
+      光污染的扩散程度正以每年约 10% 的速度从地表扩散，是全球变化中最快却最被忽视的维度之一。
+      澳门作为世界人口密度最高的 24 小时运转的"不夜城"，其独特的光环境对本地生物多样性构成何种压力，此前缺乏系统性评估。
+      本研究基于 2025—2026 年澳门 51,853 条公民科学记录，
+      首次将公民科学数据与光污染梯度相结合，揭示城市灯光下的生态昼夜节律。
     </p>
 
     <div class="keynums">
       <div class="item">
         <div class="num">51,853</div>
-        <div class="label">兩年清洗後有效觀測記錄</div>
+        <div class="label">两年清洗后有效观测记录</div>
       </div>
       <div class="item">
         <div class="num">39.0%</div>
-        <div class="label">兩年物種 Jaccard 相似度</div>
+        <div class="label">两年物种 Jaccard 相似度</div>
       </div>
       <div class="item">
         <div class="num">71.7%</div>
-        <div class="label">兩棲類夜間活動比例</div>
+        <div class="label">两栖类夜间活动比例</div>
       </div>
       <div class="item">
         <div class="num">37.6%</div>
-        <div class="label">路環夜行焦點類群夜間比例</div>
+        <div class="label">路环夜行焦点类群夜间比例</div>
       </div>
       <div class="item">
         <div class="num">2.2 ×</div>
-        <div class="label">路環 / 半島 夜間活動倍數</div>
+        <div class="label">路环 / 半岛 夜间活动倍数</div>
       </div>
     </div>
   </div>
 
-  <h3 class="h3-sub">研究主線</h3>
+  <h3 class="h3-sub">研究主线</h3>
   <p class="body-text">
-    全研究以"<strong>時鐘</strong>"為敘事骨架，把 24 小時的城市生態切成 6 段。
-    從午夜的霓虹 → 清晨的鳥鳴 → 上午 10 點的合唱 → 午後昆蟲 → 黃昏交接 → 重回深夜，
-    我們試圖回答：<em>在越來越亮的澳門，誰還按自己的生物鐘生活？</em>
+    全研究以"<strong>时钟</strong>"为叙事骨架，把 24 小时的城市生态切成 6 段。
+    从午夜的霓虹 → 清晨的鸟鸣 → 上午 10 点的合唱 → 午后昆虫 → 黄昏交接 → 重回深夜，
+    我们试图回答：<em>在越来越亮的澳门，谁还按自己的生物钟生活？</em>
   </p>
 
   <div class="flow">
     <div class="flow-step">
       <div class="icon">📊</div>
-      <h4>兩年資料</h4>
-      <p>2025: 33,486 條<br>2026: 18,367 條</p>
+      <h4>两年数据</h4>
+      <p>2025: 33,486 条<br>2026: 18,367 条</p>
     </div>
     <div class="flow-step">
       <div class="icon">🧹</div>
-      <h4>座標清洗</h4>
-      <p>剔除 155 條異常<br>圈養 / 野生分離</p>
+      <h4>坐标清洗</h4>
+      <p>剔除 155 条异常<br>圈养 / 野生分离</p>
     </div>
     <div class="flow-step">
       <div class="icon">🕐</div>
-      <h4>晝夜分箱</h4>
-      <p>夜間 / 晨間<br>白天 / 黃昏</p>
+      <h4>昼夜分箱</h4>
+      <p>夜间 / 晨间<br>白天 / 黄昏</p>
     </div>
     <div class="flow-step">
       <div class="icon">🗺️</div>
-      <h4>梯度比較</h4>
-      <p>半島 / 氹仔 / 路環<br>三層光汙染梯度</p>
+      <h4>梯度比较</h4>
+      <p>半岛 / 氹仔 / 路环<br>三层光污染梯度</p>
     </div>
     <div class="flow-step">
       <div class="icon">💡</div>
-      <h4>保護建議</h4>
-      <p>暗夜照明<br>路環示範區</p>
+      <h4>保护建议</h4>
+      <p>暗夜照明<br>路环示范区</p>
     </div>
   </div>
 
   <div class="callout">
-    <strong>核心資訊 ·</strong> 路環相對低光區夜行焦點類群夜間活動比例（37.6%）為半島高光區（16.9%）的
+    <strong>核心信息 ·</strong> 路环相对低光区夜行焦点类群夜间活动比例（37.6%）为半岛高光区（16.9%）的
     <em style="color:var(--amber-gold);font-weight:700">2.2 倍</em>；
-    90 條日行性鳥類夜間活動記錄提示光汙染可能干擾其晝夜節律；
-    識別 5 種重點入侵物種早期預警點位。
+    90 条日行性鸟类夜间活动记录提示光污染可能干扰其昼夜节律；
+    识别 5 种重点入侵物种早期预警点位。
   </div>
 
   <div class="pager">
     <span></span>
-    <div class="pager-meta">第 <strong>1</strong> / 5 章 · 主頁</div>
+    <div class="pager-meta">第 <strong>1</strong> / 5 章 · 主页</div>
     <button data-action="next">下一章 · 研究背景 <span class="pager-arrow">→</span></button>
   </div>
 </section>
@@ -1075,54 +1075,54 @@ body.modal-open { overflow: hidden; }
 <section id="background" class="section" data-title="研究背景">
   <div class="section-head">
     <span class="kicker">CHAPTER 02 · BACKGROUND</span>
-    <h2>研究背景 ｜ 不夜城裡的生態壓力</h2>
-    <p>從全球光汙染的快速擴散，到澳門 32.9 km² 的高密度城市光環境，本研究的起點。</p>
+    <h2>研究背景 ｜ 不夜城里的生态压力</h2>
+    <p>从全球光污染的快速扩散，到澳门 32.9 km² 的高密度城市光环境，本研究的起点。</p>
   </div>
 
   <p class="lead">
-    光污染的扩散程度正以每年約 10% 的速度從地表擴散（Scientific American, 2023），
-    是全球變化中最快卻最被忽視的維度之一。澳門作為世界人口密度最高的24 小時運轉的"不夜城"，
-    其獨特的光環境對本地生物多樣性構成何種壓力，此前缺乏系統性評估。
+    人造光正以每年约 10% 的速度从地表扩散（Scientific American, 2023），
+    是全球变化中最快却最被忽视的维度之一。澳门作为世界人口密度最高、博彩业 24 小时运转的"不夜城"，
+    其独特的光环境对本地生物多样性构成何种压力，此前缺乏系统性评估。
   </p>
 
-  <h3 class="h3-sub">來自 Science 的證據</h3>
+  <h3 class="h3-sub">来自 Science 的证据</h3>
   <p class="body-text">
-    研究顯示，城市夜間人造光（ALAN）可延長日行性鳥類發聲活動平均
-    <em>50 分鐘</em>（Pease &amp; Gilbert, 2025, <i>Science</i> 389:818–821），
-    並干擾昆蟲飛行定向、求偶與捕食行為（Owens &amp; Lewis, 2018; Fabian et al., 2024）。
-    生態光汙染奠基性綜述（Longcore &amp; Rich, 2004）指出，ALAN 不僅是"看得見的光"，
-    更是一種改變物種節律、繁殖、遷徙與捕食關係的環境壓力源。
+    研究显示，城市夜间人造光（ALAN）可延长日行性鸟类发声活动平均
+    <em>50 分钟</em>（Pease &amp; Gilbert, 2025, <i>Science</i> 389:818–821），
+    并干扰昆虫飞行定向、求偶与捕食行为（Owens &amp; Lewis, 2018; Fabian et al., 2024）。
+    生态光污染奠基性综述（Longcore &amp; Rich, 2004）指出，ALAN 不仅是"看得见的光"，
+    更是一种改变物种节律、繁殖、迁徙与捕食关系的环境压力源。
   </p>
 
   <div class="two-col">
     <div>
-      <h3 class="h3-sub">澳門：32.9 km² 的生物多樣性熱點</h3>
+      <h3 class="h3-sub">澳门：32.9 km² 的生物多样性热点</h3>
       <p class="body-text">
-        澳門陸地面積僅 <strong>32.9 平方公里</strong>，卻是貨真價實的生物多樣性熱點。
-        2025 年我們記錄了 <em>2,979 個物種</em>、<em>33,486 條觀測</em>；
-        2026 年為 <em>2,009 個物種</em>、<em>18,367 條觀測</em>。
-        兩組資料的夏農 - 維納指數（Shannon H'）分別達到 6.71 和 6.41 ——
-        在城市生態學中，H' 超過 6 已屬<strong>極高水平</strong>的物種多樣性。
+        澳门陆地面积仅 <strong>32.9 平方公里</strong>，却是货真价实的生物多样性热点。
+        2025 年我们记录了 <em>2,979 个物种</em>、<em>33,486 条观测</em>；
+        2026 年为 <em>2,009 个物种</em>、<em>18,367 条观测</em>。
+        两组数据的香农 - 维纳指数（Shannon H'）分别达到 6.71 和 6.41 ——
+        在城市生态学中，H' 超过 6 已属<strong>极高水平</strong>的物种多样性。
       </p>
       <p class="body-text">
-        辛普森多樣性指數（Simpson 1-D）兩年均超過 0.995，
-        意味著隨機抽取兩條記錄，它們屬於不同物種的機率接近 100%——
-        沒有單一物種形成絕對壟斷。Pielou 均勻度指數兩年均高於 0.84，
-        說明記錄在物種間的分佈相當均勻。
+        辛普森多样性指数（Simpson 1-D）两年均超过 0.995，
+        意味着随机抽取两条记录，它们属于不同物种的概率接近 100%——
+        没有单一物种形成绝对垄断。Pielou 均匀度指数两年均高于 0.84，
+        说明记录在物种间的分布相当均匀。
       </p>
     </div>
     <figure class="figure hotspot-figure">
-      <img src="生态昼夜曲资料\图表\热点图_2026_正确数据.png"
-           alt="澳門生物多樣性熱點圖 · 2026 年正確資料">
+      <img src="生态昼夜曲资料/图表/热点图_2026_正确数据.png"
+           alt="澳门生物多样性热点图 · 2026 年正确数据">
       <figcaption>
-        <strong>圖 · 澳門生物多樣性熱點圖（2026 · 正確資料）。</strong>
-        紅色熱區清晰指示觀測密度最高的核心區域 —— 澳門半島南部與氹仔的城市綠帶、溼地。
-        澳門半島是密集的老城區，氹仔與路氹城集中了大型度假村，
-        路環島保留了相對完整的山林和溼地（最高點 Coloane Alto 172.4 m）。
-        這種從"不夜"到"暗夜"的天然過渡，為光汙染梯度研究提供了理想樣地。
+        <strong>图 · 澳门生物多样性热点图（2026 · 正确数据）。</strong>
+        红色热区清晰指示观测密度最高的核心区域 —— 澳门半岛南部与氹仔的城市绿带、湿地。
+        澳门半岛是密集的老城区，氹仔与路氹城集中了大型度假村，
+        路环岛保留了相对完整的山林和湿地（最高点 Coloane Alto 172.4 m）。
+        这种从"不夜"到"暗夜"的天然过渡，为光污染梯度研究提供了理想样地。
         <br>
         <button class="btn-open-map" data-open="hotspot">
-          🗺️ 開啟互動式熱點圖（可切換 2025/2026 · 異常 / 正確資料 · 物種篩選）
+          🗺️ 打开交互式热点图（可切换 2025/2026 · 异常 / 正确数据 · 物种筛选）
         </button>
       </figcaption>
     </figure>
@@ -1130,403 +1130,403 @@ body.modal-open { overflow: hidden; }
 
   <h3 class="h3-sub">研究方法</h3>
   <p class="body-text">
-    本研究使用 2025—2026 年澳門生物多樣性公民科學資料，經座標清洗後獲得
-    <em>51,853 條有效記錄</em>（2025 年 33,486 條；2026 年 18,367 條，
-    涵蓋 2,979 種和 2,009 種）。將有時間標記的記錄按晝夜四段分箱
-    （夜間 / 晨間 / 白天 / 黃昏），並按簡化光汙染梯度
-    （高光 / 中高光 / 相對低光）進行空間比較。
+    本研究使用 2025—2026 年澳门生物多样性公民科学数据，经坐标清洗后获得
+    <em>51,853 条有效记录</em>（2025 年 33,486 条；2026 年 18,367 条，
+    涵盖 2,979 种和 2,009 种）。将有时间标记的记录按昼夜四段分箱
+    （夜间 / 晨间 / 白天 / 黄昏），并按简化光污染梯度
+    （高光 / 中高光 / 相对低光）进行空间比较。
   </p>
 
   <div class="numcards">
-    <div class="numcard"><div class="v">2025 → 2026</div><div class="k">兩年縱向對比</div></div>
-    <div class="numcard amber"><div class="v">155 條</div><div class="k">座標異常清洗剔除</div></div>
-    <div class="numcard ocean"><div class="v">4 段</div><div class="k">晝夜分箱：夜 / 晨 / 晝 / 黃昏</div></div>
-    <div class="numcard forest"><div class="v">3 層</div><div class="k">光汙染梯度比較</div></div>
+    <div class="numcard"><div class="v">2025 → 2026</div><div class="k">两年纵向对比</div></div>
+    <div class="numcard amber"><div class="v">155 条</div><div class="k">坐标异常清洗剔除</div></div>
+    <div class="numcard ocean"><div class="v">4 段</div><div class="k">昼夜分箱：夜 / 晨 / 昼 / 黄昏</div></div>
+    <div class="numcard forest"><div class="v">3 层</div><div class="k">光污染梯度比较</div></div>
   </div>
 
   <div class="callout ocean">
-    <strong>分析工具 ·</strong> Shannon H' · Simpson 1-D · Pielou J' · Jaccard 相似度 · 類群佔比 · 晝夜節律曲線
+    <strong>分析工具 ·</strong> Shannon H' · Simpson 1-D · Pielou J' · Jaccard 相似度 · 类群占比 · 昼夜节律曲线
   </div>
 
-  <h3 class="h3-sub">研究意義</h3>
+  <h3 class="h3-sub">研究意义</h3>
   <p class="body-text">
-    本研究為澳門首次將公民科學資料與光汙染梯度相結合的生態晝夜節律分析，
-    建議推廣暗夜友好照明、建立路環暗夜生態示範區，並加強入侵物種年度監測。
+    本研究为澳门首次将公民科学数据与光污染梯度相结合的生态昼夜节律分析，
+    建议推广暗夜友好照明、建立路环暗夜生态示范区，并加强入侵物种年度监测。
   </p>
 
   <div class="pager">
-    <button data-action="prev"><span class="pager-arrow">←</span> 上一章 · 主頁</button>
+    <button data-action="prev"><span class="pager-arrow">←</span> 上一章 · 主页</button>
     <div class="pager-meta">第 <strong>2</strong> / 5 章 · 研究背景</div>
-    <button data-action="next">下一章 · 資料分析 <span class="pager-arrow">→</span></button>
+    <button data-action="next">下一章 · 数据分析 <span class="pager-arrow">→</span></button>
   </div>
 </section>
 
 
 <!-- =========================================================
-     SECTION 3 · 資料分析
+     SECTION 3 · 数据分析
      ========================================================= -->
-<section id="analysis" class="section" data-title="資料分析">
+<section id="analysis" class="section" data-title="数据分析">
   <div class="section-head">
     <span class="kicker">CHAPTER 03 · ANALYSIS</span>
-    <h2>資料分析 ｜ 從 51,853 條記錄到一首晝夜曲</h2>
-    <p>兩年資料對比、類群結構變化、24 小時晝夜節律環、光汙染梯度空間比較。</p>
+    <h2>数据分析 ｜ 从 51,853 条记录到一首昼夜曲</h2>
+    <p>两年数据对比、类群结构变化、24 小时昼夜节律环、光污染梯度空间比较。</p>
   </div>
 
-  <h3 class="h3-sub">① 資料基礎 · 兩年觀測的縱向對比</h3>
+  <h3 class="h3-sub">① 数据基础 · 两年观测的纵向对比</h3>
   <p class="body-text">
-    經座標清洗剔除 155 條異常記錄後，獲得 <em>51,853 條有效記錄</em>。
-    兩年總記錄數下降 45%，但<strong>動物界記錄反而增加 8.8%</strong>——
-    植物佔比從 76.0% 降至 53.0%，而昆蟲佔比從 8.7% 升至 20.0%，鳥類從 9.5% 升至 16.4%。
-    兩年的 Jaccard 物種相似度僅為 <em>39.0%</em>，觀測到的物種組成差異明顯。
+    经坐标清洗剔除 155 条异常记录后，获得 <em>51,853 条有效记录</em>。
+    两年总记录数下降 45%，但<strong>动物界记录反而增加 8.8%</strong>——
+    植物占比从 76.0% 降至 53.0%，而昆虫占比从 8.7% 升至 20.0%，鸟类从 9.5% 升至 16.4%。
+    两年的 Jaccard 物种相似度仅为 <em>39.0%</em>，观测到的物种组成差异明显。
   </p>
 
   <div class="two-col">
     <figure class="figure">
-      <img src="生态昼夜曲资料\图表\图1_年度指标总览.png"
-           alt="2025-2026 年度生物多樣性指標總覽">
+      <img src="生态昼夜曲资料/图表/图1_年度指标总览.png"
+           alt="2025-2026 年度生物多样性指标总览">
       <figcaption>
-        <strong>圖 1 · 年度指標總覽。</strong>
-        2025 vs 2026 年記錄數、物種數、Shannon H'、Simpson 1-D 的變化。
+        <strong>图 1 · 年度指标总览。</strong>
+        2025 vs 2026 年记录数、物种数、Shannon H'、Simpson 1-D 的变化。
         H' 由 6.71 降至 6.41，Pielou J' 由 0.838 升至 0.843，
-        Simpson 1-D 兩年均接近 1，無單一物種壓倒性主導。
+        Simpson 1-D 两年均接近 1，无单一物种压倒性主导。
       </figcaption>
     </figure>
     <figure class="figure">
-      <img src="生态昼夜曲资料\图表\图2_类群结构变化.png"
-           alt="2025-2026 類群結構變化">
+      <img src="生态昼夜曲资料/图表/图2_类群结构变化.png"
+           alt="2025-2026 类群结构变化">
       <figcaption>
-        <strong>圖 2 · 類群結構變化。</strong>
-        植物佔比 76.0% → 53.0%，昆蟲 8.7% → 20.0%，鳥類 9.5% → 16.4%。
-        2026 年資料"動物化"——昆蟲與鳥類合計佔 36.4%，是城市生態的絕對主角。
+        <strong>图 2 · 类群结构变化。</strong>
+        植物占比 76.0% → 53.0%，昆虫 8.7% → 20.0%，鸟类 9.5% → 16.4%。
+        2026 年数据"动物化"——昆虫与鸟类合计占 36.4%，是城市生态的绝对主角。
       </figcaption>
     </figure>
   </div>
 
   <p class="body-text">
-    這意味著 2026 年資料不是簡單"變少了"——是<em>動物的聲音更清楚了</em>。
-    鳥類以白天活動為主（96.9%），上午 10 點達到全年最高峰 378 條；
-    昆蟲白天在下午 3 點達到 487 條高峰，但夜間仍有 18.7% 的記錄活躍著。
+    这意味着 2026 年数据不是简单"变少了"——是<em>动物的声音更清楚了</em>。
+    鸟类以白天活动为主（96.9%），上午 10 点达到全年最高峰 378 条；
+    昆虫白天在下午 3 点达到 487 条高峰，但夜间仍有 18.7% 的记录活跃着。
   </p>
 
-  <h3 class="h3-sub">② 類群多樣性指數（2026 年）</h3>
+  <h3 class="h3-sub">② 类群多样性指数（2026 年）</h3>
   <div class="tbl-wrap">
     <table class="tbl">
       <thead>
-        <tr><th>分類群</th><th>記錄數</th><th>物種數</th><th>Shannon H'</th><th>Simpson 1-D</th><th>Pielou J'</th></tr>
+        <tr><th>分类群</th><th>记录数</th><th>物种数</th><th>Shannon H'</th><th>Simpson 1-D</th><th>Pielou J'</th></tr>
       </thead>
       <tbody>
         <tr><td>植物</td><td class="num">9,736</td><td class="num">1,074</td><td class="num">5.9835</td><td class="num">0.9949</td><td class="num">0.8573</td></tr>
-        <tr><td>昆蟲</td><td class="num">3,673</td><td class="num">574</td><td class="num">5.4723</td><td class="num">0.9923</td><td class="num">0.8614</td></tr>
-        <tr><td>鳥類</td><td class="num">3,007</td><td class="num">95</td><td class="num">3.0875</td><td class="num">0.9234</td><td class="num">0.6780</td></tr>
+        <tr><td>昆虫</td><td class="num">3,673</td><td class="num">574</td><td class="num">5.4723</td><td class="num">0.9923</td><td class="num">0.8614</td></tr>
+        <tr><td>鸟类</td><td class="num">3,007</td><td class="num">95</td><td class="num">3.0875</td><td class="num">0.9234</td><td class="num">0.6780</td></tr>
         <tr><td>真菌</td><td class="num">152</td><td class="num">63</td><td class="num">3.6594</td><td class="num">0.9621</td><td class="num">0.8832</td></tr>
-        <tr><td>蛛形綱</td><td class="num">212</td><td class="num">58</td><td class="num">3.3136</td><td class="num">0.9349</td><td class="num">0.8161</td></tr>
-        <tr><td>魚類</td><td class="num">177</td><td class="num">38</td><td class="num">2.7101</td><td class="num">0.8820</td><td class="num">0.7450</td></tr>
-        <tr><td>軟體動物</td><td class="num">273</td><td class="num">28</td><td class="num">2.2548</td><td class="num">0.8380</td><td class="num">0.6767</td></tr>
+        <tr><td>蛛形纲</td><td class="num">212</td><td class="num">58</td><td class="num">3.3136</td><td class="num">0.9349</td><td class="num">0.8161</td></tr>
+        <tr><td>鱼类</td><td class="num">177</td><td class="num">38</td><td class="num">2.7101</td><td class="num">0.8820</td><td class="num">0.7450</td></tr>
+        <tr><td>软体动物</td><td class="num">273</td><td class="num">28</td><td class="num">2.2548</td><td class="num">0.8380</td><td class="num">0.6767</td></tr>
         <tr><td>爬行</td><td class="num">239</td><td class="num">20</td><td class="num">2.0944</td><td class="num">0.8320</td><td class="num">0.6991</td></tr>
         <tr><td>哺乳</td><td class="num">54</td><td class="num">10</td><td class="num">1.7124</td><td class="num">0.7470</td><td class="num">0.7437</td></tr>
-        <tr><td>兩棲</td><td class="num">303</td><td class="num">7</td><td class="num">1.4224</td><td class="num">0.6985</td><td class="num">0.7310</td></tr>
+        <tr><td>两栖</td><td class="num">303</td><td class="num">7</td><td class="num">1.4224</td><td class="num">0.6985</td><td class="num">0.7310</td></tr>
       </tbody>
     </table>
   </div>
   <p class="body-text" style="font-size:13.5px;color:var(--text-mute)">
-    資料來源：報告文件 / 生物多樣性指數分析報告.md
+    数据来源：报告文档 / 生物多样性指数分析报告.md
   </p>
 
-  <h3 class="h3-sub">③ 24 小時晝夜節律環</h3>
+  <h3 class="h3-sub">③ 24 小时昼夜节律环</h3>
   <p class="body-text">
-    將所有有時間標記的記錄按 24 小時分箱後，澳門城市生態呈現一條清晰的"晝夜曲"：
-    清晨 6 點鳥類率先發聲（18 條），到 10 點達到全年最高峰 <em>378 條</em>；
-    昆蟲午後 15 點達到 <em>487 條</em>高峰；
-    兩棲類在 19 點之後接管夜晚 —— 夜間活動比例 <em>71.7%</em>；
-    凌晨 4 點形成全城"生態真空"——零記錄的一小時。
+    将所有有时间标记的记录按 24 小时分箱后，澳门城市生态呈现一条清晰的"昼夜曲"：
+    清晨 6 点鸟类率先发声（18 条），到 10 点达到全年最高峰 <em>378 条</em>；
+    昆虫午后 15 点达到 <em>487 条</em>高峰；
+    两栖类在 19 点之后接管夜晚 —— 夜间活动比例 <em>71.7%</em>；
+    凌晨 4 点形成全城"生态真空"——零记录的一小时。
   </p>
 
   <div class="two-col">
     <figure class="figure">
-      <img src="生态昼夜曲资料\图表\图3_24小时昼夜节律环.png"
-           alt="24 小時晝夜節律環">
+      <img src="生态昼夜曲资料/图表/图3_24小时昼夜节律环.png"
+           alt="24 小时昼夜节律环">
       <figcaption>
-        <strong>圖 3 · 24 小時晝夜節律環。</strong>
-        以圓環表達每小時每類群的記錄量。鳥類（白晝）、昆蟲（午後高峰）、
-        兩棲類（夜間主導）三條曲線交織成一首生態晝夜曲。
+        <strong>图 3 · 24 小时昼夜节律环。</strong>
+        以圆环表达每小时每类群的记录量。鸟类（白昼）、昆虫（午后高峰）、
+        两栖类（夜间主导）三条曲线交织成一首生态昼夜曲。
       </figcaption>
     </figure>
     <figure class="figure">
       <img src="_preview_circadian.png"
-           alt="晝夜曲設計預覽">
+           alt="昼夜曲设计预览">
       <figcaption>
-        <strong>設計預覽 · 晝夜曲海報視覺。</strong>
-        以"時鐘"為敘事骨架：從 00 點深夜（提出問題）到 10 點合唱（資料高峰），
-        每一段時間對映到城市中的一個真實聲音。
+        <strong>设计预览 · 昼夜曲海报视觉。</strong>
+        以"时钟"为叙事骨架：从 00 点深夜（提出问题）到 10 点合唱（数据高峰），
+        每一段时间映射到城市中的一个真实声音。
       </figcaption>
     </figure>
   </div>
 
   <div class="tbl-wrap">
     <table class="tbl">
-      <thead><tr><th>類群</th><th>有時間記錄</th><th>夜間記錄</th><th>夜間比例</th><th>活動高峰小時</th></tr></thead>
+      <thead><tr><th>类群</th><th>有时间记录</th><th>夜间记录</th><th>夜间比例</th><th>活动高峰小时</th></tr></thead>
       <tbody>
-        <tr><td>昆蟲</td><td class="num">3,609</td><td class="num">676</td><td class="num amber">18.7%</td><td class="num">15:00</td></tr>
-        <tr><td>兩棲類</td><td class="num">300</td><td class="num">215</td><td class="num amber">71.7%</td><td class="num">19:00</td></tr>
-        <tr><td>軟體動物</td><td class="num">268</td><td class="num">86</td><td class="num amber">32.1%</td><td class="num">21:00</td></tr>
-        <tr><td>蛛形綱</td><td class="num">209</td><td class="num">21</td><td class="num amber">10.0%</td><td class="num">15:00</td></tr>
+        <tr><td>昆虫</td><td class="num">3,609</td><td class="num">676</td><td class="num amber">18.7%</td><td class="num">15:00</td></tr>
+        <tr><td>两栖类</td><td class="num">300</td><td class="num">215</td><td class="num amber">71.7%</td><td class="num">19:00</td></tr>
+        <tr><td>软体动物</td><td class="num">268</td><td class="num">86</td><td class="num amber">32.1%</td><td class="num">21:00</td></tr>
+        <tr><td>蛛形纲</td><td class="num">209</td><td class="num">21</td><td class="num amber">10.0%</td><td class="num">15:00</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3 class="h3-sub">④ 光汙染梯度空間分析</h3>
+  <h3 class="h3-sub">④ 光污染梯度空间分析</h3>
   <p class="body-text">
-    澳門的光環境與它的生物多樣性一樣，存在顯著的空間差異。
-    我們將 2026 年的有效記錄按簡化光汙染梯度分為三層——
-    <strong>高光區（半島）</strong>、<strong>中高光區（氹仔·路氹城）</strong>和
-    <strong>相對低光區（路環）</strong>，
-    將夜行焦點類群（昆蟲、兩棲類、軟體動物、蛛形綱）和鳥類的晝夜活動模式進行了跨區比較。
+    澳门的光环境与它的生物多样性一样，存在显著的空间差异。
+    我们将 2026 年的有效记录按简化光污染梯度分为三层——
+    <strong>高光区（半岛）</strong>、<strong>中高光区（氹仔·路氹城）</strong>和
+    <strong>相对低光区（路环）</strong>，
+    将夜行焦点类群（昆虫、两栖类、软体动物、蛛形纲）和鸟类的昼夜活动模式进行了跨区比较。
   </p>
 
   <div class="two-col">
     <figure class="figure">
-      <img src="生态昼夜曲资料\图表\图4_光污染梯度地图.png"
-           alt="光汙染梯度地圖">
+      <img src="生态昼夜曲资料/图表/图4_光污染梯度地图.png"
+           alt="光污染梯度地图">
       <figcaption>
-        <strong>圖 4 · 光汙染梯度地圖。</strong>
-        紅色 = 高光區（半島），橙色 = 中高光區（氹仔/路氹城），
-        綠色 = 相對低光區（路環）。Coloane Alto 172.4 m 的山體形成天然"暗影"屏障。
+        <strong>图 4 · 光污染梯度地图。</strong>
+        红色 = 高光区（半岛），橙色 = 中高光区（氹仔/路氹城），
+        绿色 = 相对低光区（路环）。Coloane Alto 172.4 m 的山体形成天然"暗影"屏障。
       </figcaption>
     </figure>
     <figure class="figure">
-      <img src="生态昼夜曲资料\图表\图4b_干净澳门底图_夜行点位.png"
-           alt="夜行物種點位分佈">
+      <img src="生态昼夜曲资料/图表/图4b_干净澳门底图_夜行点位.png"
+           alt="夜行物种点位分布">
       <figcaption>
-        <strong>圖 4b · 夜行物種空間點位。</strong>
-        夜行焦點類群（昆蟲、兩棲類、軟體動物、蛛形綱）的點位明顯集中於路環山林與溼地。
-        <em>路環正在成為澳門夜行生命最後的暗夜避難所。</em>
+        <strong>图 4b · 夜行物种空间点位。</strong>
+        夜行焦点类群（昆虫、两栖类、软体动物、蛛形纲）的点位明显集中于路环山林与湿地。
+        <em>路环正在成为澳门夜行生命最后的暗夜避难所。</em>
       </figcaption>
     </figure>
   </div>
 
   <div class="tbl-wrap">
     <table class="tbl">
-      <thead><tr><th>指標</th><th>半島（高光）</th><th>氹仔路氹城（中高光）</th><th>路環（低光）</th><th>路環/半島</th></tr></thead>
+      <thead><tr><th>指标</th><th>半岛（高光）</th><th>氹仔路氹城（中高光）</th><th>路环（低光）</th><th>路环/半岛</th></tr></thead>
       <tbody>
-        <tr><td>記錄總數</td><td class="num">8,489</td><td class="num">5,518</td><td class="num">4,309</td><td>—</td></tr>
-        <tr><td><strong>夜行焦點夜間比例</strong></td><td class="num">16.9%</td><td class="num">5.3%</td><td class="num amber">37.6%</td><td class="num amber">2.2 ×</td></tr>
-        <tr><td>鳥類夜間比例</td><td class="num">3.0%</td><td class="num">2.0%</td><td class="num">6.2%</td><td class="num">2.1 ×</td></tr>
-        <tr><td>昆蟲夜間比例</td><td class="num">13.8%</td><td class="num">4.8%</td><td class="num">31.0%</td><td class="num">2.2 ×</td></tr>
-        <tr><td>兩棲類記錄</td><td class="num">55 條</td><td class="num">44 條</td><td class="num">204 條</td><td class="num">3.7 ×</td></tr>
+        <tr><td>记录总数</td><td class="num">8,489</td><td class="num">5,518</td><td class="num">4,309</td><td>—</td></tr>
+        <tr><td><strong>夜行焦点夜间比例</strong></td><td class="num">16.9%</td><td class="num">5.3%</td><td class="num amber">37.6%</td><td class="num amber">2.2 ×</td></tr>
+        <tr><td>鸟类夜间比例</td><td class="num">3.0%</td><td class="num">2.0%</td><td class="num">6.2%</td><td class="num">2.1 ×</td></tr>
+        <tr><td>昆虫夜间比例</td><td class="num">13.8%</td><td class="num">4.8%</td><td class="num">31.0%</td><td class="num">2.2 ×</td></tr>
+        <tr><td>两栖类记录</td><td class="num">55 条</td><td class="num">44 条</td><td class="num">204 条</td><td class="num">3.7 ×</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="callout warn">
-    <strong>反直覺發現 ·</strong> 中高光區（氹仔/路氹城）夜行焦點夜間比例僅 5.3%，
-    不是介於半島和路環之間的"中間值"，而是三區中的<strong>最低值</strong>。
-    我們提出三個假說：
-    <strong>① 生境缺失效應</strong>（填海地缺乏溼地森林）；
-    <strong>② 光屏障迴避效應</strong>（極端 LED 形成"光屏障"使敏感物種完全迴避）；
-    <strong>③ 公民科學觀察偏倚</strong>（夜間高強度城區觀察意願低）。
-    這共同指向一個更深的認識——
-    <em>光汙染對生物的影響不是簡單線性，極端光照可能導致物種迴避而非活動延長。</em>
+    <strong>反直觉发现 ·</strong> 中高光区（氹仔/路氹城）夜行焦点夜间比例仅 5.3%，
+    不是介于半岛和路环之间的"中间值"，而是三区中的<strong>最低值</strong>。
+    我们提出三个假说：
+    <strong>① 生境缺失效应</strong>（填海地缺乏湿地森林）；
+    <strong>② 光屏障回避效应</strong>（极端 LED 形成"光屏障"使敏感物种完全回避）；
+    <strong>③ 公民科学观察偏倚</strong>（夜间高强度城区观察意愿低）。
+    这共同指向一个更深的认识——
+    <em>光污染对生物的影响不是简单线性，极端光照可能导致物种回避而非活动延长。</em>
   </div>
 
   <div class="pager">
     <button data-action="prev"><span class="pager-arrow">←</span> 上一章 · 研究背景</button>
-    <div class="pager-meta">第 <strong>3</strong> / 5 章 · 資料分析</div>
-    <button data-action="next">下一章 · 核心發現 <span class="pager-arrow">→</span></button>
+    <div class="pager-meta">第 <strong>3</strong> / 5 章 · 数据分析</div>
+    <button data-action="next">下一章 · 核心发现 <span class="pager-arrow">→</span></button>
   </div>
 </section>
 
 
 <!-- =========================================================
-     SECTION 4 · 核心發現
+     SECTION 4 · 核心发现
      ========================================================= -->
-<section id="findings" class="section" data-title="核心發現">
+<section id="findings" class="section" data-title="核心发现">
   <div class="section-head">
     <span class="kicker">CHAPTER 04 · KEY FINDINGS</span>
-    <h2>核心發現 ｜ 時鐘裡的四個故事</h2>
-    <p>深夜的 90 條異常 · 清晨的漸強序曲 · 上午的合唱高峰 · 暗夜避難所與入侵預警。</p>
+    <h2>核心发现 ｜ 时钟里的四个故事</h2>
+    <p>深夜的 90 条异常 · 清晨的渐强序曲 · 上午的合唱高峰 · 暗夜避难所与入侵预警。</p>
   </div>
 
-  <!-- 發現1 · 深夜異常 -->
+  <!-- 发现1 · 深夜异常 -->
   <div class="disc-card warn">
-    <span class="badge">發現 01 · 深夜異常</span>
-    <h3>🌙 90 條夜間鳥類記錄——它們本該在睡覺</h3>
+    <span class="badge">发现 01 · 深夜异常</span>
+    <h3>🌙 90 条夜间鸟类记录——它们本该在睡觉</h3>
     <p class="body-text">
-      凌晨零點到五點，我們在澳門記錄到 <em>186 條生命活動</em>。
-      昆蟲佔了 84%——麗叩甲、東方水蠊、美洲大蠊，在黑暗的角落裡爬行。
-      兩棲類 7 條——黑眶蟾蜍在溼地邊緣低鳴。
-      <strong>凌晨四點。全城靜默。</strong>那個小時，沒有任何生命被記錄——
-      澳門一天裡唯一的"生態真空"。
+      凌晨零点到五点，我们在澳门记录到 <em>186 条生命活动</em>。
+      昆虫占了 84%——丽叩甲、东方水蠊、美洲大蠊，在黑暗的角落里爬行。
+      两栖类 7 条——黑眶蟾蜍在湿地边缘低鸣。
+      <strong>凌晨四点。全城静默。</strong>那个小时，没有任何生命被记录——
+      澳门一天里唯一的"生态真空"。
     </p>
     <p class="body-text">
-      然後，資料裡出現了一個讓人不安的訊號：
-      <em>90 條夜間鳥類記錄</em>。鵲鴝 14 次，白頭鵯 8 次，麻雀 7 次，珠頸斑鳩 6 次，紅耳鵯 5 次。
-      這些不是貓頭鷹，不是夜鷹——它們全是白天活動的鳥。
-      <strong>但它們在夜裡被看到了。在午夜。在凌晨。在路燈下。</strong>
-      有一個解釋，就掛在澳門每一條街上：<em>燈光。</em>
+      然后，数据里出现了一个让人不安的信号：
+      <em>90 条夜间鸟类记录</em>。鹊鸲 14 次，白头鹎 8 次，麻雀 7 次，珠颈斑鸠 6 次，红耳鹎 5 次。
+      这些不是猫头鹰，不是夜鹰——它们全是白天活动的鸟。
+      <strong>但它们在夜里被看到了。在午夜。在凌晨。在路灯下。</strong>
+      有一个解释，就挂在澳门每一条街上：<em>灯光。</em>
     </p>
     <div class="species-row">
-      <span class="chip warn"><strong>14</strong>鵲鴝（夜間最多）</span>
-      <span class="chip warn"><strong>8</strong>白頭鵯</span>
+      <span class="chip warn"><strong>14</strong>鹊鸲（夜间最多）</span>
+      <span class="chip warn"><strong>8</strong>白头鹎</span>
       <span class="chip warn"><strong>7</strong>麻雀</span>
-      <span class="chip warn"><strong>6</strong>珠頸斑鳩</span>
-      <span class="chip warn"><strong>5</strong>紅耳鵯</span>
+      <span class="chip warn"><strong>6</strong>珠颈斑鸠</span>
+      <span class="chip warn"><strong>5</strong>红耳鹎</span>
     </div>
   </div>
 
-  <!-- 發現2 · 清晨漸強 -->
+  <!-- 发现2 · 清晨渐强 -->
   <div class="disc-card ocean">
-    <span class="badge">發現 02 · 清晨漸強</span>
-    <h3>🌅 06:00—09:00 ｜ 鳥的獨奏時間</h3>
+    <span class="badge">发现 02 · 清晨渐强</span>
+    <h3>🌅 06:00—09:00 ｜ 鸟的独奏时间</h3>
     <p class="body-text">
-      06:00，<em>18 條</em>鳥類記錄。珠頸斑鳩在 06:10 發出第一聲咕咕。鵲鴝在 06:18 開始清唱。
-      紅耳鵯在 06:28 加入，小白腰雨燕在 06:20 掠過天空。
-      07:00 升到 <em>56 條</em>——翻了三倍。08:00 是 <em>54 條</em>。
-      三個小時，<strong>128 條鳥類記錄</strong>。而昆蟲只有 41 條——還在等太陽；兩棲類 3 條——夜班剛下班。
+      06:00，<em>18 条</em>鸟类记录。珠颈斑鸠在 06:10 发出第一声咕咕。鹊鸲在 06:18 开始清唱。
+      红耳鹎在 06:28 加入，小白腰雨燕在 06:20 掠过天空。
+      07:00 升到 <em>56 条</em>——翻了三倍。08:00 是 <em>54 条</em>。
+      三个小时，<strong>128 条鸟类记录</strong>。而昆虫只有 41 条——还在等太阳；两栖类 3 条——夜班刚下班。
     </p>
     <div class="tbl-wrap">
       <table class="tbl">
-        <thead><tr><th>類群</th><th>晨間記錄 (06–08)</th><th>狀態</th><th>一句話</th></tr></thead>
+        <thead><tr><th>类群</th><th>晨间记录 (06–08)</th><th>状态</th><th>一句话</th></tr></thead>
         <tbody>
-          <tr><td>🐦 鳥類</td><td class="num amber">128 條</td><td>漸強中</td><td>"天亮了，開工。"</td></tr>
-          <tr><td>🦗 昆蟲</td><td class="num">41 條</td><td>等待中</td><td>"等太陽再高一點。"</td></tr>
-          <tr><td>🐸 兩棲類</td><td class="num">3 條</td><td>下班了</td><td>"夜班結束，找地方躲。"</td></tr>
+          <tr><td>🐦 鸟类</td><td class="num amber">128 条</td><td>渐强中</td><td>"天亮了，开工。"</td></tr>
+          <tr><td>🦗 昆虫</td><td class="num">41 条</td><td>等待中</td><td>"等太阳再高一点。"</td></tr>
+          <tr><td>🐸 两栖类</td><td class="num">3 条</td><td>下班了</td><td>"夜班结束，找地方躲。"</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <!-- 發現3 · 上午合唱 -->
+  <!-- 发现3 · 上午合唱 -->
   <div class="disc-card">
-    <span class="badge">發現 03 · 上午合唱</span>
-    <h3>☀️ 10:00 ｜ 全年最高峰 · 378 條鳥類</h3>
+    <span class="badge">发现 03 · 上午合唱</span>
+    <h3>☀️ 10:00 ｜ 全年最高峰 · 378 条鸟类</h3>
     <p class="body-text">
-      <strong>九點。</strong>182 條鳥類記錄。比八點翻了超過三倍。
-      <strong>十點。</strong><em>378 條</em>——全年最高峰，是清晨六點的 21 倍。
-      珠頸斑鳩在廣場上踱步，麻雀在屋簷下吵鬧，紅耳鵯站在最高的枝頭，
-      鵲鴝在灌木叢裡唱著重複的旋律，白頭鵯在榕樹上跳來跳去，八哥在電線上排成一排。
-      <strong>這一小時，鳥+昆蟲合計 806 條生命記錄</strong>——一天裡最"吵"的時刻。
+      <strong>九点。</strong>182 条鸟类记录。比八点翻了超过三倍。
+      <strong>十点。</strong><em>378 条</em>——全年最高峰，是清晨六点的 21 倍。
+      珠颈斑鸠在广场上踱步，麻雀在屋檐下吵闹，红耳鹎站在最高的枝头，
+      鹊鸲在灌木丛里唱着重复的旋律，白头鹎在榕树上跳来跳去，八哥在电线上排成一排。
+      <strong>这一小时，鸟+昆虫合计 806 条生命记录</strong>——一天里最"吵"的时刻。
     </p>
     <p class="body-text">
-      上午三小時，<em>838 條鳥類記錄</em>——佔全天的 27.9%。
-      <strong>這座城市最活躍的居民，不是人類。</strong>
+      上午三小时，<em>838 条鸟类记录</em>——占全天的 27.9%。
+      <strong>这座城市最活跃的居民，不是人类。</strong>
     </p>
-    <h4 style="color:var(--forest-deep);margin:18px 0 10px;font-size:15px">10:00 鳥類六巨頭（2026 總記錄）</h4>
+    <h4 style="color:var(--forest-deep);margin:18px 0 10px;font-size:15px">10:00 鸟类六巨头（2026 总记录）</h4>
     <div class="species-row">
-      <span class="chip"><strong>484</strong>珠頸斑鳩</span>
+      <span class="chip"><strong>484</strong>珠颈斑鸠</span>
       <span class="chip"><strong>435</strong>麻雀</span>
-      <span class="chip"><strong>246</strong>紅耳鵯</span>
-      <span class="chip"><strong>236</strong>鵲鴝</span>
-      <span class="chip"><strong>198</strong>白頭鵯</span>
+      <span class="chip"><strong>246</strong>红耳鹎</span>
+      <span class="chip"><strong>236</strong>鹊鸲</span>
+      <span class="chip"><strong>198</strong>白头鹎</span>
       <span class="chip"><strong>162</strong>八哥</span>
     </div>
     <p style="font-size:13.5px;color:var(--text-mute);margin-top:14px">
-      這些鳥沒有一隻是"稀有"的。正因如此，它們才是城市生態最誠實的指標——
-      如果連它們都少了，那才是真正的警報。
+      这些鸟没有一只是"稀有"的。正因如此，它们才是城市生态最诚实的指针——
+      如果连它们都少了，那才是真正的警报。
     </p>
   </div>
 
-  <!-- 發現4 · 暗夜避難所 -->
+  <!-- 发现4 · 暗夜避难所 -->
   <div class="disc-card hope">
-    <span class="badge">發現 04 · 暗夜避難所</span>
-    <h3>🏝️ 路環 ｜ 37.6% vs 16.9% · 暗夜生命的最後據點</h3>
+    <span class="badge">发现 04 · 暗夜避难所</span>
+    <h3>🏝️ 路环 ｜ 37.6% vs 16.9% · 暗夜生命的最后据点</h3>
     <p class="body-text">
-      梯度資料說話：夜行焦點類群在路環相對低光區的夜間活動比例為 <em>37.6%</em>，
-      是半島高光區 <em>16.9%</em> 的 <em>2.2 倍</em>。
-      若拆分到具體類群——鳥類夜間比例路環 6.2% vs 半島 3.0%；
-      昆蟲路環 31.0% vs 半島 13.8%，差距同樣 2.2 倍。
-      <strong>兩棲類的空間集中更為極端</strong>：2026 年共記錄 303 條兩棲類資料，
-      其中 204 條集中在路環，半島僅 55 條，兩棲類整體夜間活動比例高達 71.7%。
+      梯度数据说话：夜行焦点类群在路环相对低光区的夜间活动比例为 <em>37.6%</em>，
+      是半岛高光区 <em>16.9%</em> 的 <em>2.2 倍</em>。
+      若拆分到具体类群——鸟类夜间比例路环 6.2% vs 半岛 3.0%；
+      昆虫路环 31.0% vs 半岛 13.8%，差距同样 2.2 倍。
+      <strong>两栖类的空间集中更为极端</strong>：2026 年共记录 303 条两栖类数据，
+      其中 204 条集中在路环，半岛仅 55 条，两栖类整体夜间活动比例高达 71.7%。
     </p>
     <div class="callout">
-      <strong>路環，這座 7.6 平方公里的島嶼，正在成為澳門夜行生命最後的暗夜避難所。</strong>
-      然而這個避難所並非固若金湯——隨著路氹城填海區持續開發，光暈正在從北側逐漸滲透。
+      <strong>路环，这座 7.6 平方公里的岛屿，正在成为澳门夜行生命最后的暗夜避难所。</strong>
+      然而这个避难所并非固若金汤——随着路氹城填海区持续开发，光晕正在从北侧逐渐渗透。
     </div>
   </div>
 
-  <!-- 發現5 · 入侵預警 -->
+  <!-- 发现5 · 入侵预警 -->
   <div class="disc-card warn">
-    <span class="badge">發現 05 · 入侵預警</span>
-    <h3>🚨 5 種重點入侵物種的早期預警點位</h3>
+    <span class="badge">发现 05 · 入侵预警</span>
+    <h3>🚨 5 种重点入侵物种的早期预警点位</h3>
     <p class="body-text">
-      入侵物種不分晝夜擴散，不受光週期約束——這是它們和本地生物競爭中的"燈光紅利"。
-      本研究識別 <em>5 種重點入侵物種</em>，已構建早期預警點點陣圖。
+      入侵物种不分昼夜扩散，不受光周期约束——这是它们和本地生物竞争中的"灯光红利"。
+      本研究识别 <em>5 种重点入侵物种</em>，已构建早期预警点位图。
     </p>
     <div class="two-col">
       <div>
         <div class="tbl-wrap">
           <table class="tbl">
-            <thead><tr><th>物種</th><th>型別</th><th>記錄數</th><th>主要區域</th><th>關注</th></tr></thead>
+            <thead><tr><th>物种</th><th>类型</th><th>记录数</th><th>主要区域</th><th>关注</th></tr></thead>
             <tbody>
-              <tr><td>南美蟛蜞菊</td><td>入侵植物</td><td class="num">183</td><td>澳門半島</td><td class="amber">高</td></tr>
-              <tr><td>長足捷蟻</td><td>入侵昆蟲</td><td class="num">27</td><td>路環</td><td class="amber">高</td></tr>
-              <tr><td>紅火蟻</td><td>入侵昆蟲</td><td class="num">7</td><td>澳門半島</td><td class="amber">高</td></tr>
-              <tr><td>溫室蟾</td><td>外來兩棲類</td><td class="num">27</td><td>路環</td><td class="num">中</td></tr>
-              <tr><td>新幾內亞扁蟲</td><td>入侵扁形動物</td><td class="num">7</td><td>澳門半島</td><td class="num">中</td></tr>
+              <tr><td>南美蟛蜞菊</td><td>入侵植物</td><td class="num">183</td><td>澳门半岛</td><td class="amber">高</td></tr>
+              <tr><td>长足捷蚁</td><td>入侵昆虫</td><td class="num">27</td><td>路环</td><td class="amber">高</td></tr>
+              <tr><td>红火蚁</td><td>入侵昆虫</td><td class="num">7</td><td>澳门半岛</td><td class="amber">高</td></tr>
+              <tr><td>温室蟾</td><td>外来两栖类</td><td class="num">27</td><td>路环</td><td class="num">中</td></tr>
+              <tr><td>新几内亚扁虫</td><td>入侵扁形动物</td><td class="num">7</td><td>澳门半岛</td><td class="num">中</td></tr>
             </tbody>
           </table>
         </div>
       </div>
       <figure class="figure">
-        <img src="生态昼夜曲资料\图表\图5_入侵物种预警点位.png"
-             alt="入侵物種預警點位">
+        <img src="生态昼夜曲资料/图表/图5_入侵物种预警点位.png"
+             alt="入侵物种预警点位">
         <figcaption>
-          <strong>圖 5 · 入侵物種預警點位。</strong>
-          南美蟛蜞菊在半島形成密集地被，排擠本土草本；長足捷蟻與紅火蟻威脅本土無脊椎；
-          新幾內亞扁蟲捕食本土蝸牛。該圖作為澳門入侵物種年度監測的優先點位地圖。
+          <strong>图 5 · 入侵物种预警点位。</strong>
+          南美蟛蜞菊在半岛形成密集地被，排挤本土草本；长足捷蚁与红火蚁威胁本土无脊椎；
+          新几内亚扁虫捕食本土蜗牛。该图作为澳门入侵物种年度监测的优先点位地图。
         </figcaption>
       </figure>
     </div>
   </div>
 
-  <!-- 發現6 · 物種更替 -->
+  <!-- 发现6 · 物种更替 -->
   <div class="disc-card">
-    <span class="badge">發現 06 · 物種更替</span>
-    <h3>📊 兩年 Jaccard 相似度僅 39.0%</h3>
+    <span class="badge">发现 06 · 物种更替</span>
+    <h3>📊 两年 Jaccard 相似度仅 39.0%</h3>
     <div class="two-col">
       <div>
         <p class="body-text">
-          2025 與 2026 兩年共有物種 1,399 種，Jaccard 物種相似度僅 <em>39.0%</em>，
-          意味著兩年物種組成差異明顯。其原因可能來自三個方向：
-          取樣強度變化、觀測者關注類群轉移、真實生態壓力。
+          2025 与 2026 两年共有物种 1,399 种，Jaccard 物种相似度仅 <em>39.0%</em>，
+          意味着两年物种组成差异明显。其原因可能来自三个方向：
+          采样强度变化、观测者关注类群转移、真实生态压力。
         </p>
         <p class="body-text">
-          其中 720 個物種<strong>僅出現 1 次</strong>（singletons），322 個出現 2 次（doubletons），
-          71.0% 的物種總出現次數 ≤5。兩棲類中 <em>臺北蛙</em>僅 1 條記錄、
-          鳥類中 <em>黑臉琵鷺</em>僅 1 條——這些"獨有物種"提示後續需要重點複查。
+          其中 720 个物种<strong>仅出现 1 次</strong>（singletons），322 个出现 2 次（doubletons），
+          71.0% 的物种总出现次数 ≤5。两栖类中 <em>台北蛙</em>仅 1 条记录、
+          鸟类中 <em>黑脸琵鹭</em>仅 1 条——这些"独有物种"提示后续需要重点复查。
         </p>
       </div>
       <figure class="figure">
-        <img src="生态昼夜曲资料\图表\图6_物种更替维恩图.png"
-             alt="2025-2026 物種更替維恩圖">
+        <img src="生态昼夜曲资料/图表/图6_物种更替维恩图.png"
+             alt="2025-2026 物种更替维恩图">
         <figcaption>
-          <strong>圖 6 · 物種更替維恩圖。</strong>
-          1,399 種共有，其餘為單年獨有。注意："獨有物種"僅代表當年被記錄，
-          不代表真實新增或消失——這是公民科學資料的邊界。
+          <strong>图 6 · 物种更替维恩图。</strong>
+          1,399 种共有，其余为单年独有。注意："独有物种"仅代表当年被记录，
+          不代表真实新增或消失——这是公民科学数据的边界。
         </figcaption>
       </figure>
     </div>
   </div>
 
   <div class="pager">
-    <button data-action="prev"><span class="pager-arrow">←</span> 上一章 · 資料分析</button>
-    <div class="pager-meta">第 <strong>4</strong> / 5 章 · 核心發現</div>
-    <button data-action="next">下一章 · 未來展望 <span class="pager-arrow">→</span></button>
+    <button data-action="prev"><span class="pager-arrow">←</span> 上一章 · 数据分析</button>
+    <div class="pager-meta">第 <strong>4</strong> / 5 章 · 核心发现</div>
+    <button data-action="next">下一章 · 未来展望 <span class="pager-arrow">→</span></button>
   </div>
 </section>
 
 
 <!-- =========================================================
-     SECTION 5 · 未來展望
+     SECTION 5 · 未来展望
      ========================================================= -->
-<section id="outlook" class="section" data-title="未來展望">
+<section id="outlook" class="section" data-title="未来展望">
   <div class="section-head">
     <span class="kicker">CHAPTER 05 · OUTLOOK</span>
-    <h2>未來展望 ｜ 給夜晚留一盞不亮的燈</h2>
-    <p>四項可執行的保護行動 · 資料侷限 · 研究展望。</p>
+    <h2>未来展望 ｜ 给夜晚留一盏不亮的灯</h2>
+    <p>四项可执行的保护行动 · 数据局限 · 研究展望。</p>
   </div>
 
   <p class="lead">
-    💡 <strong>給夜晚留一盞不亮的燈。</strong>保護澳門生物鐘，從保護黑暗開始。
+    💡 <strong>给夜晚留一盏不亮的灯。</strong>保护澳门生物钟，从保护黑暗开始。
   </p>
 
   <div class="action-grid">
@@ -1534,104 +1534,104 @@ body.modal-open { overflow: hidden; }
     <div class="action">
       <h4>🌃 暗夜友好照明</h4>
       <div class="prob">
-        90 條日行鳥類夜間記錄——被燈光"騙"了。
-        半島鳥類夜間比例 3.0%，路環 6.2%。
-        Science 論文：光汙染延長鳥類活動 50 分鐘。
+        90 条日行鸟类夜间记录——被灯光"骗"了。
+        半岛鸟类夜间比例 3.0%，路环 6.2%。
+        Science 论文：光污染延长鸟类活动 50 分钟。
       </div>
       <ul>
-        <li>公園和溼地周邊使用暖色溫 LED（≤3000K）</li>
-        <li>路燈加裝遮光罩，減少向上散射</li>
-        <li>深夜（00:00-05:00）調暗非必要照明</li>
-        <li>參考國際暗天協會（IDA）暗夜友好標準</li>
+        <li>公园和湿地周边使用暖色温 LED（≤3000K）</li>
+        <li>路灯加装遮光罩，减少向上散射</li>
+        <li>深夜（00:00-05:00）调暗非必要照明</li>
+        <li>参考国际暗天协会（IDA）暗夜友好标准</li>
       </ul>
-      <p class="ref">參考 · IDA: darksky.org / Pease &amp; Gilbert (2025, Science)</p>
+      <p class="ref">参考 · IDA: darksky.org / Pease &amp; Gilbert (2025, Science)</p>
     </div>
 
     <!-- Action 2 -->
     <div class="action">
-      <h4>🏝️ 路環暗夜複查</h4>
+      <h4>🏝️ 路环暗夜复查</h4>
       <div class="prob">
-        路環夜行焦點夜間比例 37.6%（澳門最高）。
-        兩棲類 204 條記錄集中在路環。
-        但路環正在被周邊光汙染包圍。
+        路环夜行焦点夜间比例 37.6%（澳门最高）。
+        两栖类 204 条记录集中在路环。
+        但路环正在被周边光污染包围。
       </div>
       <ul>
-        <li>在路環建立標準化夜間調查樣線</li>
-        <li>監測兩棲類、夜行昆蟲的種群變化</li>
-        <li>評估路環山體的天然"暗影"屏障效應</li>
-        <li>將路環定位為澳門"暗夜生態示範區"</li>
+        <li>在路环建立标准化夜间调查样线</li>
+        <li>监测两栖类、夜行昆虫的种群变化</li>
+        <li>评估路环山体的天然"暗影"屏障效应</li>
+        <li>将路环定位为澳门"暗夜生态示范区"</li>
       </ul>
-      <p class="ref">參考 · CMS Resolution 13.5 光汙染決議 / IDA Dark Sky Park 認證</p>
+      <p class="ref">参考 · CMS Resolution 13.5 光污染决议 / IDA Dark Sky Park 认证</p>
     </div>
 
     <!-- Action 3 -->
     <div class="action">
-      <h4>🚨 入侵物種早期預警</h4>
+      <h4>🚨 入侵物种早期预警</h4>
       <div class="prob">
-        南美蟛蜞菊 183 條，長足捷蟻 27 條。
-        溫室蟾 27 條——入侵兩棲類可能擠佔本地種。
-        入侵種不分晝夜擴散，不受光週期約束。
+        南美蟛蜞菊 183 条，长足捷蚁 27 条。
+        温室蟾 27 条——入侵两栖类可能挤占本地种。
+        入侵种不分昼夜扩散，不受光周期约束。
       </div>
       <ul>
-        <li>建立重點入侵物種年度監測清單</li>
-        <li>優先清除半島和氹仔的南美蟛蜞菊種群</li>
-        <li>路環作為"入侵防火牆"進行口岸監測</li>
-        <li>開放公民科學上傳通道，鼓勵發現-上報</li>
+        <li>建立重点入侵物种年度监测清单</li>
+        <li>优先清除半岛和氹仔的南美蟛蜞菊种群</li>
+        <li>路环作为"入侵防火墙"进行口岸监测</li>
+        <li>开放公民科学上传通道，鼓励发现-上报</li>
       </ul>
-      <p class="ref">參考 · IUCN 全球入侵物種資料庫 (GISD)</p>
+      <p class="ref">参考 · IUCN 全球入侵物种数据库 (GISD)</p>
     </div>
 
     <!-- Action 4 -->
     <div class="action">
-      <h4>📋 低頻物種複核清單</h4>
+      <h4>📋 低频物种复核清单</h4>
       <div class="prob">
-        71.0% 的物種僅出現 ≤5 次。
-        720 個"僅出現 1 次"物種。
-        "獨有物種"不等於"瀕危"——需要複查確認。
+        71.0% 的物种仅出现 ≤5 次。
+        720 个"仅出现 1 次"物种。
+        "独有物种"不等于"濒危"——需要复查确认。
       </div>
       <ul>
-        <li>對僅出現 1-2 次的動物類群物種進行復查</li>
-        <li>關注夜間記錄中的稀有夜行物種</li>
-        <li>區分"資料低頻"和"真實稀少"</li>
-        <li>黑臉琵鷺、臺北蛙等單條記錄列入年度複查</li>
+        <li>对仅出现 1-2 次的动物类群物种进行复查</li>
+        <li>关注夜间记录中的稀有夜行物种</li>
+        <li>区分"数据低频"和"真实稀少"</li>
+        <li>黑脸琵鹭、台北蛙等单条记录列入年度复查</li>
       </ul>
-      <p class="ref">參考 · 報告文件 / 稀有物種分析報告.md</p>
+      <p class="ref">参考 · 报告文档 / 稀有物种分析报告.md</p>
     </div>
   </div>
 
-  <h3 class="h3-sub">資料侷限與邊界宣告</h3>
+  <h3 class="h3-sub">数据局限与边界声明</h3>
   <div class="callout warn">
-    <strong>⚠️ 邊界宣告 ·</strong> 本研究使用公民科學觀測資料。
-    兩年記錄差異可能部分來自觀測人數、路線、季節和關注類群的變化。
-    "獨有物種"僅代表當年被記錄，不代表真實新增或消失。
-    10:00 鳥類高峰部分反映"人也在這個時候最活躍"——這是公民科學資料的本質邊界。
-    本研究的所有結論均建立在"<em>相對模式</em>"而非"<em>絕對種群密度</em>"之上。
+    <strong>⚠️ 边界声明 ·</strong> 本研究使用公民科学观测数据。
+    两年记录差异可能部分来自观测人数、路线、季节和关注类群的变化。
+    "独有物种"仅代表当年被记录，不代表真实新增或消失。
+    10:00 鸟类高峰部分反映"人也在这个时候最活跃"——这是公民科学数据的本质边界。
+    本研究的所有结论均建立在"<em>相对模式</em>"而非"<em>绝对种群密度</em>"之上。
   </div>
 
-  <h3 class="h3-sub">資料→解釋→行動 閉環</h3>
+  <h3 class="h3-sub">数据→解释→行动 闭环</h3>
   <div class="tbl-wrap">
     <table class="tbl">
-      <thead><tr><th>資料發現</th><th>→ 科學解釋</th><th>→ 保護行動</th></tr></thead>
+      <thead><tr><th>数据发现</th><th>→ 科学解释</th><th>→ 保护行动</th></tr></thead>
       <tbody>
         <tr>
-          <td>90 條夜間鳥類記錄</td>
-          <td>光汙染延長鳥類活動（Science 2025）</td>
+          <td>90 条夜间鸟类记录</td>
+          <td>光污染延长鸟类活动（Science 2025）</td>
           <td class="amber">暗夜友好照明方案</td>
         </tr>
         <tr>
-          <td>路環 37.6% vs 半島 16.9%</td>
-          <td>路環是最後的暗夜避難所</td>
-          <td class="amber">路環暗夜生態示範區</td>
+          <td>路环 37.6% vs 半岛 16.9%</td>
+          <td>路环是最后的暗夜避难所</td>
+          <td class="amber">路环暗夜生态示范区</td>
         </tr>
         <tr>
-          <td>5 種入侵物種 ≥250 條記錄</td>
-          <td>不受光週期約束的擴散</td>
-          <td class="amber">早期預警年度監測</td>
+          <td>5 种入侵物种 ≥250 条记录</td>
+          <td>不受光周期约束的扩散</td>
+          <td class="amber">早期预警年度监测</td>
         </tr>
         <tr>
-          <td>720 個 singletons 物種</td>
-          <td>低頻訊號需要重複觀測確認</td>
-          <td class="amber">低頻物種複核清單</td>
+          <td>720 个 singletons 物种</td>
+          <td>低频信号需要重复观测确认</td>
+          <td class="amber">低频物种复核清单</td>
         </tr>
       </tbody>
     </table>
@@ -1639,31 +1639,31 @@ body.modal-open { overflow: hidden; }
 
   <div class="closing">
     <div class="big">
-      "在越來越亮的澳門，<br>
-      保護黑暗，就是保護那些<br>
-      按自己生物鐘生活的生命的最後權利。"
+      "在越来越亮的澳门，<br>
+      保护黑暗，就是保护那些<br>
+      按自己生物钟生活的生命的最后权利。"
     </div>
     <div class="small">
-      讓城市繼續明亮，也給夜晚的生命留一點黑暗。
+      让城市继续明亮，也给夜晚的生命留一点黑暗。
     </div>
   </div>
 
   <div class="pager">
-    <button data-action="prev"><span class="pager-arrow">←</span> 上一章 · 核心發現</button>
-    <div class="pager-meta">第 <strong>5</strong> / 5 章 · 未來展望 · <a href="#home" data-target="home" style="color:var(--amber-gold)">回到主頁 ↺</a></div>
-    <button data-action="next">回到主頁 <span class="pager-arrow">↺</span></button>
+    <button data-action="prev"><span class="pager-arrow">←</span> 上一章 · 核心发现</button>
+    <div class="pager-meta">第 <strong>5</strong> / 5 章 · 未来展望 · <a href="#home" data-target="home" style="color:var(--amber-gold)">回到主页 ↺</a></div>
+    <button data-action="next">回到主页 <span class="pager-arrow">↺</span></button>
   </div>
 </section>
 
 </main>
 
 <!-- =========================================================
-     互動式熱點圖模態 (全屏 iframe)
+     交互式热点图模态 (全屏 iframe)
      ========================================================= -->
-<div class="map-modal" id="mapModal" role="dialog" aria-label="澳門生物多樣性互動式熱點圖" aria-modal="true">
+<div class="map-modal" id="mapModal" role="dialog" aria-label="澳门生物多样性交互式热点图" aria-modal="true">
   <div class="map-modal-inner">
-    <button class="map-modal-close" id="mapModalClose" aria-label="關閉熱點圖">✕</button>
-    <iframe id="mapModalIframe" src="" title="澳門生物多樣性熱點圖" loading="lazy"></iframe>
+    <button class="map-modal-close" id="mapModalClose" aria-label="关闭热点图">✕</button>
+    <iframe id="mapModalIframe" src="" title="澳门生物多样性热点图" loading="lazy"></iframe>
   </div>
 </div>
 
@@ -1672,24 +1672,24 @@ body.modal-open { overflow: hidden; }
      ========================================================= -->
 <footer class="footer">
   <div>
-    <strong>澳門生態晝夜曲</strong> ·
-    2025–2026 公民科學資料 · 51,853 條有效記錄 ·
-    本研究為澳門首次將公民科學資料與光汙染梯度相結合的生態晝夜節律分析
+    <strong>澳门生态昼夜曲</strong> ·
+    2025–2026 公民科学数据 · 51,853 条有效记录 ·
+    本研究为澳门首次将公民科学数据与光污染梯度相结合的生态昼夜节律分析
   </div>
   <div class="sources">
-    主要參考：Pease &amp; Gilbert (2025, <i>Science</i> 389:818–821) ·
+    主要参考：Pease &amp; Gilbert (2025, <i>Science</i> 389:818–821) ·
     Owens &amp; Lewis (2018, <i>Ecology &amp; Evolution</i>) ·
     Longcore &amp; Rich (2004, <i>Frontiers in Ecology</i>) ·
     Gaston et al. (2013, <i>Biological Reviews</i>) ·
     Fabian et al. (2024, <i>Nature Communications</i>) ·
-    國際暗天協會 (IDA, darksky.org) ·
+    国际暗天协会 (IDA, darksky.org) ·
     CMS Resolution 13.5 (2020)
   </div>
 </footer>
 
 <script>
 /* ===========================================================
-   多檢視切換 + 上一章/下一章 閉環
+   多视图切换 + 上一章/下一章 闭环
    =========================================================== */
 (function () {
   const order = ['home', 'background', 'analysis', 'findings', 'outlook'];
@@ -1698,34 +1698,34 @@ body.modal-open { overflow: hidden; }
     const sections = document.querySelectorAll('.section');
     sections.forEach(s => s.classList.toggle('active', s.id === targetId));
 
-    // 頂部導航高亮
+    // 顶部导航高亮
     document.querySelectorAll('.navlinks button').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.target === targetId);
     });
 
-    // 標題更新（瀏覽器 tab 顯示當前章節）
+    // 标题更新（浏览器 tab 显示当前章节）
     const sec = document.getElementById(targetId);
     if (sec && sec.dataset.title) {
-      document.title = '澳門生態晝夜曲 · ' + sec.dataset.title;
+      document.title = '澳门生态昼夜曲 · ' + sec.dataset.title;
     }
 
-    // 滾動到頂部（導航高度補償）
+    // 滚动到顶部（导航高度补偿）
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // 1) 頂部導航按鈕
+  // 1) 顶部导航按钮
   document.querySelectorAll('.navlinks button').forEach(btn => {
     btn.addEventListener('click', () => go(btn.dataset.target));
   });
 
-  // 2) 上一章 / 下一章 按鈕（每個 section 內部各自的 .pager）
+  // 2) 上一章 / 下一章 按钮（每个 section 内部各自的 .pager）
   document.querySelectorAll('.pager button[data-action]').forEach(btn => {
     btn.addEventListener('click', () => {
       const currentSec = btn.closest('.section');
       const idx = order.indexOf(currentSec.id);
       let nextIdx;
       if (btn.dataset.action === 'next') {
-        nextIdx = (idx + 1) % order.length;            // 形成閉環
+        nextIdx = (idx + 1) % order.length;            // 形成闭环
       } else {
         nextIdx = (idx - 1 + order.length) % order.length;
       }
@@ -1733,7 +1733,7 @@ body.modal-open { overflow: hidden; }
     });
   });
 
-  // 3) "回到主頁 ↺" 錨連結
+  // 3) "回到主页 ↺" 锚链接
   document.querySelectorAll('a[data-target]').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
@@ -1741,11 +1741,11 @@ body.modal-open { overflow: hidden; }
     });
   });
 
-  // 4) 鍵盤左右方向鍵翻頁
+  // 4) 键盘左右方向键翻页
   document.addEventListener('keydown', (e) => {
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
     const modal = document.getElementById('mapModal');
-    if (modal && modal.classList.contains('open')) return;  // 模態開啟時禁用翻頁
+    if (modal && modal.classList.contains('open')) return;  // 模态打开时禁用翻页
     const currentActive = document.querySelector('.section.active');
     if (!currentActive) return;
     const idx = order.indexOf(currentActive.id);
@@ -1755,9 +1755,9 @@ body.modal-open { overflow: hidden; }
 })();
 
 /* ===========================================================
-   互動式熱點圖模態
-   - 點選圖片或"開啟互動式熱點圖"按鈕 → 載入 iframe
-   - 關閉按鈕 / ESC / 點遮罩 → 關閉並解除安裝 iframe（釋放記憶體）
+   交互式热点图模态
+   - 点击图片或"打开交互式热点图"按钮 → 加载 iframe
+   - 关闭按钮 / ESC / 点遮罩 → 关闭并卸载 iframe（释放内存）
    =========================================================== */
 (function () {
   const modal     = document.getElementById('mapModal');
@@ -1773,23 +1773,23 @@ body.modal-open { overflow: hidden; }
   function closeMap() {
     modal.classList.remove('open');
     document.body.classList.remove('modal-open');
-    // 解除安裝 iframe，節省記憶體並停止地圖指令碼執行
+    // 卸载 iframe，节省内存并停止地图脚本运行
     setTimeout(() => { iframe.src = ''; }, 250);
   }
 
-  // 按鈕觸發
+  // 按钮触发
   document.querySelectorAll('[data-open="hotspot"]').forEach(btn => {
     btn.addEventListener('click', openMap);
   });
-  // 點選圖片也能開啟
+  // 点击图片也能打开
   document.querySelectorAll('.hotspot-figure img').forEach(img => {
     img.addEventListener('click', openMap);
   });
 
-  // 關閉互動
+  // 关闭交互
   closeBtn.addEventListener('click', closeMap);
   modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeMap();  // 點遮罩區域關閉
+    if (e.target === modal) closeMap();  // 点遮罩区域关闭
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.classList.contains('open')) closeMap();
