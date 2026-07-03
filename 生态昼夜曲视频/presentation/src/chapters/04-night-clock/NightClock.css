@@ -1,0 +1,469 @@
+/* NightClock.css — 前綴 .nc- */
+
+.nc-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+/* ── Section label / kicker ── */
+.nc-section-label {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── Left-right two-column layout (steps 0, 3, 4) ── */
+.nc-lr {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  padding: 0 60px;
+  animation: nc-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.nc-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-width: 240px;
+}
+
+.nc-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  max-width: 520px;
+}
+
+/* ── Mini clock SVG ── */
+.nc-mini-clock {
+  width: 260px;
+  height: 260px;
+}
+
+/* ── Time label ── */
+.nc-time-label {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+.nc-time-sub {
+  font-family: var(--font-body);
+  font-size: 17px;
+  color: var(--text-mute);
+}
+
+/* ── Title ── */
+.nc-title {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+/* ── Species list (step 0) ── */
+.nc-sp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nc-sp-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: nc-row-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.nc-sp-name {
+  font-family: var(--font-display-cn);
+  font-size: 20px;
+  color: var(--text);
+  min-width: 96px;
+}
+
+.nc-sp-bar-wrap {
+  flex: 1;
+  height: 14px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.nc-sp-bar {
+  height: 100%;
+  background: var(--accent);
+  opacity: 0.65;
+  border-radius: 2px;
+  animation: nc-bar-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.nc-sp-count {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text-2);
+  min-width: 40px;
+  text-align: right;
+}
+
+/* ── Step 1: Three-way ratio comparison ── */
+.nc-s1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  animation: nc-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.nc-trio {
+  display: flex;
+  align-items: flex-end;
+  gap: 80px;
+}
+
+.nc-trio-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: nc-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.nc-trio-pct {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.nc-trio-bar-wrap {
+  width: 88px;
+  display: flex;
+  align-items: flex-end;
+  height: 280px;
+}
+
+.nc-trio-bar {
+  width: 88px;
+  border-radius: 4px 4px 0 0;
+  animation: nc-bar-rise 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.nc-trio-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.nc-trio-name {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text);
+}
+
+.nc-trio-note {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+}
+
+.nc-s1-caption {
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+/* ── Step 2: 4-species cards ── */
+.nc-s2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  animation: nc-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.nc-sp-cards {
+  display: flex;
+  gap: 28px;
+}
+
+.nc-sp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 28px 22px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface-2));
+  min-width: 148px;
+  animation: nc-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.nc-sp-card-name {
+  font-family: var(--font-display-cn);
+  font-size: 21px;
+  color: var(--text);
+  text-align: center;
+}
+
+.nc-sp-card-num {
+  font-size: 52px;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.nc-sp-card-unit {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+}
+
+.nc-sp-card-bar-wrap {
+  width: 100%;
+  height: 6px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.nc-sp-card-bar {
+  height: 100%;
+  background: var(--accent);
+  opacity: 0.6;
+  border-radius: 3px;
+  animation: nc-bar-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+.nc-s2-note {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-2);
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+}
+
+/* ── Step 3: mollusk + insects ── */
+.nc-insect-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nc-ins-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: nc-row-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.nc-ins-name {
+  font-family: var(--font-display-cn);
+  font-size: 19px;
+  color: var(--text);
+  min-width: 88px;
+}
+
+.nc-ins-bar-wrap {
+  flex: 1;
+  height: 12px;
+  background: color-mix(in srgb, var(--text-mute) 15%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.nc-ins-bar {
+  height: 100%;
+  background: var(--text-2);
+  opacity: 0.55;
+  border-radius: 2px;
+  animation: nc-bar-grow 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.nc-ins-count {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--text-2);
+  min-width: 36px;
+  text-align: right;
+}
+
+.nc-mol-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface-2));
+  margin-bottom: 8px;
+}
+
+.nc-mol-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mute);
+  letter-spacing: 0.12em;
+}
+
+.nc-mol-text {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--accent);
+}
+
+/* ── Step 4: deep night birds ── */
+.nc-s4-note {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text-2);
+  line-height: 1.7;
+  border-left: 3px solid var(--rule);
+  padding-left: 16px;
+}
+
+.nc-bird-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nc-bird-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: nc-row-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.nc-bird-name {
+  font-family: var(--font-display-cn);
+  font-size: 19px;
+  color: var(--text);
+  min-width: 68px;
+}
+
+.nc-bird-bar-wrap {
+  flex: 1;
+  height: 12px;
+  background: color-mix(in srgb, var(--text-mute) 12%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.nc-bird-bar {
+  height: 100%;
+  background: var(--text-mute);
+  opacity: 0.55;
+  border-radius: 2px;
+  animation: nc-bar-grow 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.nc-bird-count {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--text-2);
+  min-width: 36px;
+  text-align: right;
+}
+
+.nc-light-warn {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text-mute);
+  border-left: 3px solid var(--text-mute);
+  padding-left: 14px;
+  opacity: 0.85;
+}
+
+/* ── Step 5: lock-in conclusion ── */
+.nc-s5 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 52px;
+  animation: nc-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.nc-lock-row {
+  display: flex;
+  gap: 72px;
+  align-items: flex-end;
+}
+
+.nc-lock-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: nc-fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.nc-lock-num {
+  font-size: 72px;
+  line-height: 0.9;
+}
+
+.nc-lock-taxon {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text);
+}
+
+.nc-lock-label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+}
+
+.nc-conclusion {
+  font-family: var(--font-display-cn);
+  font-size: 34px;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.5;
+}
+
+.nc-s5-clock-wrap {
+  position: relative;
+}
+
+/* ── Keyframes ── */
+@keyframes nc-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes nc-row-in {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes nc-bar-grow {
+  from { width: 0 !important; }
+}
+
+@keyframes nc-bar-rise {
+  from { height: 0 !important; }
+}
+
+@keyframes nc-sector-in {
+  from { opacity: 0; }
+  to   { opacity: 0.7; }
+}

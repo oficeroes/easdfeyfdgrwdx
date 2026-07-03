@@ -1,0 +1,428 @@
+/* DayClock.css — 前綴 .dc- */
+
+.dc-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.dc-section-label {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── 左右佈局通用 ── */
+.dc-s0, .dc-s1, .dc-s3, .dc-s4 {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  padding: 0 60px;
+  animation: dc-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dc-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-width: 240px;
+}
+
+.dc-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  max-width: 520px;
+}
+
+.dc-mini-clock {
+  width: 260px;
+  height: 260px;
+}
+
+.dc-time-label {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  color: var(--text);
+  letter-spacing: 0.08em;
+}
+
+.dc-time-accent { color: var(--accent); }
+
+.dc-time-sub {
+  font-family: var(--font-body);
+  font-size: 17px;
+  color: var(--text-mute);
+}
+
+.dc-peak-badge {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.dc-peak-num { font-size: 56px; color: var(--text); }
+.dc-peak-unit {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text-2);
+}
+
+.dc-title {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+/* ── 鳥類條狀列表 ── */
+.dc-bird-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dc-bird-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: dc-row-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.dc-bird-name {
+  font-family: var(--font-display-cn);
+  font-size: 20px;
+  color: var(--text);
+  min-width: 88px;
+}
+
+.dc-bird-bar-wrap {
+  flex: 1;
+  height: 14px;
+  background: color-mix(in srgb, var(--text-mute) 15%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.dc-bird-bar {
+  height: 100%;
+  background: var(--text);
+  opacity: 0.6;
+  border-radius: 2px;
+  animation: dc-bar-grow 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.dc-bird-count {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text-2);
+  min-width: 40px;
+  text-align: right;
+}
+
+.dc-bird-pct {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-mute);
+  min-width: 44px;
+}
+
+/* ── Step 2: 四時段縱條圖 ── */
+.dc-s2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  animation: dc-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dc-period-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 48px;
+  height: 300px;
+}
+
+.dc-period-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  animation: dc-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.dc-period-pct {
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.dc-period-bar-wrap {
+  width: 72px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.dc-period-bar {
+  width: 72px;
+  border-radius: 3px 3px 0 0;
+  animation: dc-bar-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+.dc-period-count {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.dc-period-label {
+  font-family: var(--font-display-cn);
+  font-size: 20px;
+  color: var(--text);
+}
+
+.dc-period-time {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mute);
+}
+
+.dc-night-note {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-2);
+  border-left: 3px solid var(--rule);
+  padding-left: 16px;
+}
+
+.dc-night-note strong { color: var(--text); }
+
+/* ── Step 3: 昆蟲對比 ── */
+.dc-insect-compare {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.dc-insect-year {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--rule);
+  padding: 16px 24px;
+  border-radius: 4px;
+}
+
+.dc-insect-year-26 {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg));
+}
+
+.dc-insect-yr {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-mute);
+}
+
+.dc-insect-num {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  color: var(--text);
+}
+
+.dc-insect-year-26 .dc-insect-num { color: var(--accent); }
+
+.dc-insect-sp {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-2);
+}
+
+.dc-insect-arrow { font-size: 24px; color: var(--text-mute); }
+
+.dc-insect-delta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dc-insect-delta span {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text-2);
+}
+
+.dc-insect-delta strong { color: var(--accent); }
+
+.dc-insect-note {
+  font-family: var(--font-body);
+  font-size: 17px;
+  color: var(--text-mute);
+  border-left: 3px solid var(--accent);
+  padding-left: 14px;
+}
+
+/* ── Step 4: 黃昏 ── */
+.dc-dusk-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.dc-dusk-num { font-size: 64px; color: var(--text); }
+.dc-dusk-unit {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-2);
+}
+
+.dc-dusk-wetland {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--rule);
+  padding: 16px 20px;
+  border-radius: 4px;
+}
+
+.dc-dusk-wt-label {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+  margin-bottom: 4px;
+}
+
+.dc-dusk-wt-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.dc-wt-sp {
+  font-family: var(--font-display-cn);
+  font-size: 20px;
+  color: var(--text);
+  min-width: 60px;
+}
+
+.dc-wt-n {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.dc-dusk-note {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* ── Step 5: 時間軸 ── */
+.dc-s5 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  animation: dc-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dc-timeline {
+  position: relative;
+  display: flex;
+  gap: 80px;
+  padding: 32px 40px;
+}
+
+.dc-tl-line {
+  position: absolute;
+  left: 40px; right: 40px;
+  top: 50px;
+  height: 2px;
+  background: var(--rule);
+}
+
+.dc-tl-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+  animation: dc-fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.dc-tl-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--text);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1.5px var(--text);
+}
+
+.dc-sum-peak .dc-tl-dot { background: var(--accent); box-shadow: 0 0 0 1.5px var(--accent); }
+.dc-sum-dusk .dc-tl-dot { background: var(--text-2); box-shadow: 0 0 0 1.5px var(--text-2); }
+
+.dc-tl-time {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text-mute);
+}
+
+.dc-tl-label {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text);
+}
+
+.dc-tl-key {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--accent);
+}
+
+.dc-summary-quote {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  color: var(--text-2);
+  text-align: center;
+  line-height: 1.8;
+}
+
+/* ── keyframes ── */
+@keyframes dc-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dc-row-in {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes dc-bar-grow {
+  from { width: 0 !important; }
+}
+
+@keyframes dc-bar-rise {
+  from { height: 0 !important; }
+}
+
+@keyframes dc-sector-in {
+  from { opacity: 0; }
+  to   { opacity: 0.7; }
+}

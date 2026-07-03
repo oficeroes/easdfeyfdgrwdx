@@ -1,0 +1,431 @@
+/* Invasion.css — 前綴 .inv- */
+
+.inv-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.inv-kicker {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  display: block;
+}
+
+/* ── Step 0: 五種警示卡 ── */
+.inv-s0 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  animation: inv-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.inv-s0-header {
+  text-align: center;
+}
+
+.inv-cards-row {
+  display: flex;
+  gap: 28px;
+  align-items: stretch;
+}
+
+.inv-sp-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 24px 24px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow, none);
+  width: 180px;
+  animation: inv-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.inv-sp-card--high {
+  border-top: 3px solid var(--inv-high, #c0392b);
+}
+
+.inv-sp-card--watch {
+  border-top: 3px solid var(--inv-watch, #b8860b);
+}
+
+/* Color tokens — defined locally so they work in any CSS theme */
+:root {
+  --inv-high:  color-mix(in srgb, red 55%, var(--text) 45%);
+  --inv-watch: color-mix(in srgb, orange 60%, var(--text) 40%);
+}
+
+.inv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.inv-badge--high {
+  background: color-mix(in srgb, var(--inv-high) 12%, transparent);
+  color: var(--inv-high);
+  border: 1px solid color-mix(in srgb, var(--inv-high) 30%, transparent);
+}
+
+.inv-badge--watch {
+  background: color-mix(in srgb, var(--inv-watch) 12%, transparent);
+  color: var(--inv-watch);
+  border: 1px solid color-mix(in srgb, var(--inv-watch) 30%, transparent);
+}
+
+.inv-badge-icon {
+  font-size: 11px;
+}
+
+.inv-sp-name {
+  font-family: var(--font-display-cn);
+  font-size: 18px;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.inv-sp-count {
+  font-size: 56px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.inv-sp-unit {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-mute);
+}
+
+/* ── Step 1: 分區條圖 ── */
+.inv-s1 {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  padding: 0 80px;
+  animation: inv-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.inv-s1-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 300px;
+}
+
+.inv-title {
+  font-family: var(--font-display-cn);
+  font-size: 48px;
+  color: var(--text);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.inv-total-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.inv-total-num {
+  font-size: 80px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.inv-total-unit {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-2);
+}
+
+.inv-note {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text-2);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.inv-s1-right {
+  flex: 1;
+}
+
+.inv-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.inv-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: inv-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.inv-bar-label {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text);
+  min-width: 48px;
+  text-align: right;
+}
+
+.inv-bar-track {
+  width: 440px;
+  height: 20px;
+  background: color-mix(in srgb, var(--text-mute) 12%, transparent);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.inv-bar-fill {
+  height: 100%;
+  background: var(--inv-high);
+  opacity: 0.75;
+  border-radius: 3px;
+  animation: inv-bar-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+.inv-bar-count {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  color: var(--text-2);
+  min-width: 36px;
+  text-align: right;
+}
+
+.inv-bar-pct {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-mute);
+  min-width: 44px;
+}
+
+/* ── Step 2: 路環威脅 ── */
+.inv-s2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  animation: inv-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.inv-coloane-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.inv-threat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 36px;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  background: var(--surface-2);
+  box-shadow: var(--card-shadow, none);
+  animation: inv-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.inv-threat-card--high {
+  border-top: 3px solid var(--inv-high);
+  animation-delay: 0.05s;
+}
+
+.inv-threat-card--watch {
+  border-top: 3px solid var(--inv-watch);
+  animation-delay: 0.18s;
+}
+
+.inv-threat-name {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  color: var(--text);
+}
+
+.inv-threat-num {
+  font-size: 72px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.inv-threat-unit {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text-2);
+}
+
+.inv-threat-total {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+}
+
+.inv-threat-plus {
+  font-size: 32px;
+  color: var(--text-mute);
+  font-family: var(--font-body);
+}
+
+.inv-coloane-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 640px;
+}
+
+.inv-rule-bar {
+  width: 3px;
+  min-height: 60px;
+  background: var(--accent);
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.inv-note-text {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text-2);
+  line-height: 1.8;
+  margin: 0;
+}
+
+/* ── Step 3: 質性說明 ── */
+.inv-s3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  animation: inv-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.inv-quote-block {
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.inv-quote-accent {
+  width: 4px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.inv-quote-text {
+  font-family: var(--font-display-cn);
+  font-size: 52px;
+  color: var(--text);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.inv-timing-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.inv-timing-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 36px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface-2));
+  animation: inv-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+  opacity: 0;
+}
+
+.inv-timing-card--dim {
+  border-color: var(--rule);
+  background: var(--surface-2);
+  animation-delay: 0.32s;
+}
+
+.inv-timing-icon {
+  font-size: 24px;
+  color: var(--accent);
+}
+
+.inv-timing-icon--dim {
+  color: var(--text-mute);
+}
+
+.inv-timing-label {
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+  color: var(--text);
+}
+
+.inv-timing-label--dim {
+  color: var(--text-mute);
+}
+
+.inv-timing-sub {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--accent);
+  text-align: center;
+  line-height: 1.7;
+}
+
+.inv-timing-sub--dim {
+  color: var(--text-mute);
+}
+
+.inv-timing-arrow {
+  font-size: 28px;
+  color: var(--text-mute);
+}
+
+.inv-footer-note {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 640px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ── keyframes ── */
+@keyframes inv-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes inv-card-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes inv-bar-grow {
+  from { width: 0 !important; }
+}

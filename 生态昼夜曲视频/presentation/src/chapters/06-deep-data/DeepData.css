@@ -1,0 +1,614 @@
+/* DeepData.css — 前綴 .dd- */
+
+.dd-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.dd-section-label {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ── Step 0: 指數表 + 物種數 ── */
+.dd-s0 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+  animation: dd-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  width: 100%;
+  max-width: 900px;
+}
+
+.dd-index-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dd-index-header,
+.dd-index-row {
+  display: grid;
+  grid-template-columns: 2fr 1.3fr 1.3fr 1.3fr 2fr;
+}
+
+.dd-index-header {
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  padding: 10px 20px;
+}
+
+.dd-index-header span {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+}
+
+.dd-index-row {
+  padding: 14px 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.dd-idx-name {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text);
+}
+
+.dd-idx-val {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-2);
+}
+
+.dd-idx-delta {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.dd-idx-delta.up   { color: var(--accent); }
+.dd-idx-delta.down { color: var(--text-mute); }
+
+.dd-idx-note {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-2);
+}
+
+.dd-species-row {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 24px 40px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
+  width: 100%;
+}
+
+.dd-species-block {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.dd-species-year {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+}
+
+.dd-species-num {
+  font-size: 52px;
+  color: var(--text);
+}
+
+.dd-species-unit {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-2);
+}
+
+.dd-species-arrow {
+  font-size: 28px;
+  color: var(--rule);
+  font-weight: 300;
+}
+
+.dd-species-delta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-mute);
+}
+
+/* ── Step 1: Jaccard 韋恩圖 ── */
+.dd-s1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  animation: dd-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  width: 100%;
+  max-width: 880px;
+}
+
+.dd-jaccard-hero {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.dd-jaccard-pct {
+  font-size: 96px;
+  color: var(--accent);
+}
+
+.dd-jaccard-label {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-2);
+}
+
+.dd-venn-wrap {
+  width: 100%;
+  max-width: 720px;
+}
+
+.dd-venn-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.dd-venn-left {
+  fill: color-mix(in srgb, var(--text-mute) 18%, transparent);
+  stroke: var(--text-mute);
+  stroke-width: 1.5;
+}
+
+.dd-venn-right {
+  fill: color-mix(in srgb, var(--accent) 18%, transparent);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+.dd-venn-count {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 600;
+  fill: var(--text);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.dd-venn-count-shared {
+  fill: var(--text);
+  font-size: 26px;
+}
+
+.dd-venn-sublabel {
+  font-family: var(--font-body);
+  font-size: 16px;
+  fill: var(--text-2);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.dd-venn-sublabel-shared {
+  fill: var(--text-2);
+}
+
+.dd-venn-year {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  fill: var(--text-mute);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.dd-venn-note {
+  font-family: var(--font-body);
+  font-size: 19px;
+  color: var(--text-2);
+  text-align: center;
+  border-top: 1px solid var(--rule);
+  padding-top: 20px;
+  width: 100%;
+  margin: 0;
+}
+
+/* ── Step 2: 物種集中度 ── */
+.dd-s2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+  animation: dd-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  width: 100%;
+  max-width: 860px;
+}
+
+.dd-conc-hero-row {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+  padding: 20px 32px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent) 4%, var(--surface));
+}
+
+.dd-conc-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dd-conc-num {
+  font-size: 60px;
+  color: var(--accent);
+}
+
+.dd-conc-desc {
+  font-family: var(--font-body);
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.dd-conc-divider {
+  width: 1px;
+  height: 64px;
+  background: var(--rule);
+}
+
+.dd-conc-chart {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dd-conc-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dd-conc-bar-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mute);
+  min-width: 52px;
+  text-align: right;
+}
+
+.dd-conc-bar-track {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 18px;
+  background: color-mix(in srgb, var(--text-mute) 8%, transparent);
+  border-radius: 2px;
+  overflow: visible;
+  position: relative;
+}
+
+.dd-conc-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--text-mute) 35%, transparent);
+  animation: dd-bar-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dd-conc-bar-hi {
+  background: var(--accent);
+  opacity: 0.85;
+}
+
+.dd-conc-bar-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mute);
+  white-space: nowrap;
+  margin-left: 8px;
+}
+
+.dd-conc-note {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text-2);
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+  margin: 0;
+}
+
+/* ── Step 3: 稀有物種結構 ── */
+.dd-s3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  animation: dd-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  width: 100%;
+  max-width: 860px;
+}
+
+.dd-rare-hero {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+}
+
+.dd-rare-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 32px;
+  border-radius: 4px;
+  border: 1px solid var(--rule);
+  position: relative;
+}
+
+.dd-rare-stat-primary {
+  flex: 1.4;
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+}
+
+.dd-rare-stat-secondary {
+  flex: 1;
+  background: color-mix(in srgb, var(--text-mute) 5%, var(--surface));
+}
+
+.dd-rare-num {
+  font-size: 64px;
+  color: var(--text);
+}
+
+.dd-rare-stat-primary .dd-rare-num { color: var(--accent); }
+
+.dd-rare-unit {
+  font-family: var(--font-body);
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.dd-rare-sub {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mute);
+  letter-spacing: 0.05em;
+}
+
+.dd-rare-pct-badge {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  padding: 4px 16px;
+  border-radius: 3px;
+}
+
+.dd-rare-pct-secondary {
+  color: var(--text-2);
+  border-color: var(--rule);
+}
+
+.dd-rare-taxa {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dd-rare-taxa-title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.dd-rare-taxa-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.dd-rare-taxa-name {
+  font-family: var(--font-body);
+  font-size: 17px;
+  color: var(--text);
+  min-width: 200px;
+}
+
+.dd-rare-taxa-bar-track {
+  flex: 1;
+  height: 20px;
+  background: color-mix(in srgb, var(--text-mute) 10%, transparent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.dd-rare-taxa-bar {
+  height: 100%;
+  background: var(--accent);
+  opacity: 0.7;
+  border-radius: 2px;
+  animation: dd-bar-grow 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dd-rare-taxa-val {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-2);
+  min-width: 54px;
+  text-align: right;
+}
+
+/* ── Step 4: Singleton 物種卡 ── */
+.dd-s4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  animation: dd-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  width: 100%;
+  max-width: 920px;
+}
+
+.dd-sp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.dd-sp-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px 20px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--surface-2);
+  animation: dd-card-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.dd-sp-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.dd-sp-cn {
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.dd-sp-iucn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.dd-iucn-cr {
+  background: color-mix(in srgb, #c0392b 15%, transparent);
+  color: #c0392b;
+  border: 1px solid color-mix(in srgb, #c0392b 35%, transparent);
+}
+
+.dd-iucn-vu {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.dd-iucn-nt {
+  background: color-mix(in srgb, var(--text-mute) 12%, transparent);
+  color: var(--text-mute);
+  border: 1px solid var(--rule);
+}
+
+.dd-iucn-lc {
+  background: color-mix(in srgb, var(--text-faint) 12%, transparent);
+  color: var(--text-faint);
+  border: 1px solid var(--rule);
+}
+
+.dd-sp-la {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-mute);
+}
+
+.dd-sp-note {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-2);
+  flex: 1;
+}
+
+.dd-sp-records {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.dd-sp-records-num {
+  font-size: 36px;
+  color: var(--text-mute);
+}
+
+.dd-sp-records-label {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-faint);
+}
+
+.dd-sp-quote {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text-2);
+  text-align: center;
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+  width: 100%;
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* ── keyframes ── */
+@keyframes dd-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dd-card-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dd-bar-grow {
+  from { width: 0 !important; }
+  to   { /* width kept via inline style */ }
+}

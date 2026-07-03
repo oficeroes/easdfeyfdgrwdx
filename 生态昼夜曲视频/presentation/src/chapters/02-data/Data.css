@@ -1,0 +1,409 @@
+/* Data.css — 前綴 .dt- */
+
+.dt-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.dt-section-label {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ── Step 0: 年份對比 ── */
+.dt-s0 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  animation: dt-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dt-year-compare {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.dt-year-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-width: 280px;
+}
+
+.dt-year-tag {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  letter-spacing: 0.15em;
+  color: var(--text-mute);
+  border: 1px solid var(--rule);
+  padding: 4px 16px;
+  border-radius: 3px;
+}
+
+.dt-year-num {
+  font-size: 72px;
+  line-height: 1;
+}
+
+.dt-year-2025 .dt-year-num { color: var(--text); }
+.dt-year-2026 .dt-year-num { color: var(--accent); }
+
+.dt-year-unit {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-2);
+}
+
+.dt-year-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+  width: 100%;
+}
+
+.dt-year-detail span {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+}
+
+.dt-year-plus {
+  font-size: 40px;
+  color: var(--rule);
+  font-weight: 300;
+  align-self: center;
+  margin-top: -24px;
+}
+
+.dt-total-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-top: 2px solid var(--accent);
+  padding-top: 24px;
+}
+
+.dt-total-label {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-mute);
+}
+
+.dt-total-num {
+  font-size: 64px;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.dt-total-unit {
+  font-family: var(--font-body);
+  font-size: 24px;
+  color: var(--text-2);
+}
+
+/* ── Step 1: 類群格 ── */
+.dt-s1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  animation: dt-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dt-taxa-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 900px;
+}
+
+.dt-taxa-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  animation: dt-card-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  opacity: 0;
+}
+
+.dt-taxa-cn {
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+  color: var(--text);
+}
+
+.dt-taxa-en {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mute);
+  letter-spacing: 0.05em;
+}
+
+.dt-taxa-note {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--accent);
+}
+
+/* ── Step 2: 橫條圖 ── */
+.dt-s2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 0 80px;
+  width: 100%;
+  max-width: 900px;
+  animation: dt-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dt-bar-chart {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dt-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.dt-bar-label {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text);
+  min-width: 60px;
+}
+
+.dt-bar-tracks {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dt-bar-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dt-bar {
+  height: 22px;
+  border-radius: 2px;
+  animation: dt-bar-grow 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dt-bar-25      { background: var(--text-mute); opacity: 0.45; }
+.dt-bar-26-up   { background: var(--accent); opacity: 0.85; }
+.dt-bar-26-down { background: var(--text-2); opacity: 0.5; }
+
+.dt-bar-val {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.dt-bar-val-25 { color: var(--text-mute); }
+.dt-bar-val-26 { color: var(--text); display: flex; align-items: center; gap: 6px; }
+
+.dt-delta { font-size: 14px; }
+.dt-delta.up   { color: var(--accent); }
+.dt-delta.down { color: var(--text-mute); }
+
+.dt-note {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text-2);
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+}
+
+.dt-note strong { color: var(--accent); }
+
+/* ── Step 3: 多樣性指數 ── */
+.dt-s3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  animation: dt-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  width: 100%;
+  max-width: 860px;
+}
+
+.dt-index-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dt-index-header,
+.dt-index-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.2fr 1.2fr 2fr;
+  gap: 0;
+}
+
+.dt-index-header {
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  padding: 10px 20px;
+}
+
+.dt-index-header span {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+  letter-spacing: 0.1em;
+}
+
+.dt-index-row {
+  padding: 14px 20px;
+  border-top: 1px solid var(--rule);
+}
+
+.dt-idx-name {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--text);
+}
+
+.dt-idx-val {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.dt-idx-delta {
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.dt-idx-delta.up   { color: var(--accent); }
+.dt-idx-delta.down { color: var(--text-mute); }
+
+.dt-idx-note {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--text-2);
+}
+
+.dt-index-highlight {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.dt-highlight-num { font-size: 56px; color: var(--text); }
+.dt-highlight-arrow { font-size: 28px; color: var(--text-mute); }
+.dt-highlight-label {
+  font-family: var(--font-body);
+  font-size: 20px;
+  color: var(--text-2);
+}
+
+/* ── Step 4: 解讀邊界 ── */
+.dt-s4 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  animation: dt-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  max-width: 860px;
+}
+
+.dt-boundary-cards {
+  display: flex;
+  gap: 24px;
+}
+
+.dt-boundary-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 24px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.dt-boundary-caution {
+  border: 1px solid color-mix(in srgb, var(--text-mute) 40%, transparent);
+  background: color-mix(in srgb, var(--text-mute) 4%, var(--bg));
+}
+
+.dt-boundary-ok {
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg));
+}
+
+.dt-boundary-icon {
+  font-size: 28px;
+  color: var(--text-mute);
+}
+
+.dt-boundary-ok .dt-boundary-icon { color: var(--accent); }
+
+.dt-boundary-text {
+  font-family: var(--font-body);
+  font-size: 18px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.dt-boundary-quote {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text-2);
+  text-align: center;
+  line-height: 1.8;
+  border-top: 1px solid var(--rule);
+  padding-top: 24px;
+  width: 100%;
+}
+
+/* ── keyframes ── */
+@keyframes dt-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dt-card-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dt-bar-grow {
+  from { width: 0 !important; }
+  to   { /* width stays as inline style */ }
+}

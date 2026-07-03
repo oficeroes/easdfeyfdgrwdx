@@ -1,0 +1,514 @@
+/* Space.css — 前綴 .sp- */
+
+/* ── 通用 stage ── */
+.sp-stage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 淡色紙紋底 */
+.sp-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 55% at 50% 50%,
+    color-mix(in srgb, var(--accent) 5%, transparent),
+    transparent 80%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── 進場動畫 ── */
+@keyframes sp-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sp-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sp-bar-grow {
+  from { width: 0; }
+  to   { width: var(--bar-target, 100%); }
+}
+
+@keyframes sp-scale-in {
+  from { opacity: 0; transform: scale(0.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sp-slide-right {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ─────────────────────────────────────────────
+   Step 0: 地圖
+   ───────────────────────────────────────────── */
+.sp-s0 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  animation: sp-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-map-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.sp-map-kicker {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.sp-map-title {
+  font-family: var(--font-display-cn);
+  font-size: 36px;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.sp-map-svg {
+  width: 520px;
+  height: 480px;
+  animation: sp-scale-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+.sp-map-legend {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.sp-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 17px;
+  color: var(--text-2);
+}
+
+.sp-legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sp-legend-dot--high {
+  background: var(--accent);
+  opacity: 0.95;
+}
+
+.sp-legend-dot--mid {
+  background: var(--accent);
+  opacity: 0.5;
+}
+
+.sp-legend-dot--low {
+  background: var(--text-mute);
+  opacity: 0.45;
+}
+
+/* ─────────────────────────────────────────────
+   Step 1: 三區夜行比例比較
+   ───────────────────────────────────────────── */
+.sp-s1 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+  animation: sp-fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-s1-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.sp-s1-kicker {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.sp-s1-title {
+  font-family: var(--font-display-cn);
+  font-size: 38px;
+  color: var(--text);
+  text-align: center;
+}
+
+.sp-zone-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 880px;
+}
+
+.sp-zone-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: sp-slide-right 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-zone-row:nth-child(2) { animation-delay: 0.1s; }
+.sp-zone-row:nth-child(3) { animation-delay: 0.2s; }
+
+.sp-zone-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.sp-zone-name {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text);
+  min-width: 200px;
+}
+
+.sp-zone-sub {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+  letter-spacing: 0.05em;
+}
+
+.sp-zone-pct {
+  font-family: var(--hero-num-font, var(--font-display-cn));
+  font-style: var(--hero-num-style, italic);
+  font-weight: var(--hero-num-weight, 500);
+  font-size: 52px;
+  line-height: 1;
+  margin-left: auto;
+}
+
+.sp-zone-pct--high  { color: var(--accent); }
+.sp-zone-pct--mid   { color: var(--text-mute); }
+.sp-zone-pct--low   { color: var(--text-2); }
+
+.sp-zone-track {
+  width: 100%;
+  height: 10px;
+  background: color-mix(in srgb, var(--rule) 60%, transparent);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.sp-zone-fill {
+  height: 100%;
+  border-radius: 999px;
+  animation: sp-bar-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+}
+
+.sp-zone-fill--high {
+  background: var(--accent);
+  opacity: 0.9;
+}
+
+.sp-zone-fill--mid {
+  background: var(--text-mute);
+  opacity: 0.6;
+}
+
+.sp-zone-fill--low {
+  background: var(--accent);
+  opacity: 0.75;
+}
+
+.sp-s1-note {
+  font-family: var(--font-display-cn);
+  font-size: 26px;
+  color: var(--text-2);
+  text-align: center;
+  border-left: 4px solid var(--accent);
+  padding: 10px 28px;
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────────────────────
+   Step 2: 路環暗夜孤島
+   ───────────────────────────────────────────── */
+.sp-s2 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 52px;
+  animation: sp-fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-island-title {
+  font-family: var(--font-display-cn);
+  font-size: 56px;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.sp-island-title em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.sp-island-stats {
+  display: flex;
+  align-items: flex-start;
+  gap: 80px;
+}
+
+.sp-island-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: sp-fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.sp-island-stat:nth-child(2) { animation-delay: 0.28s; }
+.sp-island-stat:nth-child(3) { animation-delay: 0.42s; }
+
+.sp-stat-num {
+  font-family: var(--hero-num-font, var(--font-display-cn));
+  font-style: var(--hero-num-style, italic);
+  font-weight: var(--hero-num-weight, 500);
+  font-size: 88px;
+  line-height: 1;
+  color: var(--accent);
+}
+
+.sp-stat-unit {
+  font-family: var(--font-display-cn);
+  font-size: 22px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+.sp-stat-sub {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-mute);
+  letter-spacing: 0.05em;
+}
+
+.sp-stat-divider {
+  width: 1px;
+  height: 100px;
+  background: var(--rule);
+  align-self: center;
+}
+
+.sp-island-quote {
+  font-family: var(--font-display-cn);
+  font-size: 30px;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 760px;
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────────
+   Step 3: 入侵物種威脅
+   ───────────────────────────────────────────── */
+.sp-s3 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 52px;
+  animation: sp-fade-up 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-threat-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.sp-threat-kicker {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.sp-threat-title {
+  font-family: var(--font-display-cn);
+  font-size: 48px;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.sp-threat-cards {
+  display: flex;
+  align-items: stretch;
+  gap: 60px;
+}
+
+.sp-threat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 40px 52px;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--surface-2, var(--bg)) 60%, transparent);
+  animation: sp-scale-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+}
+
+.sp-threat-card:nth-child(2) { animation-delay: 0.36s; }
+
+.sp-threat-icon {
+  width: 64px;
+  height: 64px;
+}
+
+.sp-threat-name {
+  font-family: var(--font-display-cn);
+  font-size: 28px;
+  color: var(--text);
+  text-align: center;
+  font-weight: 700;
+}
+
+.sp-threat-count {
+  font-family: var(--hero-num-font, var(--font-display-cn));
+  font-style: var(--hero-num-style, italic);
+  font-weight: var(--hero-num-weight, 500);
+  font-size: 80px;
+  line-height: 1;
+  color: var(--text-mute);
+}
+
+.sp-threat-count-label {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
+}
+
+.sp-threat-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  border: 1px solid color-mix(in srgb, var(--text-mute) 40%, transparent);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-mute);
+  letter-spacing: 0.05em;
+}
+
+.sp-threat-caption {
+  font-family: var(--font-display-cn);
+  font-size: 26px;
+  color: var(--text-2);
+  text-align: center;
+  max-width: 760px;
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────────────────────
+   Step 4: 科學邊界
+   ───────────────────────────────────────────── */
+.sp-s4 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+  animation: sp-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-caveat-kicker {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.sp-caveat-items {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 820px;
+  width: 100%;
+}
+
+.sp-caveat-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 24px 32px;
+  border-left: 3px solid var(--rule);
+  animation: sp-slide-right 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sp-caveat-row:nth-child(2) { animation-delay: 0.12s; }
+.sp-caveat-row:nth-child(3) { animation-delay: 0.24s; }
+
+.sp-caveat-row.is-signal {
+  border-left-color: var(--accent);
+}
+
+.sp-caveat-mark {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  color: var(--text-mute);
+  flex-shrink: 0;
+  padding-top: 3px;
+}
+
+.sp-caveat-row.is-signal .sp-caveat-mark {
+  color: var(--accent);
+}
+
+.sp-caveat-text {
+  font-family: var(--font-body);
+  font-size: 22px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+.sp-caveat-row.is-signal .sp-caveat-text {
+  color: var(--text);
+  font-family: var(--font-display-cn);
+  font-size: 24px;
+}
